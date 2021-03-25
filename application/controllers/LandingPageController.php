@@ -8,8 +8,10 @@ class LandingPageController extends My_Controller {
 		$data['mainContent'] = 'landingPage/index';
 		$this->landingPageRenderer('landingPage/index', $data);
 	}
+	
 	// landing page how to request files
-	public function howToRequestFile(){
+	public function checkBatchCode(){
+		$post = $this->input->post();
 		$data['mainContent'] = 'landingPage/howToRequestFile';
 		$this->landingPageRenderer('landingPage/howToRequestFile',$data);
 	}

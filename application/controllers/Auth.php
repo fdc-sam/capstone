@@ -127,7 +127,8 @@ class Auth extends CI_Controller
 			// 	'id' => 'password',
 			// 	'type' => 'password',
 			// ];
-
+			
+			$this->data['currentPageTitle'] = 'Login';
 			$this->load->view('includes/landingPage/header',$this->data);
 			$this->load->view('landingPage/login');
 			$this->load->view('includes/landingPage/footer');
@@ -496,6 +497,8 @@ class Auth extends CI_Controller
 		// if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin()){
 		// 	redirect('auth', 'refresh');
 		// }
+		$hasBatchCode = '';
+		$addBatchFields = array();
 		
 		$tables = $this->config->item('tables', 'ion_auth');
 		$identity_column = $this->config->item('identity', 'ion_auth');
@@ -504,6 +507,7 @@ class Auth extends CI_Controller
 		// validate form input
 		$this->form_validation->set_rules('first_name', $this->lang->line('create_user_validation_fname_label'), 'trim|required');
 		$this->form_validation->set_rules('last_name', $this->lang->line('create_user_validation_lname_label'), 'trim|required');
+		$this->form_validation->set_rules('batchCode', $this->lang->line('create_user_validation_batchCode_label'), 'trim|required');
 		if ($identity_column !== 'email'){
 			$this->form_validation->set_rules('identity', $this->lang->line('create_user_validation_identity_label'), 'trim|required|is_unique[' . $tables['users'] . '.' . $identity_column . ']');
 			$this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'trim|required|valid_email');
@@ -532,13 +536,39 @@ class Auth extends CI_Controller
 			];
 		}
 		
+		// checking the Batch Code
+		$hasBatchCode = $this->universal->get(
+			'true',
+			'batch',
+			'*',
+			'all',
+			array(
+				'code' => $this->input->post('batchCode')
+			)
+		);
+		
+		if (!empty($hasBatchCode) && !empty($this->input->post('batchCode')) && !empty($this->input->post('email'))) {
+			$addBatchFields = array(
+				'batch_id' => $hasBatchCode[0]->id,
+				'email' => $email
+			);
+			// echo "<pre>";
+			// print_r($hasBatchCode[0]->id);
+			// die();
+		}
+		
 		// has group default
 		$group = 4;
 		if (!empty($this->input->post('group'))) {
 			$group = $this->input->post('group');
 		}
 		
-		if ($this->form_validation->run() === TRUE && $this->ion_auth->register($identity, $password, $email, $additional_data,$group)){
+		if (
+			$this->form_validation->run() === TRUE && 
+			$this->ion_auth->register($identity, $password, $email, $additional_data,$group) && 
+			!empty($hasBatchCode) && 
+			$this->universal->insert('batch_connect',$addBatchFields)
+		){
 			// check to see if we are creating the user
 			// redirect them back to the admin page
 			// $this->session->set_flashdata('message', $this->ion_auth->messages());
@@ -583,56 +613,18 @@ class Auth extends CI_Controller
 			// display the create user form
 			// set the flash data error message if there is one
 			$this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
+			if (empty($hasBatchCode) && !empty($this->input->post('batchCode'))) {
+				$this->data['message'] = 'Invalid Batch Code';
+			}
+			
 			//
-			// $this->data['first_name'] = [
-			// 	'name' => 'first_name',
-			// 	'id' => 'first_name',
-			// 	'type' => 'text',
-			// 	'value' => $this->form_validation->set_value('first_name'),
-			// ];
-			// $this->data['last_name'] = [
-			// 	'name' => 'last_name',
-			// 	'id' => 'last_name',
-			// 	'type' => 'text',
-			// 	'value' => $this->form_validation->set_value('last_name'),
-			// ];
-			// $this->data['identity'] = [
-			// 	'name' => 'identity',
-			// 	'id' => 'identity',
-			// 	'type' => 'text',
-			// 	'value' => $this->form_validation->set_value('identity'),
-			// ];
-			// $this->data['email'] = [
-			// 	'name' => 'email',
-			// 	'id' => 'email',
-			// 	'type' => 'text',
-			// 	'value' => $this->form_validation->set_value('email'),
-			// ];
-			// $this->data['company'] = [
-			// 	'name' => 'company',
-			// 	'id' => 'company',
-			// 	'type' => 'text',
-			// 	'value' => $this->form_validation->set_value('company'),
-			// ];
-			// $this->data['phone'] = [
-			// 	'name' => 'phone',
-			// 	'id' => 'phone',
-			// 	'type' => 'text',
-			// 	'value' => $this->form_validation->set_value('phone'),
-			// ];
-			// $this->data['password'] = [
-			// 	'name' => 'password',
-			// 	'id' => 'password',
-			// 	'type' => 'password',
-			// 	'value' => $this->form_validation->set_value('password'),
-			// ];
-			// $this->data['password_confirm'] = [
-			// 	'name' => 'password_confirm',
-			// 	'id' => 'password_confirm',
-			// 	'type' => 'password',
-			// 	'value' => $this->form_validation->set_value('password_confirm'),
-			// ];
-			//
+			$this->data['first_name'] = $this->input->post('first_name');
+			$this->data['last_name'] = $this->input->post('last_name');
+			$this->data['middle_name'] = $this->input->post('middle_name');
+			$this->data['email'] = $this->input->post('email');
+			$this->data['batchCode'] = $this->form_validation->set_value('batchCode');
+			$this->data['password'] = $this->form_validation->set_value('password');
+			$this->data['password_confirm'] = $this->form_validation->set_value('password_confirm');
 			
 			$data = array(
 				'data' => 'error',
@@ -653,7 +645,8 @@ class Auth extends CI_Controller
 					</div>'
 				);
 			}
-		
+			
+			$this->data['currentPageTitle'] = 'Register';
 			$this->data['mainContent'] = 'landingPage/login';
 			$this->load->view('includes/landingPage/header',$this->data);
 			$this->load->view('landingPage/register');

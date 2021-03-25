@@ -16,30 +16,30 @@
                                     <div class="col-md-4">
                                         <div class="position-relative form-group">
                                             <label for="exampleName" class=""><span class="text-danger">*</span> First Name</label>
-                                            <input name="first_name" id="first_name" placeholder="First Name here..." type="text" class="form-control">
+                                            <input name="first_name" id="first_name" placeholder="First Name here..." type="text" class="form-control" value="<?php echo $first_name; ?>">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="position-relative form-group">
                                             <label for="examplePassword" class=""> Middle Name</label>
-                                            <input name="middle_name" id="middle_name" placeholder="Middle Name here..." type="text" class="form-control">
+                                            <input name="middle_name" id="middle_name" placeholder="Middle Name here..." type="text" class="form-control" value="<?php echo $middle_name; ?>">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="position-relative form-group">
                                             <label for="examplePasswordRep" class=""><span class="text-danger">*</span> Last Name</label>
-                                            <input name="last_name" id="last_name" placeholder="Last Name here..." type="text" class="form-control">
+                                            <input name="last_name" id="last_name" placeholder="Last Name here..." type="text" class="form-control" value="<?php echo $last_name; ?>">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="position-relative form-group">
                                             <label for="exampleEmail" class=""><span class="text-danger">*</span> Email</label>
-                                            <input name="email" id="email" placeholder="Email here..." type="email" class="form-control">
+                                            <input name="email" id="email" placeholder="Email here..." type="email" class="form-control" value="<?php echo $email; ?>">
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="position-relative form-group">
                                             <label for="exampleEmail" class=""><span class="text-danger">*</span> Sex/Gender</label>
                                             <select name="gender" class="mb-2 form-control">
@@ -48,37 +48,30 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="col-md-4">
+                                        <div class="position-relative form-group">
+                                            <label for="exampleEmail" class=""><span class="text-danger">*</span> Batch Code</label>
+                                            <input name="batchCode" id="batchCode" placeholder="Enter Batch Code here..." type="text" class="form-control"  value="<?php echo $batchCode; ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
                                     <div class="col-md-6">
                                         <div class="position-relative form-group">
                                             <label for="examplePassword" class=""><span class="text-danger">*</span> Password</label>
-                                            <input name="password" id="password" placeholder="Password here..." type="password" class="form-control">
+                                            <input name="password" id="password" placeholder="Password here..." type="password" class="form-control"  value="<?php echo $password; ?>">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="position-relative form-group">
                                             <label for="examplePasswordRep" class=""><span class="text-danger">*</span> Repeat Password</label>
-                                            <input name="password_confirm" id="password_confirm" placeholder="Repeat Password here..." type="password" class="form-control">
+                                            <input name="password_confirm" id="password_confirm" placeholder="Repeat Password here..." type="password" class="form-control" value="<?php echo $password_confirm; ?>">
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <div class="form-row">
-                                    <div class="col-md-6">
-                                        <div class="position-relative form-group">
-                                            <label for="examplePassword" class=""><span class="text-danger">*</span> Student</label>
-                                            <input class="form-check-input" type="radio" name="group" value="4">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="position-relative form-group">
-                                            <label for="examplePasswordRep" class=""><span class="text-danger">*</span> Repeat Password</label>
-                                            <input class="form-check-input" type="radio" name="group" value="5">
-                                        </div>
-                                    </div>
-                                </div> -->
-                                <div class="mt-3 position-relative form-check">
-                                    <input name="check" id="exampleCheck" type="checkbox" class="form-check-input">
-                                    <label for="exampleCheck" class="form-check-label">Accept our <a href="javascript:void(0);">Terms and Conditions</a>.</label>
-                                </div>
+                                
+                                
                                 <div class="mt-4 d-flex align-items-center">
                                     <h5 class="mb-0">Already have an account? <a href="<?php echo base_url('login'); ?>" class="text-primary">Sign in</a></h5>
                                     <div class="ml-auto">
