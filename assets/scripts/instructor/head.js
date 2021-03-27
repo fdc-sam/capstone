@@ -90,7 +90,9 @@ var batchDataTable = $('#batchDataTable').DataTable({
                 }
             }
         },
-        
+        {
+            "data": "count"
+        },
         {
             "data": 'id',
             "render": function(data, type, row, meta){

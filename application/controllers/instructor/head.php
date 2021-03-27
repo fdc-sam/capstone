@@ -175,6 +175,17 @@ class Head extends CI_Controller {
         
         $data['data'] = array();
         foreach ($batchDataResult['data'] as $k => $sheet){
+            // get the count of
+            $countBatch = $this->universal->get(
+                true,
+                'batch_connect',
+                'id',
+                'all',
+                array(
+                    'batch_id' =>  $sheet['id']
+                )
+            );
+            $sheet['count'] =  count($countBatch);
             array_push($data['data'], $sheet);
         }
         

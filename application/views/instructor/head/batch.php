@@ -64,6 +64,7 @@
                                             <th>Batch Year From</th>
                                             <th>Batch Year To</th>
                                             <th>Batch Status</th>
+                                            <th>Registered Student</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -74,6 +75,7 @@
                                             <th>Batch Year From</th>
                                             <th>Batch Year To</th>
                                             <th>Batch Status</th>
+                                            <th>Registered Student</th>
                                             <th>Action</th>
                                         </tr>
                                     </tfoot>
