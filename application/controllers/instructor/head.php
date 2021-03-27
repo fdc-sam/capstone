@@ -188,5 +188,27 @@ class Head extends CI_Controller {
         );
     }
     
+    public function changeBatchStatus(){
+        $post = $this->input->post();
+        
+        if ($post['batchStatus'] == 1) {
+            // to deactivate
+            $status = 0;
+        }else{
+            // to active
+            $status = 1;
+        }
+        
+        $updateBatchStatus = $this->universal->update(
+            'batch',
+            array(
+                'status' => $status
+            ),
+            array(
+                'id' => $post['id']
+            )
+        );
+        echo $updateBatchStatus;
+    }
     
 }

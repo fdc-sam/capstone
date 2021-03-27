@@ -18,6 +18,7 @@ var sub_content =  '<?php echo isset($subContent)? $subContent : null ?>';
 <?php if ($subContent == 'head/batch'): ?>
 	<script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
 	<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 	<script src="<?php echo base_url('assets/scripts/instructor/head.js'); ?>"></script>
 <?php endif; ?>
 

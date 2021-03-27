@@ -58,75 +58,75 @@ $('#batch_form').on('submit', function(e){
 });
 
 // get the batch data
-function getBatchData(){
-    //teacher view
-    var batchDataTable = $('#batchDataTable').DataTable({
-        "responsive" : true,
-        "processing" : true,
-        "serverSide" : true,
-        "order": [[0,'asc']],
-        "ajax" : {
-          "url" : `${base_url}/instructor/head/getBatchDataTable`,
-          "type" : "POST"
-        },
-        // "columnDefs": [
-        //     {
-        //         "targets": [ ], //first column / numbering column
-        //         "orderable": false, //set not orderable
-        //     },
-        //     // { targets: 5 , class: 'text-center'}
-        //     // { targets: 5 , class: 'text-center'},
-        // ],
-        "columns" : [
-            {"data": "code"},
-            {"data": "batch_from"}, 
-            {"data": "batch_to"},
-            {
-                "data": "status",
-                "render": function(data, type, row, meta){
-                    if (data == 1) {
-                        return `Active`;
-                    }else{
-                        return `Deactivate`;
-                    }
-                }
-            },
-            
-            {
-                "data": 'id',
-                "render": function(data, type, row, meta){
-                    var btnReturn = '';
-                    if (row.status == 1 ) {
-                        btnReturn += `
-                            <button class="btn-deactivate btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-danger"  batchId="${data}" data-toggle="tooltip" data-placement="top" title="Deactivate">
-                                <i class="lnr-cross-circle btn-icon-wrapper"> </i>
-                            </button>
-                        `;
-                    }else{
-                        btnReturn +=  `
-                            <button class="btn-activate btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary"  batchId="${data}" data-toggle="tooltip" data-placement="top" title="Activate">
-                                <i class="lnr-checkmark-circle btn-icon-wrapper"> </i>
-                            </button>
-                        `;
-                    }
-                    btnReturn +=  `
-                        <button class="btn-edit btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-info" batchId="${data}" data-toggle="tooltip" data-placement="top" title="Edit">
-                            <i class="lnr-pencil btn-icon-wrapper"> </i>
-                        </button>
-                        <button class="btn-view btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-secondary"  batchId="${data}" data-toggle="tooltip" data-placement="top" title="View">
-                            <i class="lnr-eye btn-icon-wrapper"> </i>
-                        </button>
-                    `;
-                    return btnReturn;
-                                        
+//teacher view
+var batchDataTable = $('#batchDataTable').DataTable({
+    "responsive" : true,
+    "processing" : true,
+    "serverSide" : true,
+    "order": [[0,'asc']],
+    "ajax" : {
+      "url" : `${base_url}/instructor/head/getBatchDataTable`,
+      "type" : "POST"
+    },
+    // "columnDefs": [
+    //     {
+    //         "targets": [ ], //first column / numbering column
+    //         "orderable": false, //set not orderable
+    //     },
+    //     // { targets: 5 , class: 'text-center'}
+    //     // { targets: 5 , class: 'text-center'},
+    // ],
+    "columns" : [
+        {"data": "code"},
+        {"data": "batch_from"}, 
+        {"data": "batch_to"},
+        {
+            "data": "status",
+            "render": function(data, type, row, meta){
+                if (data == 1) {
+                    return `Active`;
+                }else{
+                    return `Deactivate`;
                 }
             }
-        ]
-    });// end of the data table variable
-} // end of the getBatchData()
+        },
+        
+        {
+            "data": 'id',
+            "render": function(data, type, row, meta){
+                var btnReturn = '';
+                if (row.status == 1 ) {
+                    // batch status to deactivate
+                    btnReturn += `
+                        <button class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-danger"  batchId="${data}" batchStatus="${row.status}" data-toggle="tooltip" data-placement="top" title="Deactivate">
+                            <i class="lnr-cross-circle btn-icon-wrapper"> </i>
+                        </button>
+                    `;
+                }else{
+                    // batch status to active
+                    btnReturn +=  `
+                        <button class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary"  batchId="${data}"  batchStatus="${row.status}" data-toggle="tooltip" data-placement="top" title="Activate">
+                            <i class="lnr-checkmark-circle btn-icon-wrapper"> </i>
+                        </button>
+                    `;
+                }
+                btnReturn +=  `
+                    <button class="btn-edit btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-info" batchId="${data}" data-toggle="tooltip" data-placement="top" title="Edit">
+                        <i class="lnr-pencil btn-icon-wrapper"> </i>
+                    </button>
+                    <button class="btn-view btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-secondary"  batchId="${data}" data-toggle="tooltip" data-placement="top" title="View">
+                        <i class="lnr-eye btn-icon-wrapper"> </i>
+                    </button>
+                `;
+                return btnReturn;
+                                    
+            }
+        }
+    ]
+});// end of the data table variable
 
 // run the getBatchData()
-getBatchData();
+// getBatchData();
 
 // edit
 $(document).on("click", ".btn-edit", function(e){
@@ -138,11 +138,82 @@ $(document).on("click", ".btn-edit", function(e){
 });
 
 // activate
-$(document).on("click", ".btn-activate", function(e){
+$(document).on("click", ".btn-changeStatus", function(e){
     
-    var batchData = JSON.stringify({
-        id: jQuery(this).attr('batchId')
-    });
+    var batchStatus = jQuery(this).attr('batchStatus');
+    var batchData = {id:jQuery(this).attr('batchId'), batchStatus:batchStatus };
+    // console.log(batchStatus);
+    if (batchStatus == 1) {
+        // to deactivate
+        var batchMessageTitle = 'Are you sure you want to Deactivate?';
+        var batchMessageText = 'Please be advise the if you do this, the batch will not be seen by the student registered to this batch';
+        var batchBtnText = 'Yes, Deactivate it!';
+    }else{
+        // to active
+        var batchMessageTitle = 'Are you sure you want to Activate?';
+        var batchMessageText = 'Please be advise the if you do this, the batch will be seen by the student registered to this batch';
+        var batchBtnText = 'Yes, Activate it!';
+    }
+    
+    Swal.fire({
+        title: batchMessageTitle,
+        text: batchMessageText,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: batchBtnText
+    }).then((result) => {
+        if (result.isConfirmed) {
+            changeBatchStatus(batchData);
+        }
+    })
+    
+    function changeBatchStatus(batchData) {
+        $.ajax({
+            url:`${base_url}/instructor/head/changeBatchStatus`,
+            type:'post',
+            dataType:'json',
+            data:batchData,
+            beforeSend: function() {
+                $('#loadingState').show();
+            },
+            success:function(data){
+                // if (!data.error) {
+                //     var alertClass = `alert-success`;
+                //     var alertMessege = `Batch has successfully <b>Created</b>`;
+                // }else{
+                //     var alertClass = `alert-warning`;
+                //     var alertMessege = `Batch was not created`;
+                // }
+                // 
+                // $('#alertMessege').html(`
+                //     <div class="alert alert-dismissible fade show ${alertClass}" role="alert">
+                //         <button type="button" class="close" aria-label="Close" data-dismiss="alert">
+                //             <span aria-hidden="true">×</span>
+                //         </button>
+                //         ${alertMessege}
+                //     </div>`
+                // );
+                batchDataTable.ajax.reload();
+                console.log(batchData);
+                
+            },
+            error: function(xhr, status, error){
+                $('#alertMessege').html(`
+                    <div class="alert alert-dismissible fade show alert-danger" role="alert">
+                        <button type="button" class="close" aria-label="Close" data-dismiss="alert">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        Batch was not created, please Refresh the page
+                    </div>`
+                );
+            },
+            complete: function(){
+                $('#loadingState').hide();
+            }
+        });
+    }
     
 });
 
