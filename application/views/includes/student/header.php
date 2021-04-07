@@ -157,7 +157,7 @@
                                                                             <div class="avatar-wrapper mt-2 avatar-wrapper-overlap">
                                                                                 <div class="avatar-icon-wrapper avatar-icon-sm">
                                                                                     <div class="avatar-icon">
-                                                                                        <img src="<?php echo base_url('assets/images/avatars/1.jpg') ?>" alt="">
+                                                                                        <img src="<?php echo base_url('assets/images/avatars/2.jpg') ?>" alt="">
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="avatar-icon-wrapper avatar-icon-sm">
@@ -415,12 +415,9 @@
                                                     <div class="menu-header-content text-left">
                                                         <div class="widget-content p-0">
                                                             <div class="widget-content-wrapper">
-                                                                <div class="widget-content-left mr-3">
-                                                                    <img width="42" class="rounded-circle" src="<?php echo base_url('assets/images/avatars/1.jpg') ?>" alt="">
-                                                                </div>
                                                                 <div class="widget-content-left">
-                                                                    <div class="widget-heading">Alina Mcloughlin</div>
-                                                                    <div class="widget-subheading opacity-8">A short profile description</div>
+                                                                    <div class="widget-heading"><?php echo $fullName; ?></div>
+                                                                    <div class="widget-subheading opacity-8"><?php echo $userInfo->email; ?></div>
                                                                 </div>
                                                                 <div class="widget-content-right mr-2">
                                                                     <a href="<?php echo base_url('logout'); ?>" class="btn-pill btn-shadow btn-shine btn btn-focus">Logout</a>
@@ -435,12 +432,10 @@
                                                     <ul class="nav flex-column">
                                                         <li class="nav-item-header nav-item">Activity</li>
                                                         <li class="nav-item">
-                                                            <a href="javascript:void(0);" class="nav-link">Chat
-                                                                <div class="ml-auto badge badge-pill badge-info">8</div>
-                                                            </a>
+                                                            <a href="<?php echo base_url('student/home/myProfile'); ?>" class="nav-link">My Profile</a>
                                                         </li>
                                                         <li class="nav-item">
-                                                            <a href="javascript:void(0);" class="nav-link">Recover Password</a>
+                                                            <a href="<?php echo base_url('student/home/changePassword'); ?>" class="nav-link">Change Password</a>
                                                         </li>
                                                         <li class="nav-item-header nav-item">My Account
                                                         </li>
@@ -535,15 +530,15 @@
                     <div class="app-sidebar__inner">
                         <ul class="vertical-nav-menu">
                             <li class="app-sidebar__heading">Head UI</li>
-                            <li  class="<?php echo isset($mainContent) && $mainContent == 'student/home' ? 'mm-active': '' ?>">
+                            <li  class="<?php echo isset($mainContent) && $mainContent == 'student/home' && $subContent != 'home/myProfile' && $subContent != 'home/changePassword'  ? 'mm-active': '' ?>">
                                 <a href="#">
                                     <i class="metismenu-icon pe-7s-rocket"></i>Dashboards
                                     <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="<?php echo base_url('instructor/head') ?>"  class="<?php echo isset($subContent) && $subContent == 'home/index' ? 'mm-active': '' ?> " >
-                                            <i class="metismenu-icon"></i>Member's
+                                        <a href="<?php echo base_url('student/home') ?>"  class="<?php echo isset($subContent) && $subContent == 'home/index' ? 'mm-active': '' ?> " >
+                                            <i class="metismenu-icon"></i>Home
                                         </a>
                                     </li>
                                     <li>

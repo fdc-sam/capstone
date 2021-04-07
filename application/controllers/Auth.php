@@ -152,71 +152,72 @@ class Auth extends CI_Controller
 	/**
 	 * Change password
 	 */
-	public function change_password()
-	{
+	public function change_password(){
 		$this->form_validation->set_rules('old', $this->lang->line('change_password_validation_old_password_label'), 'required');
 		$this->form_validation->set_rules('new', $this->lang->line('change_password_validation_new_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|matches[new_confirm]');
 		$this->form_validation->set_rules('new_confirm', $this->lang->line('change_password_validation_new_password_confirm_label'), 'required');
 
-		if (!$this->ion_auth->logged_in())
-		{
+		if (!$this->ion_auth->logged_in()){
 			redirect('auth/login', 'refresh');
 		}
 
-		$user = $this->ion_auth->user()->row();
-
-		if ($this->form_validation->run() === FALSE)
-		{
+		// get the current user information
+		$this->data['userInfo'] = $this->ion_auth->user()->row();
+		$this->data['fullName'] = $this->data['userInfo']->first_name." ".$this->data['userInfo']->middle_name." ".$this->data['userInfo']->last_name;
+		
+		$this->data['min_password_length'] = $this->config->item('min_password_length', 'ion_auth');
+		$this->data['old_password'] = $this->input->post('old');
+		$this->data['new_password'] =  $this->input->post('new');
+		$this->data['new_password_confirm'] = $this->input->post('new_confirm');
+		
+		if ($this->form_validation->run() === FALSE){
 			// display the form
 			// set the flash data error message if there is one
-			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-
-			$this->data['min_password_length'] = $this->config->item('min_password_length', 'ion_auth');
-			$this->data['old_password'] = [
-				'name' => 'old',
-				'id' => 'old',
-				'type' => 'password',
-			];
-			$this->data['new_password'] = [
-				'name' => 'new',
-				'id' => 'new',
-				'type' => 'password',
-				'pattern' => '^.{' . $this->data['min_password_length'] . '}.*$',
-			];
-			$this->data['new_password_confirm'] = [
-				'name' => 'new_confirm',
-				'id' => 'new_confirm',
-				'type' => 'password',
-				'pattern' => '^.{' . $this->data['min_password_length'] . '}.*$',
-			];
-			$this->data['user_id'] = [
-				'name' => 'user_id',
-				'id' => 'user_id',
-				'type' => 'hidden',
-				'value' => $user->id,
-			];
-
-			// render
-			$this->_render_page('auth' . DIRECTORY_SEPARATOR . 'change_password', $this->data);
-		}
-		else
-		{
+			$this->data['message'] = (validation_errors()) ? validation_errors() :"";
+			
+			if ($this->data['message'] != null) {
+				$this->session->set_flashdata('message',
+					'<div class="alert alert-warning">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<i class="pe-7s-close"> </i>
+						</button>
+						<span>
+							<p>'.$this->data['message'].'</p>
+						</span>
+					</div>');
+			}
+			
+			
+		}else{
 			$identity = $this->session->userdata('identity');
 
 			$change = $this->ion_auth->change_password($identity, $this->input->post('old'), $this->input->post('new'));
 
-			if ($change)
-			{
+			if ($change){
 				//if the password was successfully changed
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
 				$this->logout();
-			}
-			else
-			{
-				$this->session->set_flashdata('message', $this->ion_auth->errors());
-				redirect('auth/change_password', 'refresh');
+			}else{
+				$this->session->set_flashdata('message',
+					'<div class="alert alert-warning">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<i class="pe-7s-close"> </i>
+						</button>
+						<span>
+							<p>'.$this->ion_auth->errors().'</p>
+						</span>
+					</div>');
 			}
 		}
+		
+		// - data
+		$this->data['currentPageTitle'] = 'Student - Chagne Password';
+		$this->data['mainContent'] = 'student/home';
+		$this->data['subContent'] = 'home/changePassword';
+		
+		$this->load->view('includes/student/header', $this->data);
+		$this->load->view('student/changePassword');
+		$this->load->view('includes/student/footer');
 	}
 
 	/**
@@ -520,7 +521,7 @@ class Auth extends CI_Controller
 		$this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
 
 		if ($this->form_validation->run() === TRUE){
-			$email = strtolower($this->input->post('email'));
+			$email = $this->input->post('email');
 			$identity = ($identity_column === 'email') ? $email : $this->input->post('identity');
 			$password = $this->input->post('password');
 			
@@ -547,14 +548,12 @@ class Auth extends CI_Controller
 			)
 		);
 		
+		// for batch connect insert fields
 		if (!empty($hasBatchCode) && !empty($this->input->post('batchCode')) && !empty($this->input->post('email'))) {
 			$addBatchFields = array(
 				'batch_id' => $hasBatchCode[0]->id,
 				'email' => $email
 			);
-			// echo "<pre>";
-			// print_r($hasBatchCode[0]->id);
-			// die();
 		}
 		
 		// has group default
