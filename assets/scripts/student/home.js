@@ -54,6 +54,7 @@ if (sub_content == 'home/index') {
                     },
                     complete: function(){
                         $('#loadingState').hide();
+                        batchDataTable.ajax.reload();
                     }
                 })
             }
@@ -220,4 +221,99 @@ if (sub_content == 'home/index') {
         
     });
     
+    
+    //teacher view
+    var batchDataTable = $('#dataTableGroupMembers').DataTable({
+        "responsive" : true,
+        "processing" : true,
+        "serverSide" : true,
+        "order": [[0,'asc']],
+        "ajax" : {
+          "url" : `${base_url}/student/home/getGroupMembers`,
+          "type" : "POST"
+        },
+        // "columnDefs": [
+        //     {
+        //         "targets": [ ], //first column / numbering column
+        //         "orderable": false, //set not orderable
+        //     },
+        //     // { targets: 5 , class: 'text-center'}
+        //     // { targets: 5 , class: 'text-center'},
+        // ],
+        "columns" : [
+            {"data": "id"},
+            {
+                "data": "first_name",
+                "render": function(data, type, row, meta){
+                    var fullName = `${row.first_name} ${row.middle_name} ${row.last_name}`;
+                    return fullName;
+                }
+            }, 
+            {"data": "email"},
+            {
+                "data": "gender",
+                "render": function(data, type, row, meta){
+                    if (data == 1) {
+                        return `Male`;
+                    }else{
+                        return `Female`;
+                    }
+                }
+            },
+            // {"data": "user_id"}
+            {
+                "data": 'id',
+                "render": function(data, type, row, meta){
+                    var btnReturn = '';
+                    btnReturn += `
+                        <button class="border-0 btn-transition btn btn-outline-danger deleteGroupMember" user_id="${row.user_id}">
+                            <i class="fa fa-trash-alt"></i>
+                        </button>
+                    `;
+                    return btnReturn;
+            
+                }
+            }
+        ]
+    });// end of the data table variable
+    
+    $(document).on('click','.deleteGroupMember', function(){
+        var user_id = $(this).attr('user_id');
+        
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url:`${base_url}/student/home/deleteGroupMember`,
+                    type:'post',
+                    dataType:'json',
+                    data:{user_id:user_id},
+                    beforeSend: function() {
+                        $('#loadingState').show();
+                    },
+                    success: function(data){
+                        batchDataTable.ajax.reload();
+                        console.log(data);
+                        Swal.fire(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                        )
+                    },
+                    complete: function(){
+                        $('#loadingState').hide();
+                        countAvailableProposalLeft();
+                    }
+                });
+            }
+        })
+        
+    });
 }

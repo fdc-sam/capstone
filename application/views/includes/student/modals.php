@@ -102,7 +102,7 @@
 </script>
 
 <?php if ($subContent == 'home/index'): ?>
-	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script> -->
+	<script src="<?php echo base_url('assets/scripts/jquery.dataTables.min.js'); ?>"></script>
 	<script src="<?php echo base_url('assets/scripts/select2.min.js'); ?>"></script>
 	<script src="<?php echo base_url('assets/scripts/student/home.js'); ?>"></script>
 <?php endif; ?>

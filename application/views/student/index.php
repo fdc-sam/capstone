@@ -32,43 +32,26 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered">
+                            <table style="width: 100%;" id="dataTableGroupMembers" class="table table-hover table-striped table-bordered">
                                 <thead>
                                     <tr>
+                                        <th>ID</th>
                                         <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
+                                        <th>E-mail</th>
+                                        <th>Gender</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Tiger Nixon</td>
-                                        <td>System Architect</td>
-                                        <td>Edinburgh</td>
-                                        <td>61</td>
-                                        <td>2011/04/25</td>
-                                        <td>$320,800</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Garrett Winters</td>
-                                        <td>Accountant</td>
-                                        <td>Tokyo</td>
-                                        <td>63</td>
-                                        <td>2011/07/25</td>
-                                        <td>$170,750</td>
-                                    </tr>
+                                    
                                 </tbody>
                                 <tfoot>
                                     <tr>
+                                        <th>ID</th>
                                         <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
+                                        <th>E-mail</th>
+                                        <th>Gender</th>
+                                        <th>Action</th>
                                     </tr>
                                 </tfoot>
                             </table>

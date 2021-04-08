@@ -140,6 +140,9 @@ class Home extends CI_Controller {
                     'modified' => date('Y-m-d H:i:s')
                 )
             );
+            
+        }else{
+            $thesisGroupId = $hasGroup->thesis_group_id;
         }
         
         // add members to the group
@@ -409,6 +412,108 @@ class Home extends CI_Controller {
             'thises',
             array(
                 'id' => $post['id']
+            )
+        );
+        
+        $result = array(
+            'message' => 'Unable to Delete',
+            'error' => 1
+        );
+        
+        if ($deletePropossal) {
+            $result = array(
+                'message' => 'Data Deleted',
+                'error' => 0
+            );
+        }
+        
+        echo json_encode($result);
+    }
+    
+    public function getGroupMembers(){
+        // get the current user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        
+        // get the current user Thises Group Id
+        $currentThisesGroupId = $this->getThisesGroupId($data['userInfo']->id);
+        
+        
+        // - variables from datatable
+        $post = $this->input->post();
+        $draw = $this->input->post('draw');
+        $length = $this->input->post('length');
+        $offset = $this->input->post('start');
+        $search = $this->input->post('search');
+        $order = $this->input->post('order');
+        $columns = $this->input->post('columns');
+        
+        // order of the data pass
+        if(!empty($order)){
+            $setorder =  array($columns[$order[0]['column']]['data'] => $order[0]['dir']);
+        }else{
+            $setorder = array();
+        }
+        
+        //search functionality
+        if(empty($search['value'])){
+            $like = array();
+        }else{
+            $like = array(
+                'TC.id' => $search['value'],
+                'TC.thesis_group_id' => $search['value'],
+                'TC.thises_id' => $search['value'],
+                'TC.batch_id ' => $search['value'],
+                'TC.user_id' => $search['value'],
+                'TC.created' => $search['value'],
+                'TC.modified' => $search['value']
+            );
+        }
+        
+        // get the teacher details to the database using the usniversal model
+        $batchDataResult = $this->universal->datatables(
+            'thises_connect AS TC',
+            'TC.id,	
+            TC.thesis_group_id, 
+            TC.thises_id, 
+            TC.batch_id,
+            TC.user_id,
+            TC.created,
+            TC.modified,
+            U.email,
+            U.first_name,
+            U.middle_name,
+            U.last_name,
+            U.gender',
+            array(
+                'TC.thesis_group_id' => $currentThisesGroupId,
+                'TC.user_id !=' => $data['userInfo']->id
+            ), 
+            array(
+                'users as U' => 'U.id = TC.user_id'
+            ),
+            array($length => $offset),
+            $setorder,
+            $like, 
+            true
+        );
+        
+        
+        echo json_encode(
+            array(
+                'draw' => intval($draw),
+                "recordsTotal" => $batchDataResult['recordsTotal'],
+                "recordsFiltered" => $batchDataResult['recordsFiltered'],
+                "data" => $batchDataResult['data']
+            )
+        );
+    }
+    
+    public function deleteGroupMember(){
+        $post = $this->input->post();
+        $deletePropossal = $this->universal->delete(
+            'thises_connect',
+            array(
+                'user_id' => $post['user_id']
             )
         );
         
