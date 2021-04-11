@@ -115,8 +115,8 @@ class Home extends CI_Controller {
         // get the current user batch code 
         $currentUserBatchCodeId = $this->getStudentBatchCodeId($data['userInfo']->email);
         
-        // create a random Thesis Group Id code
-        $thesisGroupId = $this->getRandomString(10);
+        // create a random Thesis Group Name code
+        $thesisGroupName = $this->getRandomString(10);
         
         //  add curent user to the group
         $hasGroup = $this->universal->get(
@@ -130,17 +130,25 @@ class Home extends CI_Controller {
         );
         
         if (!$hasGroup) {
+            $insertGroup = $this->universal->insert(
+                'thises_group',
+                array(
+                    'thesis_group_name' => $thesisGroupName,
+                    'created' => date('Y-m-d H:i:s'),
+                    'modified' => date('Y-m-d H:i:s')
+                )
+            );
             $addGroupMember = $this->universal->insert(
                 'thises_connect',
                 array(
-                    'thesis_group_id' => $thesisGroupId,
+                    'thesis_group_id' => $insertGroup,
                     'batch_id' => $currentUserBatchCodeId,
                     'user_id' => $data['userInfo']->id,
                     'created' => date('Y-m-d H:i:s'),
                     'modified' => date('Y-m-d H:i:s')
                 )
             );
-            
+            $thesisGroupId = $insertGroup;
         }else{
             $thesisGroupId = $hasGroup->thesis_group_id;
         }
@@ -148,7 +156,7 @@ class Home extends CI_Controller {
         // add members to the group
         foreach ($post['groupMemberId'] as $key => $value) {
             // determine if has already a group
-            $hasGroup = $this->universal->get(
+            $hasGroup1 = $this->universal->get(
                 true,
                 'thises_connect',
                 '*',
@@ -158,7 +166,7 @@ class Home extends CI_Controller {
                 )
             );
             
-            if (!$hasGroup) {
+            if (!$hasGroup1) {
                 $addGroupMember = $this->universal->insert(
                     'thises_connect',
                     array(
@@ -331,6 +339,40 @@ class Home extends CI_Controller {
                 'user_id' => $currentUserId
             )
         );
+        
+        if (!$currentThisesGroupId) {
+            
+            // get the current user information
+            $data['userInfo'] = $this->ion_auth->user()->row();
+            $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+            
+            // get the current user batch code 
+            $currentUserBatchCodeId = $this->getStudentBatchCodeId($data['userInfo']->email);
+            
+            // create a random Thesis Group Name code
+            $thesisGroupName = $this->getRandomString(10);
+            
+            $insertGroup = $this->universal->insert(
+                'thises_group',
+                array(
+                    'thesis_group_name' => $thesisGroupName,
+                    'created' => date('Y-m-d H:i:s'),
+                    'modified' => date('Y-m-d H:i:s')
+                )
+            );
+            $addGroupMember = $this->universal->insert(
+                'thises_connect',
+                array(
+                    'thesis_group_id' => $insertGroup,
+                    'batch_id' => $currentUserBatchCodeId,
+                    'user_id' => $data['userInfo']->id,
+                    'created' => date('Y-m-d H:i:s'),
+                    'modified' => date('Y-m-d H:i:s')
+                )
+            );
+            
+            $currentThisesGroupId = $insertGroup;
+        }
         
         return isset($currentThisesGroupId->thesis_group_id)? $currentThisesGroupId->thesis_group_id: null;
     }

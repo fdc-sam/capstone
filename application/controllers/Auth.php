@@ -537,27 +537,40 @@ class Auth extends CI_Controller
 			];
 		}
 		
-		// checking the Batch Code
-		$hasBatchCode = $this->universal->get(
-			'true',
-			'batch',
-			'*',
-			'all',
-			array(
-				'code' => $this->input->post('batchCode')
-			)
-		);
+		// has group default
+		if (strtolower($this->input->post('batchCode')) == 'panelist') {
+			// for panelist
+			$group = 5;
+			$batchId = $this->input->post('batchCode');
+		} else if (!empty($this->input->post('batchCode')) && strtolower($this->input->post('batchCode')) != 'panelist') {
+			// for student
+			// checking the Batch Code
+			$hasBatchCode = $this->universal->get(
+				'true',
+				'batch',
+				'*',
+				'all',
+				array(
+					'code' => $this->input->post('batchCode')
+				)
+			);
+			$group = 4;
+			$batchId = $hasBatchCode[0]->id;
+		}
+		
+		// pre($this->form_validation->run());
+		// die();
 		
 		// for batch connect insert fields
-		if (!empty($hasBatchCode) && !empty($this->input->post('batchCode')) && !empty($this->input->post('email'))) {
+		if (!empty($hasBatchCode) && !empty($this->input->post('batchCode')) && !empty($this->input->post('email')) || strtolower($this->input->post('batchCode')) == 'panelist' ) {
 			$addBatchFields = array(
-				'batch_id' => $hasBatchCode[0]->id,
-				'email' => $email
+				'batch_id' => $batchId,
+				'email' => $this->input->post('email')
 			);
 		}
 		
-		// has group default
-		$group = 4;
+		
+		
 		if (!empty($this->input->post('group'))) {
 			$group = $this->input->post('group');
 		}
@@ -566,7 +579,7 @@ class Auth extends CI_Controller
 			$this->form_validation->run() === TRUE && 
 			$this->ion_auth->register($identity, $password, $email, $additional_data,$group) && 
 			!empty($hasBatchCode) && 
-			$this->universal->insert('batch_connect',$addBatchFields)
+			$this->universal->insert('batch_connect',$addBatchFields) || strtolower($this->input->post('batchCode')) == 'panelist'
 		){
 			// check to see if we are creating the user
 			// redirect them back to the admin page

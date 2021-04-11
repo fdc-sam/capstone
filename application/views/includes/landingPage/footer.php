@@ -36,9 +36,12 @@ $(document).ready(function(){
                     }else if(result == 'student'){
                         window.location.replace(`${base_url}student/home`);
                         console.log(result);
-                    }else if(result == 'instructor'){
+                    }else if(result == 'IT head'){
                         console.log(result);
                         window.location.replace(`${base_url}instructor/head`);
+                    }else if(result == 'instructor'){
+                        console.log(result);
+                        window.location.replace(`${base_url}instructor/panel`);
                     }else{
                         var temp = JSON.parse(result);
                         console.log(temp);
