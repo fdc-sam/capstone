@@ -132,4 +132,4 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('ion_auth_model','universal','swiftmailer');
+$autoload['model'] = array('ion_auth_model','universal','swiftMailer');
