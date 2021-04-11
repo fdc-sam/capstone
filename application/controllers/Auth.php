@@ -605,7 +605,7 @@ class Auth extends CI_Controller
 			$message .= '</table>';
 			$message .= '</body></html>';
 			
-			$this->swiftmailer->mailSend($from, $to, $subject, $headers, $message);
+			$this->swiftMailer->mailSend($from, $to, $subject, $headers, $message);
 			
 			$data = array(
 				'data' => 'success',
