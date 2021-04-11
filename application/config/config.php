@@ -36,7 +36,7 @@ $config['base_url'] = 'https://capstone-online.herokuapp.com/';
 | variable so that it is blank.
 |
 */
-$config['index_page'] = '';
+$config['index_page'] = 'index';
 
 /*
 |--------------------------------------------------------------------------

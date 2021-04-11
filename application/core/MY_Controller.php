@@ -1,36 +1,32 @@
 <?php
-class MY_Router extends CI_Router {
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-protected function _validate_request($segments)
- {
- $c = count($segments);
- $directory_override = isset($this->directory);
+class My_Controller extends CI_Controller {
 
- // Loop through our segments and return as soon as a controller
- // is found or when such a directory doesn't exist
- while ($c-- > 0)
- {
- $test = $this->directory
- .ucfirst($this->translate_uri_dashes === TRUE ? str_replace('-', '_', $segments[0]) : $segments[0]);
+	//
+	public function pageRenderer($page, array $data){
+		$this->load->view('includes/landingPage/header',$data);
+		$this->load->view($page);
+		$this->load->view('includes/landingPage/footer');
+	}
 
- if ( ! file_exists(APPPATH.'controllers/'.$test.'.php')
- && $directory_override === FALSE
- && is_dir(APPPATH.'controllers/'.$this->directory.$segments[0])
- )
- {
- $this->set_directory(array_shift($segments), TRUE);
-                while(count($segments) > 0 && is_dir(APPPATH.'controllers/'.$this->directory.$segments[0]))
-                {
-                    $this->set_directory($this->directory . $segments[0]);
-                    $segments = array_slice($segments, 1);
-                }
- continue;
- }
+	//landing pages
+	public function landingPageRenderer($page, array $data){
+		$this->load->view('includes/landingPage/header',$data);
+		$this->load->view($page);
+		$this->load->view('includes/landingPage/footer');
+	}
 
- return $segments;
- }
+	
+	public function registrarPageRenderer($page, array $data){
+		$this->load->view('includes/registrar/header',$data);
+		$this->load->view($page);
+		$this->load->view('includes/registrar/footer');
+	}
 
- // This means that all segments were actually directories
- return $segments;
- }
-} 
+	public function studentPageRendere($page, array $data){
+		$this->load->view('includes/student/header',$data);
+		$this->load->view($page);
+		$this->load->view('includes/student/footer');
+	}
+}
