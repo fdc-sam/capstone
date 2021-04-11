@@ -55,8 +55,6 @@ $route['login'] = 'Auth/login';
 $route['register'] = 'Auth/create_user';
 $route['logout'] = 'Auth/logout';
 
-// instructor
-
 $route['student'] = 'StudentController'; // gpo to the indx function to the student controller
 $route['student/home/changePassword'] = 'Auth/change_password'; 
 
@@ -64,3 +62,9 @@ $route['student/home/changePassword'] = 'Auth/change_password';
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+
+// instructor
+$route['instructor/(:any)'] = 'instructor/head/$1';
+$route['instructor/(:any)/(:any)'] = 'instructor/head/$1/$2';
+
