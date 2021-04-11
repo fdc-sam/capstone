@@ -295,18 +295,18 @@ class CI_Router {
 		}
 
 		// Is the method being specified?
-		if (sscanf($this->default_controller, '%[^/]/%s', $class, $method) !== 2)
+		if (!sscanf($this->default_controller, '%[^/]/%[^/]/%s', $directory, $class, $method) !== 2)
 		{
 			$method = 'index';
 		}
 
-		if ( ! file_exists(APPPATH.'controllers/'.$this->directory.ucfirst($class).'.php'))
+		if ( ! file_exists(APPPATH.'controllers'. DIRECTORY_SEPARATOR . $directory. DIRECTORY_SEPARATOR .ucfirst($class).'.php'))
 		{
 			// This will trigger 404 later
 			return;
 		}
 
-		$this->set_class($class);
+		$this->set_directory($directory);
 		$this->set_method($method);
 
 		// Assign routed segments, index starting from 1
