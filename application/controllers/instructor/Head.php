@@ -445,7 +445,7 @@ class Head extends CI_Controller {
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
         
         // - data
-        $data['currentPageTitle'] = 'Head - Home';
+        $data['currentPageTitle'] = 'Team Proposal';
         $data['mainContent'] = 'instructor/head';
         $data['subContent'] = 'head/teamProposal';
         $data['thesisGroupId'] = $thesisGroupId;

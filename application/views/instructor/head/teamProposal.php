@@ -1,29 +1,25 @@
 <div class="app-main__outer">
-    <div class="app-main__inner">
-        <div class="app-page-title">
-            <div class="page-title-wrapper">
-                <div class="page-title-heading">
-                    <div class="page-title-icon">
-                        <i class="pe-7s-car icon-gradient bg-mean-fruit"></i>
-                    </div>
-                    <div>Analytics Dashboard
-                        <div class="page-title-subheading">This is an example dashboard created using build-in elements and components.</div>
-                    </div>
-                </div>
-            </div> 
-        </div>       
-        <ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
-            <li class="nav-item">
-                <a role="tab" class="nav-link active" href="index.html">
-                    <span>Variation 1</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a role="tab" class="nav-link" href="analytics-variation.html">
-                    <span>Variation 2</span>
-                </a>
-            </li>
-        </ul>
+    <div class="app-main__inner">    
+    <div class="page-title-heading">
+        <div>
+            <div class="page-title-subheading opacity-10">
+                <nav class="" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="<?php echo base_url('instructor/head'); ?>">
+                                <i aria-hidden="true" class="fa fa-home"></i>
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="<?php echo base_url('instructor/head/proposal'); ?>">Proposal</a>
+                        </li>
+                        <li class="active breadcrumb-item" aria-current="page">
+                            Team Proposal
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
         <div class="tabs-animation">
             <div class="card mb-3">
                 <div class="card-header-tab card-header">

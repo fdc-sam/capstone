@@ -1,17 +1,23 @@
 <div class="app-main__outer">
     <div class="app-main__inner">
-        <div class="app-page-title">
-            <div class="page-title-wrapper">
-                <div class="page-title-heading">
-                    <div class="page-title-icon">
-                        <i class="pe-7s-display1 icon-gradient bg-premium-dark"></i>
-                    </div>
-                    <div>Student Batch
-                        <div class="page-title-subheading">Wide selection of forms controls, using the Bootstrap 4 code base, but built with React.</div>
-                    </div>
-                </div>
+        
+        <div>
+            <div class="page-title-subheading opacity-10">
+                <nav class="" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="<?php echo base_url('instructor/head'); ?>">
+                                <i aria-hidden="true" class="fa fa-home"></i>
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a>Batch</a>
+                        </li>
+                    </ol>
+                </nav>
             </div>
-        </div>        
+        </div>
+            
         <ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
             <li class="nav-item">
                 <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-0">
