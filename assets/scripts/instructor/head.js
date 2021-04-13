@@ -249,14 +249,6 @@ if (sub_content == 'head/index') {
           "url" : `${base_url}/instructor/head/getAllInstructor`,
           "type" : "POST"
         },
-        // "columnDefs": [
-        //     {
-        //         "targets": [ ], //first column / numbering column
-        //         "orderable": false, //set not orderable
-        //     },
-        //     // { targets: 5 , class: 'text-center'}
-        //     // { targets: 5 , class: 'text-center'},
-        // ],
         "columns" : [
             {
                 "data": "id",
@@ -274,7 +266,7 @@ if (sub_content == 'head/index') {
                     }
                 }
             },
-            {"data": "activation_code"},
+            {"data": "email"},
             {
                 "data": "activation_selector",
                 "render": function(data, type, row, meta){
@@ -409,13 +401,23 @@ if (sub_content == 'head/teamProposal') {
                 "data": 'status',
                 "render": function(data, type, row, meta){
                     var badge = '';
-                    if (data == 0) {
-                        badge = `<div class="badge badge-warning ml-2">Pending</div>`;
-                    }else if (data == 1) {
+                    if (row.approvedFlag && data == 1) {
                         badge = `<div class="badge badge-success ml-2">Approved</div>`;
-                    }else if (data == 2) {
-                        badge = `<div class="badge badge-danger ml-2">Rejected</div>`;
+                    }else  {
+                        if (row.approvedFlag) {
+                            badge = `<div class="badge badge-danger ml-2">Rejected</div>`;
+                        }else{
+                            if (data == 0) {
+                                badge = `<div class="badge badge-warning ml-2">Pending</div>`;
+                            }else if (data == 1) {
+                                badge = `<div class="badge badge-success ml-2">Approved</div>`;
+                            }else if (data == 2) {
+                                badge = `<div class="badge badge-danger ml-2">Rejected</div>`;
+                            }
+                        }
+                        
                     }
+                    
                     return badge;
                                         
                 }
@@ -430,25 +432,76 @@ if (sub_content == 'head/teamProposal') {
                     }else if (data == 2) {
                         var chagneStat = `Approve`;
                         var btnStat = `btn-outline-primary`;
-                    }else if (data == 0) {
-                        return `
+                    }
+                    
+                    if (row.approvedFlag && data == 1) {
+                        btnReturn = `
                             <button class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-danger" proposalId="${row.id}" activation="Reject" data-toggle="tooltip" data-placement="top" title="Reject">
                                 <i class="lnr-cross-circle btn-icon-wrapper"> </i>
                             </button>
+                        `;
+                    }else if(!row.approvedFlag && data == 0){
+                        btnReturn = `
+                            <button class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary" proposalId="${row.id}" activation="Approve" data-toggle="tooltip" data-placement="top" title="Approve">
+                                <i class="lnr-checkmark-circle btn-icon-wrapper"> </i>
+                            </button>
+                            <button class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-danger" proposalId="${row.id}" activation="Reject" data-toggle="tooltip" data-placement="top" title="Reject">
+                                <i class="lnr-cross-circle btn-icon-wrapper"> </i>
+                            </button>
+                        `;
+                    }else if(!row.approvedFlag &&  data == 2){
+                        btnReturn = `
                             <button class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary" proposalId="${row.id}" activation="Approve" data-toggle="tooltip" data-placement="top" title="Approve">
                                 <i class="lnr-checkmark-circle btn-icon-wrapper"> </i>
                             </button>
                         `;
                     }
-                    btnReturn += `
-                        <button class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn" proposalId="${row.id}" activation="${chagneStat}" data-toggle="tooltip" data-placement="top" title="${chagneStat}">
-                            <i class="lnr-eye btn-icon-wrapper"> </i>
-                        </button>
-                    `;
+                    
                     return btnReturn;
                                         
                 }
             }
         ]
     });// end of the data table variable
+    
+    $(document).on('click','.btn-changeStatus', function(){
+        var activation = $(this).attr('activation');
+        var proposalId = $(this).attr('proposalId');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url:`${base_url}/instructor/head/thesisChangeStatus`,
+                    type:'post',
+                    dataType:'json',
+                    data:{
+                        activation:activation,
+                        proposalId:proposalId
+                    },
+                    beforeSend: function() {
+                        $('#loadingState').show();
+                    },
+                    success: function(data){
+                        console.log(data);
+                        Swal.fire(
+                            'INFO!',
+                            'User data has been Updated',
+                            'success'
+                        )
+                    },
+                    complete: function(){
+                        $('#loadingState').hide();
+                        getProposalDetails.ajax.reload();
+                    }
+                });
+            }
+        })
+    });
 }

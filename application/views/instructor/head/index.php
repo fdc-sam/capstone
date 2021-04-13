@@ -28,9 +28,9 @@
                             <thead>
                                 <tr>
                                     <th>Fullname</th>
+                                    <th>Gender</th>
                                     <th>E-mail</th>
-                                    <th>Office</th>
-                                    <th>Age</th>
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -39,11 +39,11 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Position</th>
-                                    <th>Office</th>
-                                    <th>Age</th>
-                                    <th>Start date</th>
+                                    <th>Fullname</th>
+                                    <th>Gender</th>
+                                    <th>E-mail</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </tfoot>
                         </table>

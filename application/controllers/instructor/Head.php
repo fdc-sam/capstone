@@ -499,12 +499,48 @@ class Head extends CI_Controller {
             $like,
             true
         );
+        
+        $approvedFlag = false;
+        $result = array();
+        foreach ($thisesGroups['data'] as $key => $thisesGroupData) {
+            if ($thisesGroupData['status'] == 1) {
+                $approvedFlag = true;
+            }
+        }
+        
+        foreach ($thisesGroups['data'] as $key => $thisesGroupData) {
+            $thisesGroupData['approvedFlag'] = $approvedFlag;
+            array_push($result, $thisesGroupData);
+        }
+        
         echo json_encode(
             array(
                 'draw' => intval($draw),
                 "recordsTotal" => $thisesGroups['recordsTotal'],
                 "recordsFiltered" => $thisesGroups['recordsFiltered'],
-                "data" => $thisesGroups['data']
+                "data" => $result
+            )
+        );
+    }
+    
+    public function thesisChangeStatus(){
+        $post = $this->input->post();
+        $status = 0;
+        
+        if ($post['activation'] == 'Reject') {
+            $status = 2;
+        }
+        if ($post['activation'] == 'Approve') {
+            $status = 1;
+        }
+        
+        $updateThesisStatus = $this->universal->update(
+            'thises',
+            array(
+                'status' => $status
+            ),
+            array(
+                'id' => $post['proposalId']
             )
         );
     }
