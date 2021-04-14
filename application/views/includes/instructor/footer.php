@@ -17,7 +17,13 @@
 
 <?php if ($subContent == 'head/teamProposal'): ?>
 	<script type="text/javascript">
-		var thesisGroupId = <?php echo $thesisGroupId ?>;
+		var thesisGroupId = '<?php echo $thesisGroupId ?>';
+	</script>
+<?php endif; ?>
+
+<?php if ($subContent == 'head/viewStudent'): ?>
+	<script type="text/javascript">
+		var batchCode = '<?php echo $batchCode ?>';
 	</script>
 <?php endif; ?>
 

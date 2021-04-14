@@ -84,9 +84,9 @@ if (sub_content == 'head/batch') {
                 "data": "status",
                 "render": function(data, type, row, meta){
                     if (data == 1) {
-                        return `Active`;
+                        return `<div class="badge badge-primary ml-2">Active</div>`;
                     }else{
-                        return `Deactivate`;
+                        return `<div class="badge badge-danger ml-2">Deactivate</div>`;
                     }
                 }
             },
@@ -113,12 +113,9 @@ if (sub_content == 'head/batch') {
                         `;
                     }
                     btnReturn +=  `
-                        <button class="btn-edit btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-info" batchId="${data}" data-toggle="tooltip" data-placement="top" title="Edit">
-                            <i class="lnr-pencil btn-icon-wrapper"> </i>
-                        </button>
-                        <button class="btn-view btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-secondary"  batchId="${data}" data-toggle="tooltip" data-placement="top" title="View">
+                        <a href="${base_url}instructor/head/viewStudent/${row.code}" class="btn-view btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-secondary"  batchId="${data}" data-toggle="tooltip" data-placement="top" title="View">
                             <i class="lnr-eye btn-icon-wrapper"> </i>
-                        </button>
+                        </a>
                     `;
                     return btnReturn;
                                         
@@ -237,6 +234,52 @@ if (sub_content == 'head/batch') {
         
     });
 }
+
+
+if (sub_content == 'head/viewStudent') {
+    
+    var viewStudentBatchDataTable = $('#viewStudentBatchDataTable').DataTable({
+        "responsive" : true,
+        "processing" : true,
+        "serverSide" : true,
+        "order": [[0,'asc']],
+        "ajax" : {
+            "url" : `${base_url}/instructor/head/getBatchStudent`,
+            "type" : "POST",
+            "data": {batchCode:batchCode}
+        },
+        "columns" : [
+            {
+                "data": "id",
+                "render": function(data, type, row, meta){
+                    return `${row.first_name} ${row.middle_name} ${row.last_name}`;
+                }
+            },
+            {"data": "email"}, 
+            {
+                "data": "gender",
+                "render": function(data, type, row, meta){
+                    if (data) {
+                        return `Male`;
+                    }else{
+                        return `Female`;
+                    }
+                }
+            },
+            {
+                "data": "activation_selector",
+                "render": function(data, type, row, meta){
+                    if (data == null) {
+                        return `<div class="badge badge-danger ml-2">Deactivated</div>`;
+                    }else if(data == 'Activated'){
+                        return `<div class="badge badge-primary ml-2">Active</div>`;
+                    }
+                }
+            },
+        ]
+    });// end of the data table variable
+}
+
 
 if (sub_content == 'head/index') {
     

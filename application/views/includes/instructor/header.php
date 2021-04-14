@@ -285,7 +285,10 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo base_url('instructor/head/batch') ?>" class="<?php echo isset($subContent) && $subContent == 'head/batch' ? 'mm-active': '' ?> ">
+                                            <a 
+                                                href="<?php echo base_url('instructor/head/batch') ?>" 
+                                                class="<?php echo isset($subContent) && $subContent == 'head/batch' || $subContent == 'head/viewStudent' ? 'mm-active': '' ?> "
+                                            >
                                                 <i class="metismenu-icon"></i>Batch
                                             </a>
                                         </li>

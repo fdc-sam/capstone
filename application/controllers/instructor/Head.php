@@ -153,6 +153,7 @@ class Head extends CI_Controller {
         }
         
         // - data
+        $data['currentPageTitle'] = 'Head - Batch';
         $data['mainContent'] = 'instructor/head';
         $data['subContent'] = 'head/batch';
         $data['batch_code'] = $batch_code;
@@ -174,6 +175,98 @@ class Head extends CI_Controller {
 		}
 		return $result;
 	}
+    
+    public function viewStudent($batchCode = null){
+        // - get the user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+        
+        // - data
+        $data['currentPageTitle'] = 'Head - Batch';
+        $data['mainContent'] = 'instructor/head';
+        $data['subContent'] = 'head/viewStudent';
+        $data['batchCode'] = $batchCode;
+        
+        // - load view 
+        $this->load->view('includes/instructor/header',$data);
+		$this->load->view('instructor/head/viewStudent.php');
+		$this->load->view('includes/instructor/footer');
+    }
+    
+    public function getBatchStudent(){
+        $post = $this->input->post();
+        $batchCode = $post['batchCode'];
+        $draw = $this->input->post('draw');
+        $length = $this->input->post('length');
+        $offset = $this->input->post('start');
+        $search = $this->input->post('search');
+        $order = $this->input->post('order');
+        $columns = $this->input->post('columns');
+        
+        // order of the data pass
+        if(!empty($order)){
+            $setorder =  array($columns[$order[0]['column']]['data'] => $order[0]['dir']);
+        }else{
+            $setorder = array();
+        }
+        
+        //search functionality
+        if(empty($search['value'])){
+            $like = array();
+        }else{
+            $like = array(
+                'b.id' => $search['value'],
+                'b.batch_from' => $search['value'],
+                'b.batch_to' => $search['value'],
+                'b.code' => $search['value'],
+                'b.status' => $search['value'],
+                'b.created' => $search['value'],
+                'b.modified' => $search['value']
+            );
+        }
+        
+        // get the teacher details to the database using the usniversal model
+        $batchDataResult = $this->universal->datatables(
+            'batch_connect AS BC',
+            'U.*',
+            array(
+                'B.code' => $batchCode
+            ), 
+            array(
+                'users AS U' => 'U.email = BC.email',
+                'batch AS B' => 'B.id = BC.batch_id'
+            ),
+            array($length => $offset),
+            $setorder,
+            $like, 
+            true
+        );
+        
+        $data['data'] = array();
+        foreach ($batchDataResult['data'] as $k => $sheet){
+            // get the count of
+            $countBatch = $this->universal->get(
+                true,
+                'batch_connect',
+                'id',
+                'all',
+                array(
+                    'batch_id' =>  $sheet['id']
+                )
+            );
+            $sheet['count'] =  count($countBatch);
+            array_push($data['data'], $sheet);
+        }
+        
+        echo json_encode(
+            array(
+                'draw' => intval($draw),
+                "recordsTotal" => $batchDataResult['recordsTotal'],
+                "recordsFiltered" => $batchDataResult['recordsFiltered'],
+                "data" => $data['data']
+            )
+        );
+    }
     
     public function insert_batch(){
         sleep(2);
