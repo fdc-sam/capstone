@@ -219,10 +219,6 @@ class Home extends CI_Controller {
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
         
-        // echo "<pre>";
-        // print_r($data['userInfo']);
-        // die();
-        
         // - data
         $data['currentPageTitle'] = 'Student - My Profile';
         $data['mainContent'] = 'student/home';
@@ -230,7 +226,8 @@ class Home extends CI_Controller {
         
         $this->load->view('includes/student/header',$data);
 		$this->load->view('student/MyProfile');
-		$this->load->view('includes/student/footer');
+        $this->load->view('includes/student/footer');
+        $this->load->view('includes/student/modals');
     }
     
     public function updateMyProfile(){
@@ -281,7 +278,8 @@ class Home extends CI_Controller {
         
         $this->load->view('includes/student/header',$data);
 		$this->load->view('student/changePassword');
-		$this->load->view('includes/student/footer');
+        $this->load->view('includes/student/footer');
+        $this->load->view('includes/student/modals');
     }
     
     public function addPropose(){
@@ -415,22 +413,36 @@ class Home extends CI_Controller {
                 }
                 $proposeData .= '
                     <li class="list-group-item">
-                        <div class="todo-indicator '.$sideStatusBar.' "></div>
-                        <div class="widget-content p-0">
-                            <div class="widget-content-wrapper">
-                                <div class="widget-content-left">
-                                    <div class="widget-heading">'.$value->title.'
-                                        '.$requestStatus.'
+                        <a href="'.base_url().'student/home/capstoneDetails/'.$value->id.'" class="hrefProposal">
+                            <div class="todo-indicator '.$sideStatusBar.' "></div>
+                            <div class="widget-content p-0">
+                                <div class="widget-content-wrapper">
+                                    <div class="widget-content-left">
+                                        <div class="widget-heading">
+                                            <span class="timeline-title">'.$value->title.'</span>
+                                        </div>
+                                        <div class="widget-subheading proposalDescription">
+                                            <span style="
+                                                display:inline-block;
+                                                white-space: nowrap;
+                                                overflow: hidden;
+                                                text-overflow: ellipsis;
+                                                max-width: 28ch;
+                                            ">
+                                            '.$value->discreption.' asdasdasd asdasdasdasdasdasdasdasdasdasdasdasd
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div class="widget-subheading"><i> '.$value->discreption.' </i></div>
-                                </div>
-                                <div class="widget-content-right">
-                                    <button class="border-0 btn-transition btn btn-outline-danger deletePropossal" thisesId="'. $value->id.'">
-                                        <i class="fa fa-trash-alt"></i>
-                                    </button>
+                                    <div class="widget-content-right">
+                                        '.$requestStatus.'
+                                        <button class="border-0 btn-transition btn btn-outline-danger deletePropossal" thisesId="'. $value->id.'">
+                                            <i class="fa fa-trash-alt"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
+                        
                     </li>
                 ';
             }
@@ -572,6 +584,129 @@ class Home extends CI_Controller {
         }
         
         echo json_encode($result);
+    }
+    
+    public function capstoneDetails($proposalId = null){
+        // get the current user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+        
+        // get the current user group id
+        $currentThisesGroupId = $this->getThisesGroupId($data['userInfo']->id);
+        
+        $getCapstoneDetails = $this->universal->get(
+            true,
+            'thises AS T',
+            'T.id, T.thesis_group_id, T.title, T.discreption, T.created, T.created, T.modified, T.status, U.first_name, U.middle_name, U.last_name, U.email',
+            'all',
+            array(
+                'T.id' => $proposalId
+            ),
+            array(),
+            array(
+                'thises_connect AS TC' => 'TC.thesis_group_id = T.thesis_group_id' ,
+                'users AS U' => 'U.id = TC.user_id'
+            )
+        );
+        
+        if ($getCapstoneDetails) {
+            $data['getCapstoneDetails'] = $getCapstoneDetails;
+        }
+        
+        // get the thesis document
+        $thesisDocument = $this->universal->get(
+            true,
+            'documents AS D',
+            'D.*',
+            'all',
+            array(
+                'D.group_id' => $currentThisesGroupId,
+                'D.thesis_id' => $proposalId
+            )
+        );
+        
+        if ($thesisDocument) {
+            $data['thesisDocuments'] = $thesisDocument;
+        }
+        
+        // - data
+        $data['proposalId'] = $proposalId;
+        $data['currentPageTitle'] = 'Student - Proposal Details';
+        $data['mainContent'] = 'student/home';
+        $data['subContent'] = 'home/capstoneDetails';
+        
+        $this->load->view('includes/student/header',$data);
+		$this->load->view('student/capstoneDetails');
+        $this->load->view('includes/student/footer');
+        $this->load->view('includes/student/modals');
+    }
+    
+    public function deleteDocument(){
+        $post = $this->input->post();
+        
+        // get the thesis document
+        $thesisDocument = $this->universal->get(
+            true,
+            'documents AS D',
+            'D.*',
+            'row',
+            array(
+                'D.id' => $post['documentId']
+            )
+        );
+        
+        $result = $this->universal->delete(
+            'documents',
+            array(
+                'id' => $post['documentId']
+            )
+        );
+        
+        $output = false;
+        if ($result) {
+            // delete file to the local
+            unlink(FCPATH.'uploads/'.$thesisDocument->file_name);
+            $output = true;
+        }
+        
+        echo $output;
+    }
+    
+    public function viewDocumentPDF($documentId = null){
+        // get the current user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+        
+        // get the current user group id
+        $currentThisesGroupId = $this->getThisesGroupId($data['userInfo']->id);
+        
+        // get the thesis document
+        $thesisDocument = $this->universal->get(
+            true,
+            'documents AS D',
+            'D.*',
+            'row',
+            array(
+                'D.group_id' => $currentThisesGroupId,
+                'D.id' => $documentId
+            )
+        );
+        
+        if ($thesisDocument) {
+            // pre($thesisDocument);
+            // die();
+            $data['thesisDocuments'] = $thesisDocument;
+        }
+        
+        // - data
+        $data['currentPageTitle'] = 'Student - Proposal Details';
+        $data['mainContent'] = 'student/home';
+        $data['subContent'] = 'home/viewDocumentPDF';
+        
+        $this->load->view('includes/student/header',$data);
+		$this->load->view('student/viewDocumentPDF');
+        $this->load->view('includes/student/footer');
+        $this->load->view('includes/student/modals');
     }
 }
 ?>

@@ -16,6 +16,20 @@
 
     <link href="<?php echo base_url('assets/css/main.d810cf0ae7f39f28f336.css'); ?>  " rel="stylesheet">
     <link href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" rel="stylesheet">
+    
+    <style media="screen">
+        .hrefProposal:hover {
+            color: #3b5998;
+            text-decoration:none;
+        }
+        .hrefDocument:hover {
+            color: #787878;
+            text-decoration:none;
+        }
+        .pdfobject-container { 
+            height: 35rem !important; 
+        }
+    </style>
 </head>
 
 <body>
@@ -535,7 +549,7 @@
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="<?php echo base_url('student/home') ?>"  class="<?php echo isset($subContent) && $subContent == 'home/index' ? 'mm-active': '' ?> " >
+                                        <a href="<?php echo base_url('student/home') ?>"  class="<?php echo isset($subContent) && $subContent == 'home/index' || $subContent == 'home/capstoneDetails' ? 'mm-active': '' ?> " >
                                             <i class="metismenu-icon"></i>Home
                                         </a>
                                     </li>

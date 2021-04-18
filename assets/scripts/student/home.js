@@ -1,4 +1,4 @@
-if (sub_content == 'home/index') {
+if (sub_content == 'home/index') {    
     $(document).ready(function(){
         // initialize select2
         var groupMemberMultiSelect = $("#groupMember").select2({
@@ -316,4 +316,148 @@ if (sub_content == 'home/index') {
         })
         
     });
+}
+
+if (sub_content == 'home/capstoneDetails') { 
+    
+    // add documentation files
+    $(document).on('click','.btnAddFiles', function(e){
+        e.preventDefault();
+        
+        // to activate the clicl function of 'selectedFile'
+        var selectedFile = $('#selectedFile').click();
+        
+        const fileSelector = document.getElementById('selectedFile');
+        fileSelector.addEventListener('change', (event) => {
+            const fileList = event.target.files;
+            console.log(fileList);
+            for (var i = 0, f; f = fileList[i]; i++) {
+                console.log(escape(f.name));
+                var fileName = escape(f.name);
+                var fileExtention = fileName.split('.').pop();;
+                console.log(fileExtention);
+                
+                if (fileExtention == 'pdf') {
+                    var files = `
+                        <li class="pt-2 pb-2 pr-2 list-group-item li-selectedFile">
+                            <div class="widget-content p-0">
+                                <div class="widget-content-wrapper">
+                                    <div class="widget-content-left opacity-6 fsize-2 mr-3 text-danger center-elem">
+                                        <i class="fa fa-file-pdf"></i>
+                                    </div>
+                                    <div class="widget-content-left">
+                                        <div class="widget-heading font-weight-normal">${fileName}</div>
+                                    </div>
+                                    <div class="widget-content-right">
+                                        <button class="btn-icon mb-2 mr-2 btn btn-primary btn-link btn-sm saveFile">
+                                            Save
+                                        </button>
+                                        <button class="mb-2 mr-2 btn-icon btn-sm btn-icon-only btn-shadow btn-outline-2x btn btn-outline-danger btnRemoveDocument">
+                                            <i class="lnr-cross btn-icon-wrapper"> </i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    `;
+                }else if (fileExtention == 'docx') {
+                    var files = `
+                        <li class="pt-2 pb-2 pr-2 list-group-item li-selectedFile">
+                            <div class="widget-content p-0">
+                                <div class="widget-content-wrapper">
+                                    <div class="widget-content-left opacity-6 fsize-2 mr-3 text-primary center-elem">
+                                        <i class="fa fa-file-alt"></i>
+                                    </div>
+                                    <div class="widget-content-left">
+                                        <div class="widget-heading font-weight-normal">${fileName}</div>
+                                    </div>
+                                    <div class="widget-content-right widget-content-actions">
+                                        <button class="btn-icon mb-2 mr-2 btn btn-primary btn-link btn-sm saveFile">
+                                            Save
+                                        </button>
+                                        <button class="mb-2 mr-2 btn-icon btn-sm btn-icon-only btn-shadow btn-outline-2x btn btn-outline-danger btnRemoveDocument">
+                                            <i class="lnr-cross btn-icon-wrapper"> </i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    `;
+                }
+                $('.selectedFiles').append(files);
+            }
+        });
+    });
+    
+    $(document).on('click', '.saveFile', function(e){
+        $('.updloadFile').click();
+    });
+    
+    // remove the selected File
+    $(document).on('click', '.btnRemoveDocument', function(e){
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, remove it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been removed.',
+                    'success'
+                )
+                $('.li-selectedFile').fadeOut(500);
+                $('.form-document')[0].reset();
+            }
+        })
+    });
+    
+    // delete the File
+    $(document).on('click', '.btnDeleteDocument', function(e){
+        e.preventDefault();
+        var documentId = $(this).attr('documentId');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, remove it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url:`${base_url}/student/home/deleteDocument`,
+                    type:'post',
+                    // dataType:'json',
+                    data:{documentId:documentId},
+                    beforeSend: function() {
+                        $('#loadingState').show();
+                    },
+                    success: function(data){
+                        console.log(data);
+                        Swal.fire(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                        )
+                    },
+                    complete: function(){
+                        $('#loadingState').fadeOut(500);
+                        $(`.li-selectedFile${documentId}`).fadeOut(500);
+                    }
+                });
+                
+            }
+        })
+    });
+}
+
+if (sub_content == 'home/viewDocumentPDF') { 
+    console.log(base_url);
+    
 }

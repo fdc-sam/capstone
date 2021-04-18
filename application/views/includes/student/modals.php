@@ -107,6 +107,31 @@
 	<script src="<?php echo base_url('assets/scripts/student/home.js'); ?>"></script>
 <?php endif; ?>
 
+<?php if ($subContent == 'home/capstoneDetails'): ?>
+	<script src="<?php echo base_url('assets/scripts/student/home.js'); ?>"></script>
+<?php endif; ?>
+
+<?php if ($subContent == 'home/viewDocumentPDF'): ?>
+    
+	<script src="<?php echo base_url('assets/scripts/student/home.js'); ?>"></script>
+    
+    <!-- for pdf js -->
+    <script type="text/javascript" src="https://unpkg.com/pdfobject@2.1.1/pdfobject.js"></script>
+    <script type="text/javascript">
+        var file_name = '<?php echo $thesisDocuments->file_name ?>';
+        var options = {
+            pdfOpenParams: {
+                pagemode: "thumbs",
+                navpanes: 1,
+                toolbar: 1,
+                statusbar: 1,
+                view: "FitV"
+            }
+        };
+        PDFObject.embed(`${base_url}uploads/${file_name}`, "#viewer", options);
+    </script>
+<?php endif; ?>
+
 <?php if ($subContent == 'home/MyProfile'): ?>
 	<script src="<?php echo base_url('assets/scripts/student/myProfile.js'); ?>"></script>
 <?php endif; ?>
