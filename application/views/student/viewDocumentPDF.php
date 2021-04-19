@@ -23,9 +23,8 @@
         <div class="" id="alertMessege"></div>        
         <div class="tabs-animation">
             <div class="row">
-                
-                <div class="col-md-12 col-lg-12 parent" style='width: 100% !important; height: 100% !important; margin: 0 auto !important;'>
-                    <div id='viewer' style='width: 100%; height: 100%; margin: 0 auto;'></div>
+                <div class="col-md-12 col-lg-12 parent">
+                    <div  id='viewer' style='width: 100%; height: 100%; margin: 0 auto;'></div>
                 </div>
             </div>
         </div>

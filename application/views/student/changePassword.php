@@ -1,17 +1,21 @@
 <div class="app-main__outer">
     <div class="app-main__inner">
-        <div class="app-page-title">
-            <div class="page-title-wrapper">
-                <div class="page-title-heading">
-                    <div class="page-title-icon">
-                        <i class="lnr-map text-info"></i>
-                    </div>
-                    <div>Chane Password
-                        <div class="page-title-subheading">You can Update you personal information here</div>
-                    </div>
-                </div>
+        <div>
+            <div class="page-title-subheading opacity-10">
+                <nav class="" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="<?php echo base_url('student/home'); ?>">
+                                <i aria-hidden="true" class="fa fa-home"></i>
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a>Chagne Password</a>
+                        </li>
+                    </ol>
+                </nav>
             </div>
-        </div>        
+        </div>      
         <div class="tab-content">
             <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
                 <div class="row">
@@ -48,7 +52,7 @@
                                     <div class="clearfix">
                                         <!-- <button type="button" id="reset-btn" class="btn-shadow float-left btn btn-link">Reset</button> -->
                                         <button type="submit" id="btnUpdate" class="btn-shadow btn-wide float-right btn-hover-shine btn btn-primary">Update</button>
-                                        <button type="button" id="btnCancel" class="btn-shadow float-right btn-wide mr-3 btn btn-outline-secondary">Cancel</button>
+                                        <a href="<?php echo base_url('student/home'); ?>" id="btnCancel" class="btn-shadow float-right btn-wide mr-3 btn btn-outline-secondary">Cancel</a>
                                     </div>
                                 </div>
                             </form>

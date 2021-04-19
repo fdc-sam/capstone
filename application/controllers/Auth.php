@@ -212,12 +212,13 @@ class Auth extends CI_Controller
 		
 		// - data
 		$this->data['currentPageTitle'] = 'Student - Chagne Password';
-		$this->data['mainContent'] = 'student/home';
+		$this->data['mainContent'] = 'home/changePassword';
 		$this->data['subContent'] = 'home/changePassword';
 		
 		$this->load->view('includes/student/header', $this->data);
 		$this->load->view('student/changePassword');
 		$this->load->view('includes/student/footer');
+		$this->load->view('includes/student/modals');
 	}
 
 	/**

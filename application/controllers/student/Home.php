@@ -221,7 +221,7 @@ class Home extends CI_Controller {
         
         // - data
         $data['currentPageTitle'] = 'Student - My Profile';
-        $data['mainContent'] = 'student/home';
+        $data['mainContent'] = 'home/MyProfile';
         $data['subContent'] = 'home/MyProfile';
         
         $this->load->view('includes/student/header',$data);
@@ -268,8 +268,7 @@ class Home extends CI_Controller {
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
         
-        // pre();
-        // die();
+    
         
         // - data
         $data['currentPageTitle'] = 'Student - Chagne Password';

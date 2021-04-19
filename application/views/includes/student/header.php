@@ -27,7 +27,7 @@
             text-decoration:none;
         }
         .pdfobject-container { 
-            height: 35rem !important; 
+            height: 50rem !important; 
         }
     </style>
 </head>
@@ -542,14 +542,15 @@
                     <div class="app-sidebar__inner">
                         <ul class="vertical-nav-menu">
                             <li class="app-sidebar__heading">Head UI</li>
-                            <li  class="<?php echo isset($mainContent) && $mainContent == 'student/home' && $subContent != 'home/myProfile' && $subContent != 'home/changePassword'  ? 'mm-active': '' ?>">
+                            <li  class="<?php echo isset($mainContent) && $mainContent == 'student/home'  ? 'mm-active': '' ?>">
                                 <a href="#">
                                     <i class="metismenu-icon pe-7s-rocket"></i>Dashboards
                                     <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="<?php echo base_url('student/home') ?>"  class="<?php echo isset($subContent) && $subContent == 'home/index' || $subContent == 'home/capstoneDetails' ? 'mm-active': '' ?> " >
+                                        <a href="<?php echo base_url('student/home') ?>"  
+                                            class="<?php echo isset($subContent) && $subContent == 'home/index' || $subContent == 'home/capstoneDetails' || $subContent == 'home/viewDocumentPDF' ? 'mm-active': '' ?> " >
                                             <i class="metismenu-icon"></i>Home
                                         </a>
                                     </li>
