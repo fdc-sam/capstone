@@ -2,6 +2,13 @@
 	</div>
 </body>
 </html>
+
+<?php  
+if ($subContent == 'head/groups') {
+	require_once(APPPATH.'elements/instructor/headModal.php');
+}
+?>
+
 <script src="<?php echo base_url('assets/scripts/jquery-3.6.0.js'); ?>" ></script>
 <script type="text/javascript" src="<?php echo base_url('assets/scripts/main.d810cf0ae7f39f28f336.js'); ?>"></script>
 

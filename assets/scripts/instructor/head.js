@@ -548,3 +548,44 @@ if (sub_content == 'head/teamProposal') {
         })
     });
 }
+
+
+if (sub_content == 'head/groups') {
+    var instaructorDataTable = $('#getAllGroups').DataTable({
+        "searching": true,
+        "responsive" : true,
+        "processing" : true,
+        "serverSide" : true,
+        // "paging": false,
+        "order": [[0,'asc']],
+        "ajax" : {
+          "url" : `${base_url}/instructor/head/getAllGroups`,
+          "type" : "POST"
+        },
+        "columns" : [
+            {"data": "id"}, 
+            {"data": "discreption"},
+            {"data": "title"},
+            {"data": "members"},
+            {
+                "data": 'id',
+                "render": function(data, type, row, meta){
+                    var btnReturn = '';
+                    btnReturn += `
+                        <button 
+                            data-toggle="modal" data-target="#addAdviserModal"
+                            class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary" 
+                            activation="Deactivated" data-toggle="tooltip" 
+                            data-placement="top" 
+                            title="Assign Adviser"
+                        >
+                            <i class="fa fa-audio-description" aria-hidden="true"></i>
+                        </button>
+                    `;
+                    return btnReturn;
+                                        
+                }
+            }
+        ]
+    });// end of the data table variable
+}

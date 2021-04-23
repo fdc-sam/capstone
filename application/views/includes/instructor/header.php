@@ -299,8 +299,8 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="dashboards-crm.html" >
-                                                <i class="metismenu-icon"></i> CRM
+                                            <a href="<?php echo base_url('instructor/head/groups') ?>" class="<?php echo isset($subContent) && $subContent == 'head/groups' ? 'mm-active': '' ?> ">
+                                                <i class="metismenu-icon"></i> Groups
                                             </a>
                                         </li>
                                     </ul>

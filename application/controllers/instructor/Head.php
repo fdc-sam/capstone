@@ -638,4 +638,121 @@ class Head extends CI_Controller {
         );
     }
     
+    public function groups(){
+        // - get the user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+        
+        
+        // $instructorDetails = $this->universal->get(
+        //     true,
+        //     ''
+        // );
+        
+        // - data
+        $data['currentPageTitle'] = 'Team Proposal';
+        $data['mainContent'] = 'instructor/head';
+        $data['subContent'] = 'head/groups';
+        
+        // - load view 
+        $this->load->view('includes/instructor/header',$data);
+		$this->load->view('instructor/head/groups');
+		$this->load->view('includes/instructor/footer');
+    }
+    
+    public function getAllGroups(){
+        
+        $post = $this->input->post();
+        $draw = $this->input->post('draw');
+        $length = $this->input->post('length');
+        $offset = $this->input->post('start');
+        $search = $this->input->post('search');
+        $order = $this->input->post('order');
+        $columns = $this->input->post('columns');
+        
+        // order of the data pass
+        if(!empty($order)){
+            $setorder =  array($columns[$order[0]['column']]['data'] => $order[0]['dir']);
+        }else{
+            $setorder = array();
+        }
+        
+        //search functionality
+        if(empty($search['value'])){
+            $like = array();
+        }else{
+            $like = array(
+                'TG.thesis_group_name' => $search['value'],
+                'TG.created' => $search['value'],
+                'U.first_name' => $search['value'],
+                'U.middle_name' => $search['value'],
+                'U.last_name' => $search['value'],
+                'TG.modified' => $search['value']
+            );
+        }
+        
+        //  get all proposals
+        $thisesGroups = $this->universal->datatables(
+            'thises_group AS TG',
+            'T.*, U.first_name, U.middle_name, U.last_name, U.email',
+            array(), 
+            array(
+                'thises_connect AS TC' => 'TC.thesis_group_id = TG.id',
+                'thises AS T' => 'T.thesis_group_id = TG.id AND T.status = 1',
+                'users AS U' => 'U.id = TC.user_id'  
+            ),
+            array($length => $offset),
+            $setorder,
+            $like,
+            true
+        );
+        
+        $result = array();
+        $count = 0;
+        $matchFlag = 0;
+        foreach ($thisesGroups['data'] as $key => $thisesGroupData) {
+            
+            if ($matchFlag == $thisesGroupData['id'] || $matchFlag == 0) {
+                $result[$count] = array(
+                    "id" => $thisesGroupData['id'],
+                    "discreption" => $thisesGroupData['discreption'],
+                    "title" => $thisesGroupData['title'],
+                    "members" => array()
+                );
+                $matchFlag = $thisesGroupData['id'];
+            }else{
+                $count ++;
+                $result[$count] = array(
+                    "id" => $thisesGroupData['id'],
+                    "discreption" => $thisesGroupData['discreption'],
+                    "title" => $thisesGroupData['title'],
+                    "members" => array()
+                );
+                $matchFlag = $thisesGroupData['id'];
+            }
+        }
+        
+        foreach ($result as $reskey => $value) {
+            $fullName = null;
+            foreach ($thisesGroups['data'] as $key => $thisesGroupData) {
+                if ($value['id'] == $thisesGroupData['id']) {
+                    $fullName = " ".$thisesGroupData['first_name']." ".$thisesGroupData['middle_name']." ".$thisesGroupData['last_name'];
+                    array_push($result[$reskey]['members'], $fullName);
+                    $matchFlag = $thisesGroupData['id'];
+                }
+            }
+            
+        }
+        
+        echo json_encode(
+            array(
+                'draw' => intval($draw),
+                "recordsTotal" => $thisesGroups['recordsTotal'],
+                "recordsFiltered" => $thisesGroups['recordsFiltered'],
+                "data" => $result
+            )
+        );
+        
+    }
+    
 }

@@ -11,12 +11,13 @@
                             </a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a>Proposal</a>
+                            <a>Groups</a>
                         </li>
                     </ol>
                 </nav>
             </div>
         </div>
+        
         <div class="tabs-animation">
             <div class="card mb-3">
                 <div class="card-header-tab card-header">
@@ -25,14 +26,20 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table style="width: 100%;" id="getAllProposal" class="table table-hover table-striped table-bordered">
+                    
+                    <style media="screen">
+                        .dataTables_info {
+                            display: none;
+                        }
+                    </style>
+                    
+                    <table style="width: 100%;" id="getAllGroups" class="table table-hover table-striped table-bordered">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Proposal</th>
-                                <th>Group Member</th>
-                                <th>Created</th>
-                                <th>Modified</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Members</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -42,10 +49,9 @@
                         <tfoot>
                             <tr>
                                 <th>ID</th>
-                                <th>Proposal</th>
-                                <th>Group Member</th>
-                                <th>Created</th>
-                                <th>Modified</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Members</th>
                                 <th>Action</th
                             </tr>
                         </tfoot>

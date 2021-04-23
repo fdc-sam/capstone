@@ -27,5 +27,8 @@
     },
 	"require": {
         "swiftmailer/swiftmailer": "^6.0"
+    },
+	"require": {
+       "phpoffice/phpword": "v0.16.*"
     }
 }
