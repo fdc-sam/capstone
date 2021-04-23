@@ -19,6 +19,7 @@
         </div>
         <div class="tabs-animation">
             <div class="card mb-3">
+                <?php echo $this->layout->element('demo'); ?>
                 <div class="card-header-tab card-header">
                     <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
                             class="header-icon lnr-laptop-phone mr-3 text-muted opacity-6"> </i>Easy Dynamic Tables

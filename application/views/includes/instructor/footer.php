@@ -28,6 +28,12 @@ if ($subContent == 'head/groups') {
 	</script>
 <?php endif; ?>
 
+<?php if ($subContent == 'head/proposalDetails'): ?>
+	<script type="text/javascript">
+		var thesisGroupId = '<?php echo $thesisGroupId ?>';
+	</script>
+<?php endif; ?>
+
 <?php if ($subContent == 'head/viewStudent'): ?>
 	<script type="text/javascript">
 		var batchCode = '<?php echo $batchCode ?>';

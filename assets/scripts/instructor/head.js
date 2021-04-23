@@ -401,6 +401,7 @@ if (sub_content == 'head/proposal') {
         },
         "columns" : [
             {"data": "id"}, 
+            {"data": "thesis_group_name"},
             {"data": "groupPoposals"},
             {"data": "groupMembers"},
             {"data": "proposalCreated"},
@@ -409,8 +410,13 @@ if (sub_content == 'head/proposal') {
                 "data": 'id',
                 "render": function(data, type, row, meta){
                     var btnReturn = '';
+                    // btnReturn += `
+                    //     <a href="${base_url}/instructor/head/teamProposal/${row.thesisGroupId}" class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary" activation="Deactivated" data-toggle="tooltip" data-placement="top" title="View Proposal(s)">
+                    //         <i class="lnr-eye btn-icon-wrapper"> </i>
+                    //     </a>
+                    // `;
                     btnReturn += `
-                        <a href="${base_url}/instructor/head/teamProposal/${row.thesisGroupId}" class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary" activation="Deactivated" data-toggle="tooltip" data-placement="top" title="View Proposal(s)">
+                        <a href="${base_url}instructor/head/proposalDetails/${row.thesisGroupId}" class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary" activation="Deactivated" data-toggle="tooltip" data-placement="top" title="View Proposal(s)">
                             <i class="lnr-eye btn-icon-wrapper"> </i>
                         </a>
                     `;
@@ -420,6 +426,32 @@ if (sub_content == 'head/proposal') {
             }
         ]
     });// end of the data table variable
+}
+
+if (sub_content == 'head/proposalDetails') {
+    $.ajax({
+        url:`${base_url}/instructor/head/getProposalDetails2`,
+        type:'post',
+        dataType:'json',
+        data:{
+            thesisGroupId:thesisGroupId
+        },
+        beforeSend: function() {
+            $('#loadingState').show();
+        },
+        success: function(data){
+            console.log(data);
+            Swal.fire(
+                'INFO!',
+                'User data has been Updated',
+                'success'
+            )
+        },
+        complete: function(){
+            $('#loadingState').hide();
+            getProposalDetails.ajax.reload();
+        }
+    });
 }
 
 if (sub_content == 'head/teamProposal') {
@@ -499,6 +531,12 @@ if (sub_content == 'head/teamProposal') {
                             </button>
                         `;
                     }
+                    
+                    btnReturn += `
+                        <button class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary" proposalId="${row.id}"  data-toggle="tooltip" data-placement="top" title="View">
+                            <i class="lnr-eye btn-icon-wrapper"> </i>
+                        </button>
+                    `;
                     
                     return btnReturn;
                                         
