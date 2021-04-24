@@ -36,8 +36,7 @@
 
 <!-- Large modal  add propose -->
 
-<div class="modal fade bd-example-modal-lg" id="addProposeModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
+<div class="modal fade bd-example-modal-lg" id="addProposeModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <form id="proposeForm" class="" action="index.html" method="post">
             <div class="modal-content">
@@ -54,7 +53,7 @@
                                 <div class="form-row">
                                     <div class="col-md-12">
                                         <div class="position-relative form-group">
-                                            <label for="exampleEmail11" class=""> Title</label>
+                                            <label for="" class=""> PROJECT TITLE</label>
                                             <input name="title[]"  placeholder="" type="text" class="form-control proposeTitle" required>
                                         </div>
                                     </div>
@@ -62,8 +61,24 @@
                                 <div class="form-row">
                                     <div class="col-md-12">
                                         <div class="position-relative form-group">
-                                            <label for="exampleEmail11" class=""> Description</label>
-                                            <textarea rows="1" name="description[]" class="form-control autosize-input" style="max-height: 200px; height: 65px;" required></textarea>
+                                            <label for="" class=""> SCOPE OF THE STUDY</label>
+                                            <textarea rows="1" name="description[]" id="description" class="form-control autosize-input" style="max-height: 200px; height: 65px;" required></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-md-12">
+                                        <div class="position-relative form-group">
+                                            <label for="" class=""> LIMITATIONS OF THE STUDY</label>
+                                            <textarea rows="1" name="limitations[]" id="limitations" class="form-control autosize-input" style="max-height: 200px; height: 65px;" required></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-md-12">
+                                        <div class="position-relative form-group">
+                                            <label for="" class=""> PROJECT DESIGN DEVELOPMENT PLAN</label>
+                                            <textarea rows="1" name="designDevelopmentPlan[]" id="designDevelopmentPlan" class="form-control autosize-input" style="max-height: 200px; height: 65px;" required></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -102,6 +117,7 @@
 </script>
 
 <?php if ($subContent == 'home/index'): ?>
+    <script src="<?php echo base_url('assets/scripts/ckeditor/ckeditor.js'); ?>"></script>
 	<script src="<?php echo base_url('assets/scripts/jquery.dataTables.min.js'); ?>"></script>
 	<script src="<?php echo base_url('assets/scripts/select2.min.js'); ?>"></script>
 	<script src="<?php echo base_url('assets/scripts/student/home.js'); ?>"></script>

@@ -34,16 +34,16 @@ class SwiftMailer extends CI_Model {
             isset($message)
         ) {
             // Create the Transport
-            $transport = (new Swift_SmtpTransport('smtp.lolipop.jp', 465, 'ssl'))
-            ->setUsername('info@eyepro.online')
-            ->setPassword('jwz_c_YS-0KMJHop');
+            $transport = (new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl'))
+            ->setUsername('samvillarta05@gmail.com')
+            ->setPassword('Sam09213364006');
           
             // Create the Mailer using your created Transport
             $mailer = new Swift_Mailer($transport);
       
             // Create a message
             $message = (new Swift_Message($subject))
-            ->setFrom(['info@eyepro.online' => 'EVSU-OCC'])
+            ->setFrom(['samvillarta05@gmail.com' => 'EVSU-OCC'])
             ->setTo([$to])
             ->setBody($message, 'text/html');
       

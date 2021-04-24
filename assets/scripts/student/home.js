@@ -1,5 +1,11 @@
 if (sub_content == 'home/index') {    
     $(document).ready(function(){
+        
+        // this line of code is for the textarea design ang functionalities
+        CKEDITOR.replace('description');
+        CKEDITOR.replace(`limitations`);
+        CKEDITOR.replace(`designDevelopmentPlan`);
+        
         // initialize select2
         var groupMemberMultiSelect = $("#groupMember").select2({
             tags: "true",
@@ -112,22 +118,41 @@ if (sub_content == 'home/index') {
                         <div class="form-row">
                             <div class="col-md-12">
                                 <div class="position-relative form-group">
-                                    <label for="exampleEmail11" class=""> Title</label>
-                                    <input name="title[]" id="exampleEmail11" placeholder="" type="text" class="form-control" required>
+                                    <label for="" class=""> PROJECT TITLE</label>
+                                    <input name="title[]" id="" placeholder="" type="text" class="form-control" required>
                                 </div>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="col-md-12">
                                 <div class="position-relative form-group">
-                                    <label for="exampleEmail11" class=""> Description</label>
-                                    <textarea rows="1" name="description[]" class="form-control autosize-input" style="max-height: 200px; height: 65px;" required></textarea>
+                                    <label for="" class=""> SCOPE OF THE STUDY</label>
+                                    <textarea rows="1" name="description[]" id="description${x}" class="form-control autosize-input" style="max-height: 200px; height: 65px;" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <div class="position-relative form-group">
+                                    <label for="" class=""> LIMITATIONS OF THE STUDY</label>
+                                    <textarea rows="1" name="limitations[]" id="limitations${x}" class="form-control autosize-input" style="max-height: 200px; height: 65px;" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <div class="position-relative form-group">
+                                    <label for="" class=""> PROJECT DESIGN DEVELOPMENT PLAN</label>
+                                    <textarea rows="1" name="designDevelopmentPlan[]" id="designDevelopmentPlan${x}" class="form-control autosize-input" style="max-height: 200px; height: 65px;" required></textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             `); //add input box
+            CKEDITOR.replace(`description${x}`);
+            CKEDITOR.replace(`limitations${x}`);
+            CKEDITOR.replace(`designDevelopmentPlan${x}`);
         } else {
             alert('You Reached the limits')
         }
@@ -141,9 +166,13 @@ if (sub_content == 'home/index') {
         $('#countAvailableProposalLeft').html(x);
     });
     
+    // submit proposal
     $(document).on("submit", "#proposeForm", function(e) {
         e.preventDefault();
-    
+        
+        // get the CKEDITOR textarea value
+        
+        
         if ( parseInt($('#countAvailableProposalLeft').html()) >=5 ) {
             alert('You Reached Your Proposal Limit of 5');
             return;
@@ -158,6 +187,13 @@ if (sub_content == 'home/index') {
             return this.value; 
         }).get();
         
+        var proposeLimitations = $('textarea[name="limitations[]"]').map(function(){ 
+            return this.value; 
+        }).get();
+        
+        var proposeDesignDevelopmentPlan = $('textarea[name="designDevelopmentPlan[]"]').map(function(){ 
+            return this.value; 
+        }).get();
         
         $.ajax({
             url:`${base_url}/student/home/addPropose`,
@@ -165,7 +201,9 @@ if (sub_content == 'home/index') {
             dataType:'json',
             data:{
                 titles:proposeTitles,
-                descriptions:proposeDescription
+                descriptions:proposeDescription,
+                limitations:proposeLimitations,
+                designDevelopmentPlan:proposeDesignDevelopmentPlan
             },
             beforeSend: function() {
                 $('#loadingState').show();

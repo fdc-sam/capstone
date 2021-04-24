@@ -10,9 +10,6 @@
 		"slack": "https://codeigniterchat.slack.com",
 		"source": "https://github.com/bcit-ci/CodeIgniter"
 	},
-	"require": {
-		"php": ">=5.3.7"
-	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"
 	},
@@ -23,12 +20,8 @@
 	"require": {
         "botman/botman": "^2.3",
         "botman/driver-web": "^1.5",
-        "symfony/cache": "3.2"
-    },
-	"require": {
-        "swiftmailer/swiftmailer": "^6.0"
-    },
-	"require": {
-       "phpoffice/phpword": "v0.16.*"
+        "symfony/cache": "3.2",
+		"swiftmailer/swiftmailer": "^6.0",
+		"phpoffice/phpword": "v0.16.*"
     }
 }

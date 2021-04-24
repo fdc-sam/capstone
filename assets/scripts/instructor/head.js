@@ -8,7 +8,8 @@ if (sub_content == 'head/batch') {
         for ( batch_description in CKEDITOR.instances )
         var batch_description = CKEDITOR.instances[batch_description].getData();
         // CKEDITOR.instances[batch_description].updateElement();
-        
+        console.log(batch_description);
+        return;
         var batch_from = $('#batch_from').val();
         var batch_to = $('#batch_to').val();
         var batch_code = $('#batch_code').val();

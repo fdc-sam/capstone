@@ -293,7 +293,7 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo base_url('instructor/head/proposal') ?>" class="<?php echo isset($subContent) && $subContent == 'head/proposal' || $subContent == 'head/teamProposal' ? 'mm-active': '' ?> ">
+                                            <a href="<?php echo base_url('instructor/head/proposal') ?>" class="<?php echo isset($subContent) && $subContent == 'head/proposal' || $subContent == 'head/proposalDetails' ? 'mm-active': '' ?> ">
                                                 <i class="metismenu-icon">
                                                 </i>Proposal
                                             </a>

@@ -535,38 +535,16 @@ class Head extends CI_Controller {
     public function proposalDetails($thesisGroupId = null){
         $this->load->library('layout');
         
-        // echo $Layout->element('demo');
-        
-        // die();
-        // - get the user information
-        $data['userInfo'] = $this->ion_auth->user()->row();
-        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
-        
-        // - data
-        $data['currentPageTitle'] = 'Team Proposal';
-        $data['mainContent'] = 'instructor/head';
-        $data['subContent'] = 'head/proposalDetails';
-        $data['thesisGroupId'] = $thesisGroupId;
-        
-        // - load view 
-        $this->load->view('includes/instructor/header',$data);
-		$this->load->view('instructor/head/proposalDetails');
-		$this->load->view('includes/instructor/footer');
-    }
-    
-    public function getProposalDetails2(){
-        $post = $this->input->post();
+        // get all team proposal
         $result = $this->universal->get(
             true,
             'thises',
             '*',
             'all',
             array(
-                'thesis_group_id' => $post['thesisGroupId']
+                'thesis_group_id' => $thesisGroupId
             )
         );
-        
-        
         
         // check if has approved proposal
         foreach ($result as $key => $thisesGroupData) {
@@ -582,15 +560,26 @@ class Head extends CI_Controller {
             $thisesGroupData->created = date("g:ia | D jS F Y", strtotime($thisesGroupData->created));
             $thisesGroupData->modified = date("g:ia | D jS F Y", strtotime($thisesGroupData->modified));
             
-            
-            
             $thisesGroupData->approvedFlag = $approvedFlag;
             array_push($getProposalDetails, $thisesGroupData);
         }
         
-        // pre($getProposalDetails);
-        // die();
+        $data['getProposalDetails'] = $getProposalDetails;
         
+        // - get the user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+        
+        // - data
+        $data['currentPageTitle'] = 'Team Proposal';
+        $data['mainContent'] = 'instructor/head';
+        $data['subContent'] = 'head/proposalDetails';
+        $data['thesisGroupId'] = $thesisGroupId;
+        
+        // - load view 
+        $this->load->view('includes/instructor/header',$data);
+		$this->load->view('instructor/head/proposalDetails');
+		$this->load->view('includes/instructor/footer');
     }
     
     public function teamProposal($thesisGroupId = null){

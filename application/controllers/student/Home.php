@@ -312,6 +312,8 @@ class Home extends CI_Controller {
                         'thesis_group_id' => $currentThisesGroupId,
                         'title' => $title,
                         'discreption' => $post['descriptions'][$key],
+                        'limitations_of_the_studies' => $post['limitations'][$key],
+                        'design_development_plans' => $post['designDevelopmentPlan'][$key],
                         'created' => date('Y-m-d H:i:s'),
                         'modified' => date('Y-m-d H:i:s')
                     )
@@ -337,39 +339,39 @@ class Home extends CI_Controller {
             )
         );
         
-        if (!$currentThisesGroupId) {
-            
-            // get the current user information
-            $data['userInfo'] = $this->ion_auth->user()->row();
-            $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
-            
-            // get the current user batch code 
-            $currentUserBatchCodeId = $this->getStudentBatchCodeId($data['userInfo']->email);
-            
-            // create a random Thesis Group Name code
-            $thesisGroupName = $this->getRandomString(10);
-            
-            $insertGroup = $this->universal->insert(
-                'thises_group',
-                array(
-                    'thesis_group_name' => $thesisGroupName,
-                    'created' => date('Y-m-d H:i:s'),
-                    'modified' => date('Y-m-d H:i:s')
-                )
-            );
-            $addGroupMember = $this->universal->insert(
-                'thises_connect',
-                array(
-                    'thesis_group_id' => $insertGroup,
-                    'batch_id' => $currentUserBatchCodeId,
-                    'user_id' => $data['userInfo']->id,
-                    'created' => date('Y-m-d H:i:s'),
-                    'modified' => date('Y-m-d H:i:s')
-                )
-            );
-            
-            $currentThisesGroupId = $insertGroup;
-        }
+        // if (!$currentThisesGroupId) {
+        // 
+        //     // get the current user information
+        //     $data['userInfo'] = $this->ion_auth->user()->row();
+        //     $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+        // 
+        //     // get the current user batch code 
+        //     $currentUserBatchCodeId = $this->getStudentBatchCodeId($data['userInfo']->email);
+        // 
+        //     // create a random Thesis Group Name code
+        //     $thesisGroupName = $this->getRandomString(10);
+        // 
+        //     $insertGroup = $this->universal->insert(
+        //         'thises_group',
+        //         array(
+        //             'thesis_group_name' => $thesisGroupName,
+        //             'created' => date('Y-m-d H:i:s'),
+        //             'modified' => date('Y-m-d H:i:s')
+        //         )
+        //     );
+        //     $addGroupMember = $this->universal->insert(
+        //         'thises_connect',
+        //         array(
+        //             'thesis_group_id' => $insertGroup,
+        //             'batch_id' => $currentUserBatchCodeId,
+        //             'user_id' => $data['userInfo']->id,
+        //             'created' => date('Y-m-d H:i:s'),
+        //             'modified' => date('Y-m-d H:i:s')
+        //         )
+        //     );
+        // 
+        //     $currentThisesGroupId = $insertGroup;
+        // }
         
         return isset($currentThisesGroupId->thesis_group_id)? $currentThisesGroupId->thesis_group_id: null;
     }
@@ -596,7 +598,10 @@ class Home extends CI_Controller {
         $getCapstoneDetails = $this->universal->get(
             true,
             'thises AS T',
-            'T.id, T.thesis_group_id, T.title, T.discreption, T.created, T.created, T.modified, T.status, U.first_name, U.middle_name, U.last_name, U.email',
+            '
+                T.id, T.thesis_group_id, T.title, T.discreption, T.limitations_of_the_studies, T.design_development_plans, T.created, T.created, T.modified, T.status, 
+                U.first_name, U.middle_name, U.last_name, U.email
+            ',
             'all',
             array(
                 'T.id' => $proposalId
@@ -704,6 +709,27 @@ class Home extends CI_Controller {
         
         $this->load->view('includes/student/header',$data);
 		$this->load->view('student/viewDocumentPDF');
+        $this->load->view('includes/student/footer');
+        $this->load->view('includes/student/modals');
+    }
+    
+    public function myGroup(){
+        // get the current user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+        
+        // get the current user group id
+        $currentThisesGroupId = $this->getThisesGroupId($data['userInfo']->id);
+        
+        
+        
+        // - data
+        $data['currentPageTitle'] = 'Student - Proposal Details';
+        $data['mainContent'] = 'student/home';
+        $data['subContent'] = 'home/myGroup';
+        
+        $this->load->view('includes/student/header',$data);
+		$this->load->view('student/myGroup');
         $this->load->view('includes/student/footer');
         $this->load->view('includes/student/modals');
     }

@@ -35,19 +35,154 @@
                                         ?><div class="badge badge-danger ml-2">Rejected</div><?php
                                     }else {
                                         // Pending
-                                        ?><div class="badge badge-warning ml-2">Approved</div><?php
+                                        ?><div class="badge badge-warning ml-2">Pending</div><?php
                                     }
                                     ?>
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <h5 class="card-title"><?php echo $getCapstoneDetails[0]->title; ?></h5>
-                            <div class="scroll-area-md">
-                                <div class="scrollbar-container ps--active-y">
-                                    <p><?php echo $getCapstoneDetails[0]->discreption; ?></p>
-                                </div>
+                        
+                        <div class="card-body" style="border: 2px solid black;">
+                            <style>
+                                * {
+                                    font-family: Arial;
+                                    font-size: 11pt;
+                                }
+                            
+                                a.NoteRef {
+                                    text-decoration: none;
+                                }
+                            
+                                hr {
+                                    height: 1px;
+                                    padding: 0;
+                                    margin: 1em 0;
+                                    border: 0;
+                                    border-top: .000001em solid #CCC;
+                                }
+                            
+                                table {
+                                    /* border: .011em solid black; */
+                                    border-spacing: 0px;
+                                    width: 100%;
+                                }
+                            
+                                td {
+                                    border: .000001em solid black;
+                                }
+                                td p {
+                                    margin: 5px !important;
+                                }
+                                .Normal {
+                                    margin-bottom: 8pt;
+                                }
+                            
+                                .No Spacing {
+                                    margin-bottom: 0pt;
+                                }
+                            </style>
+                            <div class="" >
+                                <img style="width: 350px; height: 78px;" src="<?php echo base_url('assets/images/evsu-logo-with-words.png') ?>" alt="evsu logo">
                             </div>
+                                
+                            <p style="text-align: center; margin-top: 0; margin-bottom: 0;">
+                                <span style="font-family: 'Arial Narrow'; font-size: 14pt; font-weight: bold;">CAPSTONE PROJECT TEAM ASSIGNMENTS</span>
+                            </p>
+                            <p>&nbsp;</p>
+                            <table class="TableGrid">
+                                <tr>
+                                    <td style="width: 15%;">
+                                        <p>
+                                            <span style="font-family: 'Arial Narrow'; font-size: 12pt; font-weight: bold;">TEAM NAME</span>
+                                        </p>
+                                    </td>
+                                    <td style="width: 75%;">
+                                        <p>
+                                            <span style="font-family: 'Arial Narrow'; font-size: 12pt;">Sample TEAM NAME</span>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="TableGrid">
+                                <tr>
+                                    <td>
+                                        <p style="text-align: center; margin-top: 0; margin-bottom: 0;">
+                                            <span style="font-family: 'Arial Narrow'; font-size: 12pt; font-weight: bold;">NAME</span>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p style="text-align: center; margin-top: 0; margin-bottom: 0;">
+                                            <span style="font-family: 'Arial Narrow'; font-size: 12pt; font-weight: bold;">ROLE</span>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p style="text-align: center; margin-top: 0; margin-bottom: 0;">
+                                            <span style="font-family: 'Arial Narrow'; font-size: 12pt; font-weight: bold;">SIGNATURE</span>
+                                        </p>
+                                    </td>
+                                </tr>
+                                
+                                <!--  get the group members -->
+                                <?php foreach ($getCapstoneDetails as $key => $value): ?>
+                                    <?php  
+                                        $first_name = $value->first_name.' '.$value->middle_name.' '.$value->last_name;
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <p style="text-align: center; margin-top: 0; margin-bottom: 0;">
+                                                <span style="font-family: 'Arial Narrow'; font-size: 12pt;"><?php echo $first_name; ?></span>
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <p style="text-align: center; margin-top: 0; margin-bottom: 0;">
+                                                <span style="font-family: 'Arial Narrow'; font-size: 12pt;">Not Decided</span>
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <p style="text-align: center; margin-top: 0; margin-bottom: 0;">
+                                                <span style="font-family: 'Arial Narrow'; font-size: 12pt;">No SIGNATURE</span>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                
+                            </table>
+                            <p>&nbsp;</p>
+                            <p style="text-align: center; margin-top: 0; margin-bottom: 0;"><span style="font-family: 'Arial Narrow'; font-size: 14pt; font-weight: bold;">PRE-PROPOSAL STATEMENTS</span></p>
+                            <p>&nbsp;</p>
+                            <table class="TableGrid">
+                                <tr>
+                                    <td>
+                                        <p style="margin: 5px;"><span style="font-family: 'Arial Narrow'; font-size: 12pt; font-weight: bold;">PROJECT TITLE : </span></p>
+                                        <p style="margin: 5px;">
+                                            <span style="font-family: 'Arial Narrow'; font-size: 12pt;"><?php echo $getCapstoneDetails[0]->title; ?></span>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p style="margin: 5px;"><span style="font-family: 'Arial Narrow'; font-size: 12pt; font-weight: bold;">SCOPE OF THE STUDY : </span></p>
+                                        <?php echo $getCapstoneDetails[0]->discreption; ?>
+                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p style="margin: 5px;">
+                                            <span style="font-family: 'Arial Narrow'; font-size: 12pt; font-weight: bold;">LIMITATIONS OF THE STUDY : </span>
+                                        </p>
+                                        <?php echo $getCapstoneDetails[0]->limitations_of_the_studies; ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p style="margin: 5px;">
+                                            <span style="font-family: 'Arial Narrow'; font-size: 12pt; font-weight: bold;">PROJECT DESIGN DEVELOPMENT PLAN : </span>
+                                        </p>
+                                        <?php echo $getCapstoneDetails[0]->limitations_of_the_studies; ?>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
