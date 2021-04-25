@@ -219,6 +219,19 @@ class Home extends CI_Controller {
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
         
+        $data['getMySignature'] = $this->universal->get(
+            true,
+            'users_signature',
+            '*',
+            'row',
+            array(
+                'users_id' => $data['userInfo']->id
+            )
+        );
+        
+        // pre($getMySignature);
+        // die();
+        
         // - data
         $data['currentPageTitle'] = 'Student - My Profile';
         $data['mainContent'] = 'home/MyProfile';
@@ -534,6 +547,7 @@ class Home extends CI_Controller {
             TC.user_id,
             TC.created,
             TC.modified,
+            U.id AS users_id,
             U.email,
             U.first_name,
             U.middle_name,
@@ -551,6 +565,26 @@ class Home extends CI_Controller {
             $like, 
             true
         );
+        
+        foreach ($batchDataResult['data'] as $key => $value) {
+        
+            //  get member roles
+            $getGroupMemberRoles = $this->universal->get(
+                true,
+                'users_roles AS UR',
+                'R.role_name',
+                'row',
+                array(
+                    'UR.user_id' => $value['users_id']
+                ),
+                array(),
+                array(
+                    'roles AS R' => 'R.id = UR.role_id'
+                )
+            );
+        
+            $batchDataResult['data'][$key]['role_name'] =  $getGroupMemberRoles->role_name;
+        }
         
         
         echo json_encode(
@@ -600,7 +634,10 @@ class Home extends CI_Controller {
             'thises AS T',
             '
                 T.id, T.thesis_group_id, T.title, T.discreption, T.limitations_of_the_studies, T.design_development_plans, T.created, T.created, T.modified, T.status, 
-                U.first_name, U.middle_name, U.last_name, U.email
+                U.first_name, U.middle_name, U.last_name, U.email,
+                US.signatures,
+                R.role_name,
+                TG.thesis_group_name
             ',
             'all',
             array(
@@ -609,10 +646,16 @@ class Home extends CI_Controller {
             array(),
             array(
                 'thises_connect AS TC' => 'TC.thesis_group_id = T.thesis_group_id' ,
-                'users AS U' => 'U.id = TC.user_id'
+                'users AS U' => 'U.id = TC.user_id',
+                'users_signature AS US' => 'US.users_id = U.id',
+                'users_roles AS UR' => 'UR.user_id = U.id',
+                'roles AS R' => 'R.id = UR.role_id',
+                'thises_group AS TG' => 'TG.id = T.thesis_group_id'
             )
         );
         
+        // pre($getCapstoneDetails);
+        // die();
         if ($getCapstoneDetails) {
             $data['getCapstoneDetails'] = $getCapstoneDetails;
         }
@@ -721,8 +764,36 @@ class Home extends CI_Controller {
         // get the current user group id
         $currentThisesGroupId = $this->getThisesGroupId($data['userInfo']->id);
         
+        $data['updateFlag'] = false;
+        $post = $this->input->post();
+        if ($post) {
+            $updateGroupName = $this->universal->update(
+                'thises_group',
+                array(
+                    'thesis_group_name' => $post['groupName']
+                ),
+                array(
+                    'id' => $post['id']
+                )
+            );
+            
+            if ($updateGroupName) {
+                $data['updateFlag'] = true;
+            }
+        }
         
+        $data['groupDetails'] = $this->universal->get(
+            true,
+            'thises_group',
+            '*',
+            'row',
+            array(
+                'id' => $currentThisesGroupId
+            )
+        );
         
+        // pre($data['groupDetails']);
+        // die();
         // - data
         $data['currentPageTitle'] = 'Student - Proposal Details';
         $data['mainContent'] = 'student/home';
@@ -730,6 +801,146 @@ class Home extends CI_Controller {
         
         $this->load->view('includes/student/header',$data);
 		$this->load->view('student/myGroup');
+        $this->load->view('includes/student/footer');
+        $this->load->view('includes/student/modals');
+    }
+    
+    public function myRole(){
+        // get the current user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+        
+        
+        $data['usersRoles'] = $this->universal->get(
+            true,
+            'users_roles',
+            '*',
+            'row',
+            array(
+                'user_id' => $data['userInfo']->id
+            )
+        );
+        
+        $data['updateFlag'] = false;
+        $post = $this->input->post();
+        if ($data['usersRoles']) {
+            
+            if ($post) {
+                $updateRole = $this->universal->update(
+                    'users_roles',
+                    array(
+                        'role_id' => $post['selectedRole']
+                    ),
+                    array(
+                        'user_id' =>  $data['userInfo']->id
+                    )
+                );
+                
+                if ($updateRole) {
+                    $data['updateFlag'] = true;
+                }
+            }
+        }else{
+            
+            if ($post) {
+                $insertRole = $this->universal->insert(
+                    'users_roles',
+                    array(
+                        'role_id' => $post['selectedRole'],
+                        'user_id' => $data['userInfo']->id
+                    )
+                );
+                
+                if ($insertRole) {
+                    $data['updateFlag'] = true;
+                }
+            }
+        }
+        
+        $data['roles'] = $this->universal->get(
+            true,
+            'roles',
+            '*',
+            'all'
+        );
+        
+        // pre($data['roles']);
+        // die();
+        
+        // - data
+        $data['currentPageTitle'] = 'Student - Proposal Details';
+        $data['mainContent'] = 'student/home';
+        $data['subContent'] = 'home/myRole';
+        
+        $this->load->view('includes/student/header',$data);
+		$this->load->view('student/myRole');
+        $this->load->view('includes/student/footer');
+        $this->load->view('includes/student/modals');
+    }
+    
+    public function mySignature(){
+        // get the current user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+        
+        $getMySignature = $this->universal->get(
+            true,
+            'users_signature',
+            '*',
+            'row',
+            array(
+                'users_id' => $data['userInfo']->id
+            )
+        );
+        
+        $data['signatureFlag'] = false;
+        $post = $this->input->post();
+        if ($post) {
+            
+            $image = array();
+            $image['image_parts'] = explode(";base64,", $post['signed']);
+
+            $image['image_type_aux'] = explode("image/", $image['image_parts'][0]);
+
+            $image['image_type'] = $image['image_type_aux'][1];
+
+            $image['image_base64'] = base64_decode($image['image_parts'][1]);
+            
+            if ($getMySignature) {
+                $updateSignature = $this->universal->update(
+                    'users_signature',
+                    array(
+                        'signatures' => $image['image_parts'][1]
+                    ),
+                    array(
+                        'users_id' => $data['userInfo']->id
+                    )
+                );
+            }else {
+                $insertSignature = $this->universal->insert(
+                    'users_signature',
+                    array(
+                        'users_id' => $data['userInfo']->id,
+                        'signatures' => $image['image_parts'][1]
+                    )
+                );
+            }
+            
+            if ($updateSignature || $insertSignature) {
+                redirect(base_url('student/home/myProfile'));
+            }
+            
+        }
+        
+        
+        
+        // - data
+        $data['currentPageTitle'] = 'Student - Proposal Details';
+        $data['mainContent'] = 'student/home';
+        $data['subContent'] = 'home/mySignature';
+        
+        $this->load->view('includes/student/header',$data);
+		$this->load->view('student/mySignature');
         $this->load->view('includes/student/footer');
         $this->load->view('includes/student/modals');
     }

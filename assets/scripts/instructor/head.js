@@ -429,31 +429,31 @@ if (sub_content == 'head/proposal') {
     });// end of the data table variable
 }
 
-if (sub_content == 'head/proposalDetails') {
-    $.ajax({
-        url:`${base_url}/instructor/head/getProposalDetails2`,
-        type:'post',
-        dataType:'json',
-        data:{
-            thesisGroupId:thesisGroupId
-        },
-        beforeSend: function() {
-            $('#loadingState').show();
-        },
-        success: function(data){
-            console.log(data);
-            Swal.fire(
-                'INFO!',
-                'User data has been Updated',
-                'success'
-            )
-        },
-        complete: function(){
-            $('#loadingState').hide();
-            getProposalDetails.ajax.reload();
-        }
-    });
-}
+// if (sub_content == 'head/proposalDetails') {
+//     $.ajax({
+//         url:`${base_url}instructor/head/getProposalDetails`,
+//         type:'post',
+//         dataType:'json',
+//         data:{
+//             thesisGroupId:thesisGroupId
+//         },
+//         beforeSend: function() {
+//             $('#loadingState').show();
+//         },
+//         success: function(data){
+//             console.log(data);
+//             Swal.fire(
+//                 'INFO!',
+//                 'User data has been Updated',
+//                 'success'
+//             )
+//         },
+//         complete: function(){
+//             $('#loadingState').hide();
+//             getProposalDetails.ajax.reload();
+//         }
+//     });
+// }
 
 if (sub_content == 'head/teamProposal') {
     var getProposalDetails = $('#getProposalDetails').DataTable({

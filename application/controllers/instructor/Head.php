@@ -534,27 +534,64 @@ class Head extends CI_Controller {
     
     public function proposalDetails($thesisGroupId = null){
         $this->load->library('layout');
+        $approvedFlag = false;
         
         // get all team proposal
-        $result = $this->universal->get(
+        $getCapstoneDetails = $this->universal->get(
             true,
-            'thises',
-            '*',
+            'thises AS T',
+            '
+                T.id, T.thesis_group_id, T.title, T.discreption, T.limitations_of_the_studies, T.design_development_plans, T.created, T.created, T.modified, T.status,
+                TG.thesis_group_name
+            ',
             'all',
             array(
-                'thesis_group_id' => $thesisGroupId
+                'T.thesis_group_id' => $thesisGroupId
+            ),
+            array(),
+            array(
+                'thises_group AS TG' => 'TG.id = T.thesis_group_id'
             )
         );
         
+        foreach ($getCapstoneDetails as $key => $getCapstoneDetail) {
+            $userDetails = $this->universal->get(
+                true,
+                'thises_connect AS TC',
+                '
+                    U.first_name, U.middle_name, U.last_name, U.email,
+                    US.signatures,
+                    R.role_name,
+                    
+                ',
+                'all',
+                array(
+                    'TC.thesis_group_id' => $getCapstoneDetail->thesis_group_id
+                ),
+                array(),
+                array(
+                    'users AS U' => 'U.id = TC.user_id',
+                    'users_signature AS US' => 'US.users_id = U.id',
+                    'users_roles AS UR' => 'UR.user_id = U.id',
+                    'roles AS R' => 'R.id = UR.role_id',
+                    
+                )
+            );
+            
+            $getCapstoneDetail->users = $userDetails;
+        }
+        
+        
+        
         // check if has approved proposal
-        foreach ($result as $key => $thisesGroupData) {
+        foreach ($getCapstoneDetails as $key => $thisesGroupData) {
             if ($thisesGroupData->status == 1) {
                 $approvedFlag = true;
             }
         }
         
         $getProposalDetails = array();
-        foreach ($result as $key => $thisesGroupData) { 
+        foreach ($getCapstoneDetails as $key => $thisesGroupData) { 
             
             // convert date time to `5:56am | Fri 9th April 2021`
             $thisesGroupData->created = date("g:ia | D jS F Y", strtotime($thisesGroupData->created));
@@ -564,7 +601,12 @@ class Head extends CI_Controller {
             array_push($getProposalDetails, $thisesGroupData);
         }
         
-        $data['getProposalDetails'] = $getProposalDetails;
+        // pre($getProposalDetails);
+        // die();
+        
+        if ($getProposalDetails) {
+            $data['getCapstoneDetails'] = $getProposalDetails;
+        }
         
         // - get the user information
         $data['userInfo'] = $this->ion_auth->user()->row();

@@ -71,7 +71,9 @@
                                     border: .000001em solid black;
                                 }
                                 td p {
-                                    margin: 5px !important;
+                                    margin-left: 5px !important;
+                                    margin-right: 5px !important;
+                                    margin-bottom: 0 !important;
                                 }
                                 .Normal {
                                     margin-bottom: 8pt;
@@ -80,6 +82,7 @@
                                 .No Spacing {
                                     margin-bottom: 0pt;
                                 }
+                                
                             </style>
                             <div class="" >
                                 <img style="width: 350px; height: 78px;" src="<?php echo base_url('assets/images/evsu-logo-with-words.png') ?>" alt="evsu logo">
@@ -98,25 +101,26 @@
                                     </td>
                                     <td style="width: 75%;">
                                         <p>
-                                            <span style="font-family: 'Arial Narrow'; font-size: 12pt;">Sample TEAM NAME</span>
+                                            <span style="font-family: 'Arial Narrow'; font-size: 12pt;"><?php echo $getCapstoneDetails[0]->thesis_group_name; ?></span>
                                         </p>
                                     </td>
                                 </tr>
                             </table>
+                            <p>&nbsp;</p>
                             <table class="TableGrid">
                                 <tr>
-                                    <td>
-                                        <p style="text-align: center; margin-top: 0; margin-bottom: 0;">
+                                    <td style="width: 30%;">
+                                        <p style="text-align: center; ">
                                             <span style="font-family: 'Arial Narrow'; font-size: 12pt; font-weight: bold;">NAME</span>
                                         </p>
                                     </td>
-                                    <td>
-                                        <p style="text-align: center; margin-top: 0; margin-bottom: 0;">
+                                    <td style="width: 40%;">
+                                        <p style="text-align: center;">
                                             <span style="font-family: 'Arial Narrow'; font-size: 12pt; font-weight: bold;">ROLE</span>
                                         </p>
                                     </td>
-                                    <td>
-                                        <p style="text-align: center; margin-top: 0; margin-bottom: 0;">
+                                    <td style="width: 25%;">
+                                        <p style="text-align: center;">
                                             <span style="font-family: 'Arial Narrow'; font-size: 12pt; font-weight: bold;">SIGNATURE</span>
                                         </p>
                                     </td>
@@ -127,21 +131,33 @@
                                     <?php  
                                         $first_name = $value->first_name.' '.$value->middle_name.' '.$value->last_name;
                                     ?>
-                                    <tr>
+                                    <tr style="line-height: 25px !important;">
                                         <td>
-                                            <p style="text-align: center; margin-top: 0; margin-bottom: 0;">
+                                            <p style="text-align: center;">
                                                 <span style="font-family: 'Arial Narrow'; font-size: 12pt;"><?php echo $first_name; ?></span>
                                             </p>
                                         </td>
                                         <td>
-                                            <p style="text-align: center; margin-top: 0; margin-bottom: 0;">
-                                                <span style="font-family: 'Arial Narrow'; font-size: 12pt;">Not Decided</span>
-                                            </p>
+                                            <?php if ($value->role_name): ?>
+                                                <p style="text-align: center;">
+                                                    <span style="font-family: 'Arial Narrow'; font-size: 12pt;"><?php echo $value->role_name; ?></span>
+                                                </p>
+                                            <?php else: ?>
+                                                <p style="text-align: center;">
+                                                    <span style="font-family: 'Arial Narrow'; font-size: 12pt;">Not Decided</span>
+                                                </p>
+                                            <?php endif; ?>
                                         </td>
-                                        <td>
-                                            <p style="text-align: center; margin-top: 0; margin-bottom: 0;">
-                                                <span style="font-family: 'Arial Narrow'; font-size: 12pt;">No SIGNATURE</span>
-                                            </p>
+                                        <td style="height: 25px !important;">
+                                            <?php if ($value->signatures): ?>
+                                                <img src="data:image/png;base64, <?php echo $value->signatures ?>" alt="Signature" 
+                                                    style=" overflow: visible;  width:200px; position: absolute; margin-top: -25px;" 
+                                                />
+                                            <?php else: ?>
+                                                <p style="text-align: center; margin-top: 0; margin-bottom: 0;">
+                                                    <span style="font-family: 'Arial Narrow'; font-size: 12pt;">No SIGNATURE</span>
+                                                </p>
+                                            <?php endif; ?>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

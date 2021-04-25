@@ -298,7 +298,7 @@ if (sub_content == 'home/index') {
                     }
                 }
             },
-            // {"data": "user_id"}
+            {"data": "role_name"},
             {
                 "data": 'id',
                 "render": function(data, type, row, meta){

@@ -40,6 +40,7 @@
                                         <th>Name</th>
                                         <th>E-mail</th>
                                         <th>Gender</th>
+                                        <th>Role</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -52,6 +53,7 @@
                                         <th>Name</th>
                                         <th>E-mail</th>
                                         <th>Gender</th>
+                                        <th>Role</th>
                                         <th>Action</th>
                                     </tr>
                                 </tfoot>

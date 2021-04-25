@@ -59,6 +59,16 @@
                                             </select>
                                         </div>
                                     </div>
+                                    
+                                    <div class="col-md-4">
+                                        <div class="position-relative form-group">
+                                            <label for="exampleEmail" class=""><span class="text-danger">*</span> Signature <a href="<?php echo base_url('student/home/mysignature') ?>">Add/Edit Signature</a> </label>
+                                            <?php if ($getMySignature): ?>
+                                                <img src="data:image/png;base64, <?php echo $getMySignature->signatures ?>" alt="Signature" style="height:100px; width: 100%; background: #E1DFDF;" />
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                                 <div class="divider"></div>
                                 <div class="clearfix">
