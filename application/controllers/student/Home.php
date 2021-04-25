@@ -304,6 +304,34 @@ class Home extends CI_Controller {
         // get the current user Thises Group Id
         $currentThisesGroupId = $this->getThisesGroupId($data['userInfo']->id);
         
+        // get the current user batch code 
+        $currentUserBatchCodeId = $this->getStudentBatchCodeId($data['userInfo']->email);
+        
+        if (!$currentThisesGroupId) {
+            // create a random Thesis Group Name code
+            $thesisGroupName = $this->getRandomString(10);
+            
+            $insertGroup = $this->universal->insert(
+                'thises_group',
+                array(
+                    'thesis_group_name' => $thesisGroupName,
+                    'created' => date('Y-m-d H:i:s'),
+                    'modified' => date('Y-m-d H:i:s')
+                )
+            );
+            $addGroupMember = $this->universal->insert(
+                'thises_connect',
+                array(
+                    'thesis_group_id' => $insertGroup,
+                    'batch_id' => $currentUserBatchCodeId,
+                    'user_id' => $data['userInfo']->id,
+                    'created' => date('Y-m-d H:i:s'),
+                    'modified' => date('Y-m-d H:i:s')
+                )
+            );
+            $currentThisesGroupId = $insertGroup;
+        }
+        
         // get the input post
         $post = $this->input->post();
         
@@ -427,26 +455,28 @@ class Home extends CI_Controller {
                 }
                 $proposeData .= '
                     <li class="list-group-item">
-                        <a href="'.base_url().'student/home/capstoneDetails/'.$value->id.'" class="hrefProposal">
+                        
                             <div class="todo-indicator '.$sideStatusBar.' "></div>
                             <div class="widget-content p-0">
                                 <div class="widget-content-wrapper">
-                                    <div class="widget-content-left">
-                                        <div class="widget-heading">
-                                            <span class="timeline-title">'.$value->title.'</span>
+                                    <a href="'.base_url().'student/home/capstoneDetails/'.$value->id.'" class="hrefProposal">
+                                        <div class="widget-content-left">
+                                            <div class="widget-heading">
+                                                <span class="timeline-title">'.$value->title.'</span>
+                                            </div>
+                                            <div class="widget-subheading proposalDescription">
+                                                <span style="
+                                                    display:inline-block;
+                                                    white-space: nowrap;
+                                                    overflow: hidden;
+                                                    text-overflow: ellipsis;
+                                                    max-width: 28ch;
+                                                ">
+                                                '.$value->discreption.' asdasdasd asdasdasdasdasdasdasdasdasdasdasdasd
+                                                </span>
+                                            </div>
                                         </div>
-                                        <div class="widget-subheading proposalDescription">
-                                            <span style="
-                                                display:inline-block;
-                                                white-space: nowrap;
-                                                overflow: hidden;
-                                                text-overflow: ellipsis;
-                                                max-width: 28ch;
-                                            ">
-                                            '.$value->discreption.' asdasdasd asdasdasdasdasdasdasdasdasdasdasdasd
-                                            </span>
-                                        </div>
-                                    </div>
+                                    </a>
                                     <div class="widget-content-right">
                                         '.$requestStatus.'
                                         <button class="border-0 btn-transition btn btn-outline-danger deletePropossal" thisesId="'. $value->id.'">
@@ -455,7 +485,7 @@ class Home extends CI_Controller {
                                     </div>
                                 </div>
                             </div>
-                        </a>
+                        
                         
                     </li>
                 ';
@@ -583,7 +613,7 @@ class Home extends CI_Controller {
                 )
             );
         
-            $batchDataResult['data'][$key]['role_name'] =  $getGroupMemberRoles->role_name;
+            $batchDataResult['data'][$key]['role_name'] =  isset($getGroupMemberRoles->role_name)? $getGroupMemberRoles->role_name : 'Not Role';
         }
         
         
