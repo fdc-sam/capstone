@@ -20,9 +20,31 @@
         
         <div class="tabs-animation">
             <div class="card mb-3">
-                <div class="card-header-tab card-header">
-                    <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
-                            class="header-icon lnr-laptop-phone mr-3 text-muted opacity-6"> </i>Easy Dynamic Tables
+                <div class="card-header">
+                    <i class="header-icon lnr-laptop-phone icon-gradient bg-plum-plate"> </i>Groups
+                    <div class="btn-actions-pane-right actions-icon-btn">
+                        <div class="btn-group dropdown">
+                            <button type="button" aria-haspopup="true" data-toggle="dropdown" aria-expanded="false" class="btn-icon btn-icon-only btn btn-link">
+                                Select<i class="pe-7s-menu btn-icon-wrapper"></i>
+                            </button>
+                            <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu-shadow dropdown-menu-right dropdown-menu-hover-link dropdown-menu">
+                                <h6 tabindex="-1" class="dropdown-header">Header</h6>
+                                <button type="button" tabindex="0" class="dropdown-item">
+                                    <i class="dropdown-icon lnr-inbox"> </i><span>Menus</span>
+                                </button>
+                                <button type="button" tabindex="0" class="dropdown-item">
+                                    <i class="dropdown-icon lnr-file-empty"></i><span>Settings</span>
+                                </button>
+                                <button type="button" tabindex="0" class="dropdown-item">
+                                    <i class="dropdown-icon lnr-book"> </i><span>Actions</span>
+                                </button>
+                                <div tabindex="-1" class="dropdown-divider"></div>
+                                <div class="p-3 text-right">
+                                    <button class="mr-2 btn-shadow btn-sm btn btn-link">View Details</button>
+                                    <button class="mr-2 btn-shadow btn-sm btn btn-primary">Action</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">

@@ -19,10 +19,12 @@
         </div>
         <div class="tabs-animation">
             <div class="card mb-3">
-                <div class="card-header-tab card-header">
-                    <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
-                            class="header-icon lnr-laptop-phone mr-3 text-muted opacity-6"> </i>Easy Dynamic Tables
+                <div class="card-header">
+                    <i class="header-icon lnr-laptop-phone icon-gradient bg-plum-plate"> </i>Header Menu
+                    <div class="btn-actions-pane-right actions-icon-btn">
+                        <a href="<?php echo base_url('instructor/head/assignPanel'); ?>" class="mb-2 mr-2 btn-icon btn btn-primary btn-shadow"><i class="lnr-users btn-icon-wrapper"> </i> Assign Panelist</a>
                     </div>
+                    
                 </div>
                 <div class="card-body">
                     <table style="width: 100%;" id="getAllProposal" class="table table-hover table-striped table-bordered">

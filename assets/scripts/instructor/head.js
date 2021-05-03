@@ -391,10 +391,11 @@ if (sub_content == 'head/index') {
 
 if (sub_content == 'head/proposal') {
     var instaructorDataTable = $('#getAllProposal').DataTable({
-        "searching": false,
+        "searching": true,
         "responsive" : true,
         "processing" : true,
         "serverSide" : true,
+        "ordering" : false,
         "order": [[0,'asc']],
         "ajax" : {
           "url" : `${base_url}/instructor/head/getAllProposal`,
@@ -411,11 +412,27 @@ if (sub_content == 'head/proposal') {
                 "data": 'id',
                 "render": function(data, type, row, meta){
                     var btnReturn = '';
-                    // btnReturn += `
-                    //     <a href="${base_url}/instructor/head/teamProposal/${row.thesisGroupId}" class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary" activation="Deactivated" data-toggle="tooltip" data-placement="top" title="View Proposal(s)">
-                    //         <i class="lnr-eye btn-icon-wrapper"> </i>
-                    //     </a>
-                    // `;
+                    
+                    if (row.assigned_panelist_flag == 1) {
+                        btnReturn += `
+                            <a href="${base_url}/instructor/head/teamProposal/${row.thesisGroupId}" 
+                                class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-secondary" 
+                                activation="Deactivated" 
+                                data-toggle="tooltip" data-placement="top" title="Add Panelist">
+                                <i class="lnr-users btn-icon-wrapper"> </i>
+                            </a>
+                        `;
+                    }else{
+                        btnReturn += `
+                            <a href="${base_url}instructor/head/assignPanelist/${row.thesisGroupId}" 
+                                class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary" 
+                                activation="Deactivated" 
+                                data-toggle="tooltip" data-placement="top" title="Add Panelist">
+                                <i class="lnr-users btn-icon-wrapper"> </i>
+                            </a>
+                        `;
+                    }
+                    
                     btnReturn += `
                         <a href="${base_url}instructor/head/proposalDetails/${row.thesisGroupId}" class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary" activation="Deactivated" data-toggle="tooltip" data-placement="top" title="View Proposal(s)">
                             <i class="lnr-eye btn-icon-wrapper"> </i>
@@ -427,6 +444,68 @@ if (sub_content == 'head/proposal') {
             }
         ]
     });// end of the data table variable
+}
+
+if (sub_content == 'head/assignPanelist') {
+    
+    // initialize select2
+    var panelist = $("#panelist").select2({
+        tags: "true",
+        theme:"bootstrap4",
+        placeholder: "Panelist here..."
+    });
+    
+    $('#assignPanelist').on('click', function(e){
+        e.preventDefault();
+        var instructorIds = $("#panelist").val(); 
+        var thesisGroupId = $("#thesisGroupId").val(); 
+        
+        $.ajax({
+            url:`${base_url}instructor/head/assignPanelistToGroup`,
+            type:'post',
+            dataType:'json',
+            data:{
+                instructorIds:instructorIds,
+                thesisGroupId:thesisGroupId
+            },
+            beforeSend: function() {
+                $('#loadingState').show();
+            },
+            success:function(data){
+                if (!data.error) {
+                    var alertClass = `alert-success`;
+                    var alertMessege = `Group member has successfully <b>Added</b>`;
+                    panelist.val(null).trigger("change");
+                }else{
+                    var alertClass = `alert-warning`;
+                    var alertMessege = `Group member was not Added`;
+                }
+                
+                $('#message').html(`
+                    <div class="alert alert-dismissible fade show ${alertClass}" role="alert">
+                        <button type="button" class="close" aria-label="Close" data-dismiss="alert">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        ${alertMessege}
+                    </div>`
+                );
+                console.log(data);
+            },
+            error: function(xhr, status, error){
+                $('#message').html(`
+                    <div class="alert alert-dismissible fade show alert-danger" role="alert">
+                        <button type="button" class="close" aria-label="Close" data-dismiss="alert">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        Member was not Added
+                    </div>`
+                );
+            },
+            complete: function(){
+                $('#loadingState').hide();
+            }
+        })
+    });
 }
 
 // if (sub_content == 'head/proposalDetails') {
@@ -627,4 +706,183 @@ if (sub_content == 'head/groups') {
             }
         ]
     });// end of the data table variable
+}
+
+if (sub_content == 'head/assignPanel') {
+    $(document).ready(function(){
+        // get all instructor
+        $('.select2-panelist').select2({
+            tags: "true",
+            theme:"bootstrap4",
+            placeholder: 'Select an item',
+            ajax: {
+                url: `${base_url}instructor/head/getAllInstructorSelect2`,
+                dataType: 'json',
+                delay: 250,
+                data: function (data) {
+                    return {
+                        searchTerm: data.term // search term
+                    };
+                },
+                processResults: function (response) {
+                    return {
+                        results:response
+                    };
+                },
+                cache: true
+            }
+        });
+        
+        // get all Groups
+        $('.select2-group').select2({
+            createTag: function () {
+                // Disable tagging
+                return null;
+            },
+            tags: "true",
+            theme:"bootstrap4",
+            placeholder: 'Select Group',
+            ajax: {
+                url: `${base_url}instructor/head/getAllGroupsSelect2`,
+                dataType: 'json',
+                data: function (data) {
+                    return {
+                        searchTerm: data.term // search term
+                    };
+                },
+                processResults: function (response) {
+                    console.log(response);
+                    return {
+                        results:response
+                    };
+                    
+                },
+                cache: true
+            }
+        });
+        
+        
+        
+        $('.select2-group').on('change', function(){
+            var groupId = $('.select2-group').val();
+            // console.log(`groupID: ${data}`);
+            $.ajax({
+                url:`${base_url}/instructor/head/getThisesProposal`,
+                type:'post',
+                dataType:'json',
+                data:{groupId:groupId},
+                beforeSend: function() {
+                    $('#loadingState').show();
+                },
+                success:function(data){
+                    if (!data.error_flag) {
+                        // console.log(data);
+                        $('.proposalTitles').html(data.messsage);
+                    }
+                },
+                error: function(xhr, status, error){
+                },
+                complete: function(){
+                    $('#loadingState').hide();
+                }
+            });
+        });
+        
+        
+        // max limit of proposal 
+        var maxFields = 5;
+        var x = 1;
+        // add propose
+        $(document).on('click','.addMoreProjectHearing',function(e) {
+            e.preventDefault();
+            // count of proposal 
+            console.log(x); // show response from the php script.
+            
+            var panelist = $('#panelist').val();
+            var proposalTitles = $('#proposalTitles').html();
+            var groupName = $('#groupName').val();
+            var hearingDate = $('#hearingDate').val();
+            
+            // font end
+            var groupNameFont = $(".select2-group option:selected").text();
+            var panelistNames = '';
+            $("#panelist option:selected").each(function () {
+                var $this = $(this);
+                if ($this.length) {
+                    panelistNames += `<span style="font-family: 'Arial'; font-size: 12pt; font-weight: bold;">${$this.text()},</span>`;
+                }
+            });
+            
+            if (x < maxFields) {
+                var output = `<div class="table-wrapper">
+                    <button class="btn btn-danger removeProjectHearing" style="float: right;">Remove</button>
+                    <table class="TableGrid">
+                        <tr>
+                            <td style="width: 15%;">
+                                <p style="text-align: center;">
+                                    <span style="font-family: 'Arial'; font-size: 12pt; font-weight: bold;">TEAM </span>
+                                </p>
+                            </td>
+                            <td>
+                                <p style="text-align: center;">
+                                    <span style="font-family: 'Arial'; font-size: 12pt; font-weight: bold;">PROPOSED TITLES </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p style="text-align: center;">
+                                    <span style="font-family: 'Arial'; font-size: 12pt;"> ${groupNameFont}</span>
+                                </p>
+                            </td>
+                            <td>
+                                <ul>
+                                    ${proposalTitles}
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p style="text-align: right;">
+                                    <span style="font-family: 'Arial'; font-size: 12pt; font-weight: bold;">Panel: </span>
+                                </p>
+                            </td>
+                            <td>
+                                <p>
+                                    ${panelistNames}
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                    <p>&nbsp;</p>
+                </div>`;
+                
+                if (x == 1) {
+                    $('.tableContainer').html(`${output}`); //add input box
+                }else{
+                    $('.tableContainer').append(`${output}`); //add input box
+                }
+                x++;
+            } else {
+                alert('You Reached the limits')
+            }
+            
+            // $('#countAvailableProposalLeft').html(x);
+        });
+        
+        $(document).on("click", ".removeProjectHearing", function(e) {
+            e.preventDefault();
+            $(this).parents('.table-wrapper').remove();
+            x--;
+            if (x == 1) {
+                $('.tableContainer').html(`
+                    <div style="text-align:center;">
+                        <h4>Please Add Project Hearing</h4>
+                    </div>`
+                );
+            }
+            // $('#countAvailableProposalLeft').html(x);
+        });
+    });
+    
 }

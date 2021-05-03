@@ -435,9 +435,15 @@ class Head extends CI_Controller {
         $order = $this->input->post('order');
         $columns = $this->input->post('columns');
         
+        // pre($setorder);
+        // die();
+        
         // order of the data pass
-        if(!empty($order)){
-            $setorder =  array($columns[$order[0]['column']]['data'] => $order[0]['dir']);
+        if($draw == 1){
+            $setorder = array(
+                'TG.assigned_panelist_flag' => "DESC",
+                'TG.modified' => "ASC"
+            );
         }else{
             $setorder = array();
         }
@@ -448,17 +454,23 @@ class Head extends CI_Controller {
         }else{
             $like = array(
                 'TG.thesis_group_name' => $search['value'],
-                'TG.created' => $search['value']
+                'TG.created' => $search['value'],
+                'T.title' => $search['value'],
+                'U.first_name' => $search['value'],
+                'U.middle_name' => $search['value'],
+                'U.last_name' => $search['value']
             );
         }
         
         //  get all proposals
         $thisesGroups = $this->universal->datatables(
             'thises_group AS TG',
-            'TG.*',
+            'TG.*, T.title',
             array(), 
             array(
-                'thises AS T' => 'T.thesis_group_id = TG.id'
+                'thises AS T' => 'T.thesis_group_id = TG.id',
+                'thises_connect AS TC' => 'TC.thesis_group_id = TG.id',
+                'users AS U' => 'U.id = TC.user_id'
             ),
             array($length => $offset),
             $setorder,
@@ -467,66 +479,79 @@ class Head extends CI_Controller {
         );
         
         $data['data'] = array();
-        foreach ($thisesGroups['data'] as $k => $thisesGroup){
-            // get the count of
-            $thisesProposals = $this->universal->get(
-                true,
-                'thises AS T',
-                '*',
-                'all',
-                array(
-                    'T.thesis_group_id' =>  $thisesGroup['id']
-                )
-            );
-            if ($thisesProposals) {
-                $groupPoposals = '';
-                foreach ($thisesProposals as $key => $thisesProposal) {
-                    if (isset($thisesProposal->thesis_group_id)) {
-                        $count = $key + 1;
-                        $groupPoposals .= '<span class="proposalTitle">'.$count.') '.$thisesProposal->title.'</span><br>';
-                        $groupPoposals .= '<span class="proposalDiscreption"> - '.$thisesProposal->discreption.'</span><br>';
-                        $thisesGroup['proposalCreated'] = date("g:ia | D jS F Y", strtotime($thisesProposal->created));
-                        $thisesGroup['proposalModified'] = date("g:ia | D jS F Y", strtotime($thisesProposal->modified));
-                        $thisesGroup['thesisGroupId'] = $thisesProposal->thesis_group_id;
+        if (isset($thisesGroups['data']) && $thisesGroups['data']) {
+            $matchFlag = 1;
+            $groupId = $thisesGroups['data'][0]['id'];
+            foreach ($thisesGroups['data'] as $k => $thisesGroup){
+                // get the count of
+                
+                $thisesProposals = $this->universal->get(
+                    true,
+                    'thises AS T',
+                    '*',
+                    'all',
+                    array(
+                        'T.thesis_group_id' =>  $thisesGroup['id']
+                    )
+                );
+                if ($thisesProposals && $matchFlag == 1) {
+                    $groupPoposals = '';
+                    foreach ($thisesProposals as $key => $thisesProposal) {
+                        if (isset($thisesProposal->thesis_group_id)) {
+                            $count = $key + 1;
+                            $groupPoposals .= '<span class="proposalTitle">'.$count.') '.$thisesProposal->title.'</span><br>';
+                            $groupPoposals .= '<span class="proposalDiscreption"> - '.$thisesProposal->discreption.'</span><br>';
+                            $thisesGroup['proposalCreated'] = date("g:ia | D jS F Y", strtotime($thisesProposal->created));
+                            $thisesGroup['proposalModified'] = date("g:ia | D jS F Y", strtotime($thisesProposal->modified));
+                            $thisesGroup['thesisGroupId'] = $thisesProposal->thesis_group_id;
+                        }
                     }
+                    $thisesGroup['groupPoposals'] =  $groupPoposals;
                 }
-                $thisesGroup['groupPoposals'] =  $groupPoposals;
-            }
-        
-            $usersData = $this->universal->get(
-                true,
-                'thises_connect AS TC',
-                'U.first_name, U.middle_name, U.last_name',
-                'all',
-                array(
-                    'TC.thesis_group_id' =>  $thisesGroup['id']
-                ),
-                array(),
-                array(
-                    'users AS U' => 'U.id = TC.user_id'
-                )
-            );
-            if ($usersData) {
-                $fullName = '';
-                foreach ($usersData as $key => $userData) {
-                    if (isset($userData->first_name)) {
-                        $fullName .= '<b> - '.$userData->first_name.' '.$userData->middle_name.' '.$userData->last_name.'</b><br>';
+            
+                $usersData = $this->universal->get(
+                    true,
+                    'thises_connect AS TC',
+                    'U.first_name, U.middle_name, U.last_name',
+                    'all',
+                    array(
+                        'TC.thesis_group_id' =>  $thisesGroup['id']
+                    ),
+                    array(),
+                    array(
+                        'users AS U' => 'U.id = TC.user_id'
+                    )
+                );
+                if ($usersData) {
+                    $fullName = '';
+                    foreach ($usersData as $key => $userData) {
+                        if (isset($userData->first_name)) {
+                            $fullName .= '<b> - '.$userData->first_name.' '.$userData->middle_name.' '.$userData->last_name.'</b><br>';
+                        }
                     }
+                    $thisesGroup['groupMembers'] =  $fullName;
                 }
-                $thisesGroup['groupMembers'] =  $fullName;
+                
+                
+                if ($thisesGroup['id'] == $groupId && $matchFlag == 1) {
+                    $matchFlag ++;
+                    if (isset($thisesGroup['groupPoposals'])) {
+                        array_push($data['data'], $thisesGroup);
+                    }
+                }else{
+                    $matchFlag = 1;
+                    $groupId = $thisesGroup['id'];
+                }
+                
             }
-            
-            if (isset($thisesGroup['groupPoposals'])) {
-                array_push($data['data'], $thisesGroup);
-            }
-            
         }
         
         echo json_encode(
             array(
+                // 'order' => $columns[$order[0]['column']]['data'],
                 'draw' => intval($draw),
-                "recordsTotal" => $thisesGroups['recordsTotal'],
-                "recordsFiltered" => $thisesGroups['recordsFiltered'],
+                "recordsTotal" => count($data['data']),
+                "recordsFiltered" => count($data['data']),
                 "data" => $data['data']
             )
         );
@@ -793,13 +818,9 @@ class Head extends CI_Controller {
         //  get all proposals
         $thisesGroups = $this->universal->datatables(
             'thises_group AS TG',
-            'T.*, U.first_name, U.middle_name, U.last_name, U.email',
+            'TG.*',
             array(), 
-            array(
-                'thises_connect AS TC' => 'TC.thesis_group_id = TG.id',
-                'thises AS T' => 'T.thesis_group_id = TG.id AND T.status = 1',
-                'users AS U' => 'U.id = TC.user_id'  
-            ),
+            array(),
             array($length => $offset),
             $setorder,
             $like,
@@ -848,10 +869,250 @@ class Head extends CI_Controller {
                 'draw' => intval($draw),
                 "recordsTotal" => $thisesGroups['recordsTotal'],
                 "recordsFiltered" => $thisesGroups['recordsFiltered'],
-                "data" => $result
+                "data" => $thisesGroups['data']
             )
         );
         
     }
     
+    
+    public function assignPanelist($thesisGroupId = null){
+        // - get the user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+        $data['thesisGroupId'] = $thesisGroupId;
+        
+        $intructors = $this->universal->get(
+            true,
+            'users AS U',
+            'U.*',
+            'all',
+            array(
+                'UG.group_id' => 5
+            ),
+            array(),
+            array(
+                'users_groups AS UG' => 'UG.user_id = U.id',
+            )
+        );
+        
+        $data['intructors'] = $intructors;
+        
+        // - data
+        $data['currentPageTitle'] = 'Team Proposal';
+        $data['mainContent'] = 'instructor/head';
+        $data['subContent'] = 'head/assignPanelist';
+        
+        // - load view 
+        $this->load->view('includes/instructor/header',$data);
+		$this->load->view('instructor/head/assignPanelist');
+		$this->load->view('includes/instructor/footer');
+    }
+    
+    public function assignPanelistToGroup(){
+        $post = $this->input->post();
+        
+        $thesisGroupId = $post['thesisGroupId'];
+        $instructorIds = $post['instructorIds'];
+        
+        $instructors = array(
+            'instructor1' => isset($instructorIds[0])? $instructorIds[0] : null,
+            'instructor2' => isset($instructorIds[1])? $instructorIds[1] : null,
+            'instructor3' => isset($instructorIds[2])? $instructorIds[2] : null
+        );
+        
+        $ids = json_encode($instructors);
+        
+        // check if has already assigned
+        $hasAssignedPanelist = $this->universal->get(
+            true,
+            'thises_group_assigned_panelist',
+            '*',
+            'row',
+            array(
+                'group_id' => $thesisGroupId
+            )
+        );
+        
+        if (isset($hasAssignedPanelist) && $hasAssignedPanelist) {
+            $assignedPanelist = $this->universal->insert(
+                'thises_group_assigned_panelist',
+                array(
+                    'group_id' => $thesisGroupId,
+                    'instructor_id' => $ids,
+                    'date_created' => date('Y-m-d H:i:s'),
+                    'date_modified' => date('Y-m-d H:i:s')
+                )
+            );
+            
+            if ($assignedPanelist) {
+                $updateGroup = $this->universal->update(
+                    'thises_group',
+                    array(
+                        'assigned_panelist_flag' => 1
+                    ),
+                    array(
+                        'id' => $thesisGroupId
+                    )
+                );
+                if ($updateGroup) {
+                    $result = array(
+                        'error' => false,
+                        'messsage' => 'Successfully panelist Assigned'
+                    );
+                }
+                
+            }else {
+                $result = array(
+                    'error' => true,
+                    'messsage' => 'error'
+                );
+            }
+        }else{
+            $updateAssignedPanelist = $this->universal->update(
+                'thises_group_assigned_panelist',
+                array(
+                    'instructor_id' => $ids,
+                    'date_modified' => date('Y-m-d H:i:s')
+                )
+            );
+            
+            if ($updateAssignedPanelist) {
+                $updateGroup = $this->universal->update(
+                    'thises_group',
+                    array(
+                        'assigned_panelist_flag' => 1
+                    ),
+                    array(
+                        'id' => $thesisGroupId
+                    )
+                );
+                if ($updateGroup) {
+                    $result = array(
+                        'error' => false,
+                        'messsage' => 'Successfully panelist Assigned'
+                    );
+                }
+                
+            }else {
+                $result = array(
+                    'error' => true,
+                    'messsage' => 'error'
+                );
+            }
+        }
+        
+        
+        
+        echo json_encode($result);
+    }
+    
+    
+    public function assignPanel(){
+        // - get the user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;        
+        
+        // - data
+        $data['currentPageTitle'] = 'Team Proposal';
+        $data['mainContent'] = 'instructor/head';
+        $data['subContent'] = 'head/assignPanel';
+        
+        // - load view 
+        $this->load->view('includes/instructor/header',$data);
+		$this->load->view('instructor/head/assignPanel');
+		$this->load->view('includes/instructor/footer');
+    }
+    
+    public function getAllInstructorSelect2(){
+        $instructors = $this->universal->get(
+            true,
+            'users AS U',
+            'U.*',
+            'array',
+            array(
+                'G.name' => array('instructor', 'IT Head')
+            ), 
+            array(),
+            array(
+                'users_groups AS UG' => 'UG.user_id = U.id',
+                'groups AS G' => 'UG.group_id = G.id'
+            )
+        );
+        
+        $results = array();
+        foreach ($instructors as $key => $instructor) {
+            $fullName = $instructor['first_name']." ".$instructor['middle_name']." ".$instructor['last_name'];
+            $results[] = array(
+                'id' => $instructor['id'],
+                'text' => $fullName
+            );
+        }
+        
+        echo json_encode($results);
+    }
+    
+    public function getAllGroupsSelect2(){
+        $search = $this->input->get();
+        if(empty($search['searchTerm'])){
+            $like = array();
+        }else{
+            $like = array(
+                'U.thesis_group_name' => $search['searchTerm']
+            );
+        }
+        
+        $groups = $this->universal->get(
+            true,
+            'thises_group AS GC',
+            'GC.*',
+            'array',
+            array(), 
+            $like
+        );
+        
+        $results = array();
+        foreach ($groups as $key => $group) {
+            $results[] = array(
+                'id' => $group['id'],
+                'text' => $group['thesis_group_name']
+            );
+        }
+        echo json_encode($results);
+    }
+    
+    public function getThisesProposal(){
+        $post = $this->input->post();
+        
+        $thisesProposals = $this->universal->get(
+            true,
+            'thises',
+            'title',
+            'array',
+            array(
+                'thesis_group_id' => $post['groupId']
+            )
+        );
+        $output = '';
+        $errorFlag = true;
+        if (isset($thisesProposals) && $thisesProposals) {
+            foreach ($thisesProposals as $key => $thisesProposal) {
+                $output .= '<li>
+                        <span style="font-family: Arial; font-size: 12pt; font-weight: bold; font-style: italic;">
+                            '.$thisesProposal['title'].'
+                        </span>
+                    </li>
+                ';
+            }
+            $errorFlag = false;
+        }
+        
+        
+        $result = array(
+            'messsage' => $output,
+            'error_flag' => $errorFlag
+        );
+    
+        echo json_encode($result);
+    }
 }
