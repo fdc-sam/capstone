@@ -34,7 +34,7 @@ class SwiftMailer extends CI_Model {
             isset($message)
         ) {
             // Create the Transport
-            $transport = (new Swift_SmtpTransport("smtp.gmail.com", 587, "tls"))
+            $transport = (new Swift_SmtpTransport("smtp.gmail.com", 465, "ssl"))
             ->setUsername("samvillarta05@gmail.com")
             ->setPassword("Sam09213364006");
           
