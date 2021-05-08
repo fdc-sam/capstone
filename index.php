@@ -71,6 +71,11 @@ switch ($_SERVER["HTTP_HOST"])
 	break;
 
 	case 'capstone-online.herokuapp.com':
+        // Report all errors except E_NOTICE
+        // This is the default value set in php.ini
+        error_reporting(E_ALL ^ E_NOTICE);
+        ini_set('display_errors', 0);
+    break;
 	case 'production':
 		ini_set('display_errors', 0);
 		if (version_compare(PHP_VERSION, '5.3', '>='))
