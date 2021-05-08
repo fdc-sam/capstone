@@ -34,43 +34,35 @@ class SwiftMailer extends CI_Model {
             isset($message)
         ) {
             // Create the Transport
-            $transport = (new Swift_SmtpTransport("smtp.gmail.com", 587))
+            $transport = (new Swift_SmtpTransport("smtp.gmail.com", 587, "tls"))
             ->setUsername("samvillarta05@gmail.com")
             ->setPassword("Sam09213364006");
-            if ($transport) {
-                // Create the Mailer using your created Transport
-                $mailer = new Swift_Mailer($transport);
           
-                // Create a message
-                $message = (new Swift_Message($subject))
-                ->setFrom(['samvillarta05@gmail.com' => 'EVSU-OCC'])
-                ->setTo([$to])
-                ->setBody($message, 'text/html');
+            // Create the Mailer using your created Transport
+            $mailer = new Swift_Mailer($transport);
+      
+            // Create a message
+            $message = (new Swift_Message($subject))
+            ->setFrom(['samvillarta05@gmail.com' => 'EVSU-OCC'])
+            ->setTo([$to])
+            ->setBody($message, 'text/html');
+      
+            // Send the message
+            $result = $mailer->send($message);
           
-                // Send the message
-                $result = $mailer->send($message);
-              
-                // set variables
+            // set variables
+            $resultArr = array(
+                'flag_email' => null,
+                'output' => ''
+            );
+            if ($result) {
                 $resultArr = array(
-                    'flag_email' => null,
-                    'output' => ''
+                    'flag_email' => true,
+                    'output' => 'email_send'
                 );
-                if ($result) {
-                    $resultArr = array(
-                        'flag_email' => true,
-                        'output' => 'email_send'
-                    );
-                  
-                    return $resultArr;
-                }else{
-                    $resultArr = array(
-                        'flag_email' => false,
-                        'output' => 'email_not_send'
-                    );
-                    return $resultArr;
-                }
+              
+                return $resultArr;
             }
-            
         }
         
         return false;
