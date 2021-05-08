@@ -70,7 +70,7 @@ switch ($_SERVER["HTTP_HOST"])
 		ini_set('display_errors', 1);
 	break;
 
-	case 'https://capstone-online.herokuapp.com':
+	case 'capstone-online.herokuapp.com':
 	case 'production':
 		ini_set('display_errors', 0);
 		if (version_compare(PHP_VERSION, '5.3', '>='))
