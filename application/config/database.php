@@ -73,46 +73,60 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
-// $db['default'] = array(
-// 	'dsn'	=> '',
-// 	'hostname' => 'localhost',
-// 	'username' => 'root',
-// 	'password' => '',
-// 	'database' => 'capstone',
-// 	'dbdriver' => 'mysqli',
-// 	'dbprefix' => '',
-// 	'pconnect' => FALSE,
-// 	'db_debug' => (ENVIRONMENT !== 'production'),
-// 	'cache_on' => FALSE,
-// 	'cachedir' => '',
-// 	'char_set' => 'utf8',
-// 	'dbcollat' => 'utf8_general_ci',
-// 	'swap_pre' => '',
-// 	'encrypt' => FALSE,
-// 	'compress' => FALSE,
-// 	'stricton' => FALSE,
-// 	'failover' => array(),
-// 	'save_queries' => TRUE
-// );
 
-$db['default'] = array(
-	'dsn'	=> '',
-	'hostname' => 'remotemysql.com',
-	'username' => '0rMitT7ohb',
-	'password' => 'KD298rLMzH',
-	'database' => '0rMitT7ohb',
-	'dbdriver' => 'mysqli',
-	'dbprefix' => '',
-	'pconnect' => FALSE,
-	'db_debug' => (ENVIRONMENT !== 'production'),
-	'cache_on' => FALSE,
-	'cachedir' => '',
-	'char_set' => 'utf8',
-	'dbcollat' => 'utf8_general_ci',
-	'swap_pre' => '',
-	'encrypt' => FALSE,
-	'compress' => FALSE,
-	'stricton' => FALSE,
-	'failover' => array(),
-	'save_queries' => TRUE
-);
+switch (ENVIRONMENT)
+{
+	case 'development':
+		// localhost
+		$db['default'] = array(
+			'dsn'	=> '',
+			'hostname' => 'localhost',
+			'username' => 'root',
+			'password' => '',
+			'database' => 'capstone',
+			'dbdriver' => 'mysqli',
+			'dbprefix' => '',
+			'pconnect' => FALSE,
+			'db_debug' => (ENVIRONMENT !== 'production'),
+			'cache_on' => FALSE,
+			'cachedir' => '',
+			'char_set' => 'utf8',
+			'dbcollat' => 'utf8_general_ci',
+			'swap_pre' => '',
+			'encrypt' => FALSE,
+			'compress' => FALSE,
+			'stricton' => FALSE,
+			'failover' => array(),
+			'save_queries' => TRUE
+		);
+	break;
+	case 'production':
+		// live
+		$db['default'] = array(
+			'dsn'	=> '',
+			'hostname' => 'remotemysql.com',
+			'username' => '0rMitT7ohb',
+			'password' => 'KD298rLMzH',
+			'database' => '0rMitT7ohb',
+			'dbdriver' => 'mysqli',
+			'dbprefix' => '',
+			'pconnect' => FALSE,
+			'db_debug' => (ENVIRONMENT !== 'production'),
+			'cache_on' => FALSE,
+			'cachedir' => '',
+			'char_set' => 'utf8',
+			'dbcollat' => 'utf8_general_ci',
+			'swap_pre' => '',
+			'encrypt' => FALSE,
+			'compress' => FALSE,
+			'stricton' => FALSE,
+			'failover' => array(),
+			'save_queries' => TRUE
+		);
+	break;
+
+	default:
+		header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
+		echo 'The application environment is not set correctly.';
+		exit(1); // EXIT_ERROR
+}

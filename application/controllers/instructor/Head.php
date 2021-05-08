@@ -27,7 +27,9 @@ class Head extends CI_Controller {
     
 	// - home 
 	public function index(){
-        
+
+        echo ENVIRONMENT ;   // output development
+        die();
         // - get the user information
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
