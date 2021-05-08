@@ -74,9 +74,9 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 
-switch (ENVIRONMENT)
+switch ($_SERVER["HTTP_HOST"])
 {
-	case 'development':
+	case 'localhost':
 		// localhost
 		$db['default'] = array(
 			'dsn'	=> '',

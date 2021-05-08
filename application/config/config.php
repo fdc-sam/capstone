@@ -24,8 +24,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 
-switch (ENVIRONMENT){
-	case 'development':
+switch ($_SERVER["HTTP_HOST"]){
+	case 'localhost':
 		$config['base_url'] = 'http://localhost/capstone/';
 	break;
 	default:
