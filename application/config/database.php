@@ -100,7 +100,8 @@ switch (ENVIRONMENT)
 			'save_queries' => TRUE
 		);
 	break;
-	case 'production':
+
+	default:
 		// live
 		$db['default'] = array(
 			'dsn'	=> '',
@@ -123,10 +124,4 @@ switch (ENVIRONMENT)
 			'failover' => array(),
 			'save_queries' => TRUE
 		);
-	break;
-
-	default:
-		header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
-		echo 'The application environment is not set correctly.';
-		exit(1); // EXIT_ERROR
 }
