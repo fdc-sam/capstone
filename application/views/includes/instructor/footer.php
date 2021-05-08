@@ -41,8 +41,9 @@ if ($subContent == 'head/groups') {
 	</script>
 <?php endif; ?>
 
-<?php if ($subContent == 'head/assignPanelist'): ?>
+<?php if ($subContent == 'head/assignPanelist' || $subContent == 'head/titleHearingEdit'): ?>
 	<script src="<?php echo base_url('assets/scripts/select2.min.js'); ?>"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
 <?php endif; ?>
 
 <?php if ($mainContent == 'instructor/head'): ?>
@@ -84,13 +85,17 @@ $(document).ready(function(){
 </script>
 
 
+<?php if ($subContent == 'head/assignPanel' || $subContent == 'head/titleHearingEdit'): ?>
+	<script src="<?php echo base_url('assets/scripts/select2.min.js'); ?>"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+<?php endif; ?>
+
 <?php if ($subContent == 'head/assignPanel'): ?>
 	<style media="screen">
 	    .select2-search__field{
 	        width: 100% !important;
 	    }
 	</style>
-	<script src="<?php echo base_url('assets/scripts/select2.min.js'); ?>"></script>
 	<!-- Large modal  add Project Title Hearing -->
 	<div class="modal fade" id="projectTitleHearing" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 	    <div class="modal-dialog modal-lg">
@@ -108,12 +113,12 @@ $(document).ready(function(){
 								<div class="col-md-12">
 									<div class="position-relative form-group">
 										<label for="" class=""> Hearing Date</label>
-										<input id="hearingDate" type="datetime-local" name="date" value="2021-05-02T22:13:00" class="form-control proposeTitle" required>
+										<input id="hearingDateTime" type="datetime-local" name="hearingDate" value="" class="form-control proposeTitle" required>
 									</div>
 								</div>
 							</div>
+
 							<form id="form-addMoreProjectHearing" class="" action="index.html" method="post">
-								
 								<div class="form-row">
 									<div class="col-md-12">
 										<div class="position-relative form-group">

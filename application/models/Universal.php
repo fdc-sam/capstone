@@ -17,7 +17,7 @@ class Universal extends CI_Model {
     @param array(string,string) $order --> array('column name','sort order [ASC/DESC]')
     @param array(string) group --> array('column1','column2')
   */
-  public function get($distinct=false,$table="",$select="*",$result="all",$where=array(),$like=array(),$join=array(),$limit=array(),$order = array(),$group = array(),$jointype = "left", $or_like=array(),$having = array()){
+  public function get($distinct=false,$table="",$select="*",$result="all",$where=array(),$like=array(),$join=array(),$limit=array(),$order=array(),$group=array(),$jointype = "left", $or_like=array(),$having=array()){
     $this->db->reset_query();
     if($distinct){
       $this->db->distinct();

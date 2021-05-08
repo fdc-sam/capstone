@@ -22,7 +22,12 @@
                 <div class="card-header">
                     <i class="header-icon lnr-laptop-phone icon-gradient bg-plum-plate"> </i>Header Menu
                     <div class="btn-actions-pane-right actions-icon-btn">
-                        <a href="<?php echo base_url('instructor/head/assignPanel'); ?>" class="mb-2 mr-2 btn-icon btn btn-primary btn-shadow"><i class="lnr-users btn-icon-wrapper"> </i> Assign Panelist</a>
+                        <a href="<?php echo base_url('instructor/head/assignPanel'); ?>" class="mb-2 mr-2 btn-icon btn btn-primary btn-shadow">
+                            <i class="lnr-users btn-icon-wrapper"> </i> Assign Panelist
+                        </a>
+                        <a href="<?php echo base_url('instructor/head/titleHearingDetails'); ?>" class="mb-2 mr-2 btn-icon btn btn-primary btn-shadow">
+                            <i class="lnr lnr-file-empty btn-icon-wrapper"> </i> View Hearing
+                        </a>
                     </div>
                     
                 </div>
@@ -50,7 +55,7 @@
                                 <th>Group Member</th>
                                 <th>Created</th>
                                 <th>Modified</th>
-                                <th>Action</th
+                                <th>Action</th>
                             </tr>
                         </tfoot>
                     </table>

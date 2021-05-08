@@ -8,8 +8,7 @@ if (sub_content == 'head/batch') {
         for ( batch_description in CKEDITOR.instances )
         var batch_description = CKEDITOR.instances[batch_description].getData();
         // CKEDITOR.instances[batch_description].updateElement();
-        console.log(batch_description);
-        return;
+        
         var batch_from = $('#batch_from').val();
         var batch_to = $('#batch_to').val();
         var batch_code = $('#batch_code').val();
@@ -761,8 +760,7 @@ if (sub_content == 'head/assignPanel') {
             }
         });
         
-        
-        
+        //  
         $('.select2-group').on('change', function(){
             var groupId = $('.select2-group').val();
             // console.log(`groupID: ${data}`);
@@ -788,7 +786,6 @@ if (sub_content == 'head/assignPanel') {
             });
         });
         
-        
         // max limit of proposal 
         var maxFields = 5;
         var x = 1;
@@ -796,23 +793,51 @@ if (sub_content == 'head/assignPanel') {
         $(document).on('click','.addMoreProjectHearing',function(e) {
             e.preventDefault();
             // count of proposal 
-            console.log(x); // show response from the php script.
             
             var panelist = $('#panelist').val();
             var proposalTitles = $('#proposalTitles').html();
             var groupName = $('#groupName').val();
-            var hearingDate = $('#hearingDate').val();
+            var hearingDateTime = $('#hearingDateTime').val();
+            var parsedDate = moment(hearingDateTime,"YYYY-MM-DD H m s");
+            
+            
+            // foreach the id
+            var panelistObj = new Object();
+            panelist.forEach(myFunction);
+            function myFunction(item, index) {
+                panelistObj[index] = item;
+            }
+            var panelistPost = JSON.stringify(panelistObj);
+            
+        
+            if ( panelist.length == 0 || !proposalTitles || !groupName || !hearingDateTime) {
+                alert('Please Fill all Fields');
+                return;
+            }
             
             // font end
             var groupNameFont = $(".select2-group option:selected").text();
             var panelistNames = '';
             $("#panelist option:selected").each(function () {
                 var $this = $(this);
+                
+                if ($this.length == 0) {
+                    alert('Please Fill all Fields');
+                    return;
+                }
                 if ($this.length) {
                     panelistNames += `<span style="font-family: 'Arial'; font-size: 12pt; font-weight: bold;">${$this.text()},</span>`;
                 }
             });
             
+            var fontEndHearingDateTime = parsedDate.format("MMMM DD, YYYY  (hh:mm A)");
+            console.log(fontEndHearingDateTime);
+            $('#hearingDateTimeDis').html(fontEndHearingDateTime);
+            $('#hearingDateTimePost').val(parsedDate.format("YYYY-MM-DD HH:MM:SS"));
+            
+            // var date = new Date(`${hearingTime}`).toLocaleString('en-us',{month:'long', year:'numeric', day:'numeric'});
+            // console.log(date);
+            // return;
             if (x < maxFields) {
                 var output = `<div class="table-wrapper">
                     <button class="btn btn-danger removeProjectHearing" style="float: right;">Remove</button>
@@ -833,6 +858,7 @@ if (sub_content == 'head/assignPanel') {
                             <td>
                                 <p style="text-align: center;">
                                     <span style="font-family: 'Arial'; font-size: 12pt;"> ${groupNameFont}</span>
+                                    <input type="hidden" name="groupNamePost[]" value="${groupName}">
                                 </p>
                             </td>
                             <td>
@@ -850,6 +876,7 @@ if (sub_content == 'head/assignPanel') {
                             <td>
                                 <p>
                                     ${panelistNames}
+                                    <textarea hidden name="panelistPost[]">${panelistPost}</textarea>
                                 </p>
                             </td>
                         </tr>
@@ -883,6 +910,247 @@ if (sub_content == 'head/assignPanel') {
             }
             // $('#countAvailableProposalLeft').html(x);
         });
-    });
+        
+        
+        $('.btn-submit').on('click', function(){
+            
+            // hearing date
+            var hearingDateTimePost = $('#hearingDateTimePost').val();
+            
+            // groupid
+            var groupNamePost = $('input[name="groupNamePost[]"]').map(function(){ 
+                return this.value; 
+            }).get();
+            
+            // panelist json form
+            var panelistPost = $('textarea[name="panelistPost[]"]').map(function(){ 
+                return this.value; 
+            }).get();
+            
+            if (panelistPost.length == 0) {
+                $('#message').html(`
+                    <div class="alert alert-dismissible fade show alert-warning" role="alert">
+                        <button type="button" class="close" aria-label="Close" data-dismiss="alert">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        Please Add  Project
+                    </div>
+                `);
+            }
+            
+            $.ajax({
+                url:`${base_url}/instructor/head/addProjectHearingSched`,
+                type:'post',
+                dataType:'json',
+                data:{
+                    groupId:groupNamePost,
+                    panelistId:panelistPost,
+                    hearingDateTime:hearingDateTimePost
+                },
+                beforeSend: function() {
+                    $('#loadingState').show();
+                },
+                success: function(data){
+                    $('#loadingState').hide();
+                    if (!data.errorFlag) {
+                        var alertClass = `alert-success`;
+                        var alertMessege = `Data successfully <b>Saved</b>`;
+                    }else{
+                        var alertClass = `alert-warning`;
+                        var alertMessege = `Error Data not save`;
+                    }
+                    $('#message').html(`
+                        <div class="alert alert-dismissible fade show ${alertClass}" role="alert">
+                            <button type="button" class="close" aria-label="Close" data-dismiss="alert">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            ${alertMessege}
+                        </div>`
+                    );
+                },
+                complete: function(){
+                    $('#loadingState').hide();
+                }
+            });
+            
+            console.log("here"+groupNamePost);
+        });
+    }); // doncument ready end
+    
+}
+
+
+if (sub_content == 'head/titleHearingEdit') {
+    $(document).ready(function(){
+        // get all instructor
+    
+        $('.select2-panelist').select2({
+            tags: true,
+            theme:"bootstrap4",
+            placeholder: 'Select an item',
+            multiple: true,
+            ajax: {
+                url: `${base_url}instructor/head/getAllInstructorSelect2`,
+                dataType: 'json',
+                delay: 250,
+                data: function (data) {
+                    return {
+                        searchTerm: data.term // search term
+                    };
+                },
+                processResults: function (response) {
+                    return {
+                        results:response
+                    };
+                }
+            }
+        });
+        
+        // / Fetch the preselected item, and add to the control
+        var panelistSelect = $('.select2-panelist');
+        $.ajax({
+            type: 'GET',
+            url: `${base_url}instructor/head/titleHearingEdit/${groupId}`,
+        }).then(function (data) {
+            // create the option and append to Select2
+            data1 = JSON.parse(data);
+            data1.forEach(myFunction);
+            function myFunction(item, index) {
+                var option = new Option(item.text, item.id, true, true);
+                panelistSelect.append(option).trigger('change');
+                // manually trigger the `select2:select` event
+                panelistSelect.trigger({
+                    type: 'select2:select',
+                    params: {
+                        data: data
+                    }
+                });
+            }
+        });
+        
+        
+        
+        // get all Groups
+        $('.select2-group').select2({
+            createTag: function () {
+                // Disable tagging
+                return null;
+            },
+            tags: "true",
+            theme:"bootstrap4",
+            placeholder: 'Select Group',
+            ajax: {
+                url: `${base_url}instructor/head/getAllGroupsSelect2`,
+                dataType: 'json',
+                data: function (data) {
+                    return {
+                        searchTerm: data.term // search term 
+                    };
+                },
+                processResults: function (response) {
+                    console.log(response);
+                    return {
+                        results:response
+                    };
+                    
+                },
+                cache: true
+            }
+        });
+        
+        //  
+        $('.select2-group').on('change', function(){
+            var groupId = $('.select2-group').val();
+            // console.log(`groupID: ${data}`);
+            $.ajax({
+                url:`${base_url}/instructor/head/getThisesProposal`,
+                type:'post',
+                dataType:'json',
+                data:{groupId:groupId},
+                beforeSend: function() {
+                    $('#loadingState').show();
+                },
+                success:function(data){
+                    if (!data.error_flag) {
+                        // console.log(data);
+                        $('.proposalTitles').html(data.messsage);
+                    }
+                },
+                error: function(xhr, status, error){
+                },
+                complete: function(){
+                    $('#loadingState').hide();
+                }
+            });
+        });
+        
+        $('#hearingDateTime').on('change',function(){
+            var hearingDateTime = $('#hearingDateTime').val();
+            console.log(hearingDateTime);
+        });
+        
+        $('#updatePanelist').on('click', function(){
+            console.log();
+            console.log();
+            
+            // for date
+            var hearingDateTime = $('#hearingDateTime').val();
+            var parsedDate = moment(hearingDateTime,"YYYY-MM-DD H m s");
+            
+            
+            var groupNamePost = $('#groupName').val();
+            var panelistPost = $('#panelist').val();
+            var hearingDateTimePost = parsedDate.format("YYYY-MM-DD HH:MM:SS");
+            
+            if (panelistPost.length == 0) {
+                $('#message').html(`
+                    <div class="alert alert-dismissible fade show alert-warning" role="alert">
+                        <button type="button" class="close" aria-label="Close" data-dismiss="alert">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        Please Add  Project
+                    </div>
+                `);
+            }
+            
+            $.ajax({
+                url:`${base_url}/instructor/head/addProjectHearingSched`,
+                type:'post',
+                dataType:'json',
+                data:{
+                    groupId:groupNamePost,
+                    panelistId:panelistPost,
+                    hearingDateTime:hearingDateTimePost,
+                    editFlag:1
+                },
+                beforeSend: function() {
+                    $('#loadingState').show();
+                },
+                success: function(data){
+                    $('#loadingState').hide();
+                    if (!data.errorFlag) {
+                        var alertClass = `alert-success`;
+                        var alertMessege = `Data successfully <b>Saved</b>`;
+                    }else{
+                        var alertClass = `alert-warning`;
+                        var alertMessege = `Error Data not save`;
+                    }
+                    $('#message').html(`
+                        <div class="alert alert-dismissible fade show ${alertClass}" role="alert">
+                            <button type="button" class="close" aria-label="Close" data-dismiss="alert">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            ${alertMessege}
+                        </div>`
+                    );
+                },
+                complete: function(){
+                    $('#loadingState').hide();
+                }
+            });
+            
+            console.log("here"+groupNamePost);
+        });
+    }); // doncument ready end
     
 }

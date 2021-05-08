@@ -89,6 +89,7 @@
                             </p>
                             <p>&nbsp;</p>
                             <div class="tableContainer">
+                                <?php echo $display; ?>
                                 <div style="text-align:center;">
                                     <h4>Please Add Project Hearing</h4>
                                 </div>
@@ -96,8 +97,6 @@
                         </form>
                     </div>
                     <div class="d-block text-right card-footer">
-                        <button class="btn btn btn-outline-light" data-toggle="modal" data-target="#projectTitleHearing">Add Project Hearing</button>
-                        <button class="btn-wide btn-shadow btn btn-primary btn-submit">Submit</button>
                         <a href="<?php echo base_url('instructor/head/proposal'); ?>" class="mr-2 btn btn-outline-danger btn-sm">Cancel</a>
                     </div>
                 </div>

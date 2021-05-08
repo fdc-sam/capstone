@@ -271,7 +271,7 @@
                 <div class="scrollbar-sidebar">
                     <div class="app-sidebar__inner">
                         <ul class="vertical-nav-menu">
-                            <?php if (isset($mainContent) && $mainContent == 'instructor/head'): ?>
+                            <?php if (isset($mainContent) && $mainContent == 'instructor/head' || $currentUserGroup == 'IT head'): ?>
                                 <li class="app-sidebar__heading">Head UI</li>
                                 <li  class="<?php echo isset($mainContent) && $mainContent == 'instructor/head' ? 'mm-active': '' ?>">
                                     <a href="#">
@@ -293,32 +293,31 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo base_url('instructor/head/proposal') ?>" class="<?php echo isset($subContent) && $subContent == 'head/proposal' || $subContent == 'head/proposalDetails' ? 'mm-active': '' ?> ">
+                                            <a href="<?php echo base_url('instructor/head/proposal') ?>" 
+                                                class="<?php echo isset($subContent) 
+                                                    && $subContent == 'head/proposal' 
+                                                    || $subContent == 'head/proposalDetails'
+                                                    || $subContent == 'head/assignPanel'
+                                                    || $subContent == 'head/titleHearingDetails' ? 'mm-active': '' ?> ">
                                                 <i class="metismenu-icon">
                                                 </i>Proposal
                                             </a>
                                         </li>
-                                        <li>
-                                            <a href="<?php echo base_url('instructor/head/groups') ?>" class="<?php echo isset($subContent) && $subContent == 'head/groups' ? 'mm-active': '' ?> ">
-                                                <i class="metismenu-icon"></i> Groups
-                                            </a>
-                                        </li>
+                                        
                                     </ul>
                                 </li>
                             <?php endif; ?>
                             <li class="app-sidebar__heading">Panel UI</li>
                             <li>
-                                <a href="#">
-                                    <i class="metismenu-icon pe-7s-car"></i> Components
-                                    <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                <a href="<?php echo base_url('instructor/panel'); ?>" class="<?php echo isset($subContent) && $subContent == 'panel/index' ? 'mm-active': '' ?> ">
+                                    <i class="metismenu-icon pe-7s-note2"></i> Project Title Hearing
+                                    <div class="ml-auto badge badge-pill badge-info" id="badge-prohearing-count">8</div>
                                 </a>
-                                <ul>
-                                    <li>
-                                        <a href="components-tabs.html" >
-                                            <i class="metismenu-icon"></i>Tabs
-                                        </a>
-                                    </li>
-                                </ul>
+                            </li>
+                            <li>
+                                <a href="" >
+                                    <i class="metismenu-icon pe-7s-graph2"></i>ChartJS
+                                </a>
                             </li>
                             
                             <li class="app-sidebar__heading">ADVISER UI</li>
