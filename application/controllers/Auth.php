@@ -587,7 +587,7 @@ class Auth extends CI_Controller
 			// $this->session->set_flashdata('message', $this->ion_auth->messages());
 			// redirect("auth", 'refresh');
 			
-			$from = 'aodrs2019@gmail.com';
+			$from = 'samvillarta05@gmail.com';
 			$to      = $this->input->post('email');
 			$subject = 'Verification code';
 			$headers = 'Content-type: text/html; charser =UTF-8;' . '\r \n';
