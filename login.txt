@@ -2,6 +2,10 @@ Username: admin@admin.com
 Password: password
 
 
+# https://id.heroku.com/login
+E-mail: fdc.samvillarta@gmail.com
+password : Sam09213364006@
+
 ig error to send mail please do this steps
 
 1. login gmail
