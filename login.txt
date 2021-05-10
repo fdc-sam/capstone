@@ -1,2 +1,11 @@
 Username: admin@admin.com
 Password: password
+
+
+ig error to send mail please do this steps
+
+1. login gmail
+    g-mail : samvillarta05@gmail.com
+    password: u know na Sai send email
+2. copy this link then run
+    https://accounts.google.com/UnlockCaptcha
