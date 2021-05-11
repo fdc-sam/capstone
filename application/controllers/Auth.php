@@ -275,6 +275,9 @@ class Auth extends CI_Controller
 				// if there were no errors
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
 
+				// link
+				$resetLink = base_url('auth/reset_password/'.$forgotten['forgotten_password_code']);
+
 				// send email link for reset password
 				$from = 'samvillarta05@gmail.com';
 				$to      = $this->input->post('identity');
@@ -286,7 +289,7 @@ class Auth extends CI_Controller
 				$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 				$message = '<html><body>';
 				$message .= '<h1>Reset Password Link</h1>';
-				$message .= '<h1><a href="'.base_url('auth/reset_password/'.$forgotten['forgotten_password_code']).'">'.base_url('auth/reset_password/'.$forgotten['forgotten_password_code']).'</a></h1>';
+				$message .= '<h1><a href="'.$resetLink.'">'.base_url('auth/reset_password/'.$forgotten['forgotten_password_code']).'</a></h1>';
 				$message .= '</body></html>';
 
 				$emailSend = $this->swiftMailer->mailSend($from, $to, $subject, $headers, $message);
@@ -348,14 +351,13 @@ class Auth extends CI_Controller
 				];
 				$this->data['csrf'] = $this->_get_csrf_nonce();
 				$this->data['code'] = $code;
-
 				// render
 				$this->_render_page('auth' . DIRECTORY_SEPARATOR . 'reset_password', $this->data);
 			}else{
 				$identity = $user->{$this->config->item('identity', 'ion_auth')};
 
 				// do we have a valid request?
-				if ($this->_valid_csrf_nonce() === FALSE || $user->id != $this->input->post('user_id')){
+				if ($user->id != $this->input->post('user_id')){
 
 					// something fishy might be up
 					$this->ion_auth->clear_forgotten_password_code($identity);

@@ -75,11 +75,11 @@
 										<?php echo $message;?>
 									</div>
 								<?php endif; ?>
-	                            <?php echo form_open('auth/reset_password/'.$code);?>
-	                                <div class="form-row">
+								<form class="" action="<?php echo base_url('auth/reset_password/'.$code); ?>" method="post">
+									<div class="form-row">
 	                                    <div class="col-md-6">
 	                                        <div class="position-relative form-group">
-	                                           <label for=""><?php echo sprintf(lang('reset_password_new_password_label'), $min_password_length);?></label> 
+	                                           <label for=""><?php echo sprintf(lang('reset_password_new_password_label'), $min_password_length);?></label>
 	                                            <input name="new" id="new" placeholder="User Name or Student ID" required type="password" class="form-control" pattern="^.{8}.*$">
 	                                        </div>
 	                                    </div>
@@ -98,7 +98,7 @@
 	                                        <button type="submit" class="btn btn-primary btn-lg block-page-btn-example-2">Login to Dashboard</button>
 	                                    </div>
 	                                </div>
-	                            <?php echo form_close();?>
+								</form>
 	                        </div>
 	                    </div>
 	                </div>
