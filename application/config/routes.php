@@ -56,9 +56,11 @@ $route['register'] = 'Auth/create_user';
 $route['logout'] = 'Auth/logout';
 
 // instructor
-
 $route['student'] = 'StudentController'; // gpo to the indx function to the student controller
-$route['student/home/changePassword'] = 'Auth/change_password'; 
+$route['student/home/changePassword'] = 'Auth/change_password';
+
+// recover password
+$route['recoverPassword'] = 'auth/forgot_password'; 
 
 
 

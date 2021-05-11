@@ -90,7 +90,7 @@ class Auth extends CI_Controller
 				$groups = $this->ion_auth->groups()->result();
 				foreach ($groups as $key => $groupName) {
 					if($this->data['users'][0]->name == $groupName->name){
-						
+
 						// - it will return to ajax request  success
 						echo $this->data['users'][0]->name;
 					}
@@ -127,7 +127,7 @@ class Auth extends CI_Controller
 			// 	'id' => 'password',
 			// 	'type' => 'password',
 			// ];
-			
+
 			$this->data['currentPageTitle'] = 'Login';
 			$this->load->view('includes/landingPage/header',$this->data);
 			$this->load->view('landingPage/login');
@@ -164,17 +164,17 @@ class Auth extends CI_Controller
 		// get the current user information
 		$this->data['userInfo'] = $this->ion_auth->user()->row();
 		$this->data['fullName'] = $this->data['userInfo']->first_name." ".$this->data['userInfo']->middle_name." ".$this->data['userInfo']->last_name;
-		
+
 		$this->data['min_password_length'] = $this->config->item('min_password_length', 'ion_auth');
 		$this->data['old_password'] = $this->input->post('old');
 		$this->data['new_password'] =  $this->input->post('new');
 		$this->data['new_password_confirm'] = $this->input->post('new_confirm');
-		
+
 		if ($this->form_validation->run() === FALSE){
 			// display the form
 			// set the flash data error message if there is one
 			$this->data['message'] = (validation_errors()) ? validation_errors() :"";
-			
+
 			if ($this->data['message'] != null) {
 				$this->session->set_flashdata('message',
 					'<div class="alert alert-warning">
@@ -186,8 +186,8 @@ class Auth extends CI_Controller
 						</span>
 					</div>');
 			}
-			
-			
+
+
 		}else{
 			$identity = $this->session->userdata('identity');
 
@@ -209,12 +209,12 @@ class Auth extends CI_Controller
 					</div>');
 			}
 		}
-		
+
 		// - data
 		$this->data['currentPageTitle'] = 'Student - Chagne Password';
 		$this->data['mainContent'] = 'home/changePassword';
 		$this->data['subContent'] = 'home/changePassword';
-		
+
 		$this->load->view('includes/student/header', $this->data);
 		$this->load->view('student/changePassword');
 		$this->load->view('includes/student/footer');
@@ -224,23 +224,18 @@ class Auth extends CI_Controller
 	/**
 	 * Forgot password
 	 */
-	public function forgot_password()
-	{
+	public function forgot_password(){
 		$this->data['title'] = $this->lang->line('forgot_password_heading');
 
 		// setting validation rules by checking whether identity is username or email
-		if ($this->config->item('identity', 'ion_auth') != 'email')
-		{
+		if ($this->config->item('identity', 'ion_auth') != 'email'){
 			$this->form_validation->set_rules('identity', $this->lang->line('forgot_password_identity_label'), 'required');
-		}
-		else
-		{
+		}else{
 			$this->form_validation->set_rules('identity', $this->lang->line('forgot_password_validation_email_label'), 'required|valid_email');
 		}
 
 
-		if ($this->form_validation->run() === FALSE)
-		{
+		if ($this->form_validation->run() === FALSE){
 			$this->data['type'] = $this->config->item('identity', 'ion_auth');
 			// setup the input
 			$this->data['identity'] = [
@@ -248,53 +243,60 @@ class Auth extends CI_Controller
 				'id' => 'identity',
 			];
 
-			if ($this->config->item('identity', 'ion_auth') != 'email')
-			{
+			if ($this->config->item('identity', 'ion_auth') != 'email'){
 				$this->data['identity_label'] = $this->lang->line('forgot_password_identity_label');
-			}
-			else
-			{
+			}else{
 				$this->data['identity_label'] = $this->lang->line('forgot_password_email_identity_label');
 			}
 
 			// set any errors and display the form
 			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 			$this->_render_page('auth' . DIRECTORY_SEPARATOR . 'forgot_password', $this->data);
-		}
-		else
-		{
+		}else{
 			$identity_column = $this->config->item('identity', 'ion_auth');
 			$identity = $this->ion_auth->where($identity_column, $this->input->post('identity'))->users()->row();
 
-			if (empty($identity))
-			{
+			if (empty($identity)){
 
-				if ($this->config->item('identity', 'ion_auth') != 'email')
-				{
+				if ($this->config->item('identity', 'ion_auth') != 'email'){
 					$this->ion_auth->set_error('forgot_password_identity_not_found');
-				}
-				else
-				{
+				}else{
 					$this->ion_auth->set_error('forgot_password_email_not_found');
 				}
 
 				$this->session->set_flashdata('message', $this->ion_auth->errors());
-				redirect("auth/forgot_password", 'refresh');
+				redirect("recoverPassword", 'refresh');
 			}
 
 			// run the forgotten password method to email an activation code to the user
 			$forgotten = $this->ion_auth->forgotten_password($identity->{$this->config->item('identity', 'ion_auth')});
 
-			if ($forgotten)
-			{
+			if ($forgotten){
 				// if there were no errors
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
-				redirect("auth/login", 'refresh'); //we should display a confirmation page here instead of the login page
-			}
-			else
-			{
+
+				// send email link for reset password
+				$from = 'samvillarta05@gmail.com';
+				$to      = $this->input->post('identity');
+				$subject = 'Verification code';
+				$headers = 'Content-type: text/html; charser =UTF-8;' . '\r \n';
+				$headers .= "From: " . $from . "\r\n";
+				$headers .= "Reply-To: ". $to . "\r\n";
+				$headers .= "MIME-Version: 1.0\r\n";
+				$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+				$message = '<html><body>';
+				$message .= '<h1>Reset Password Link</h1>';
+				$message .= '<h1><a href="'.base_url('auth/reset_password/'.$forgotten['forgotten_password_code']).'">'.base_url('auth/reset_password/'.$forgotten['forgotten_password_code']).'</a></h1>';
+				$message .= '</body></html>';
+
+				$emailSend = $this->swiftMailer->mailSend($from, $to, $subject, $headers, $message);
+				if ($emailSend) {
+					redirect("login", 'refresh'); //we should display a confirmation page here instead of the login page
+				}
+
+			}else{
 				$this->session->set_flashdata('message', $this->ion_auth->errors());
-				redirect("auth/forgot_password", 'refresh');
+				redirect("recoverPassword", 'refresh');
 			}
 		}
 	}
@@ -304,10 +306,8 @@ class Auth extends CI_Controller
 	 *
 	 * @param string|null $code The reset code
 	 */
-	public function reset_password($code = NULL)
-	{
-		if (!$code)
-		{
+	public function reset_password($code = NULL){
+		if (!$code){
 			show_404();
 		}
 
@@ -315,19 +315,17 @@ class Auth extends CI_Controller
 
 		$user = $this->ion_auth->forgotten_password_check($code);
 
-		if ($user)
-		{
+		if ($user){
 			// if the code is valid then display the password reset form
 
 			$this->form_validation->set_rules('new', $this->lang->line('reset_password_validation_new_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|matches[new_confirm]');
 			$this->form_validation->set_rules('new_confirm', $this->lang->line('reset_password_validation_new_password_confirm_label'), 'required');
 
-			if ($this->form_validation->run() === FALSE)
-			{
+			if ($this->form_validation->run() === FALSE){
 				// display the form
 
 				// set the flash data error message if there is one
-				$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+				$this->data['message'] = (validation_errors()) ? validation_errors() : '';
 
 				$this->data['min_password_length'] = $this->config->item('min_password_length', 'ion_auth');
 				$this->data['new_password'] = [
@@ -353,23 +351,18 @@ class Auth extends CI_Controller
 
 				// render
 				$this->_render_page('auth' . DIRECTORY_SEPARATOR . 'reset_password', $this->data);
-			}
-			else
-			{
+			}else{
 				$identity = $user->{$this->config->item('identity', 'ion_auth')};
 
 				// do we have a valid request?
-				if ($this->_valid_csrf_nonce() === FALSE || $user->id != $this->input->post('user_id'))
-				{
+				if ($this->_valid_csrf_nonce() === FALSE || $user->id != $this->input->post('user_id')){
 
 					// something fishy might be up
 					$this->ion_auth->clear_forgotten_password_code($identity);
 
 					show_error($this->lang->line('error_csrf'));
 
-				}
-				else
-				{
+				}else{
 					// finally change the password
 					$change = $this->ion_auth->reset_password($identity, $this->input->post('new'));
 
@@ -377,18 +370,14 @@ class Auth extends CI_Controller
 					{
 						// if the password was successfully changed
 						$this->session->set_flashdata('message', $this->ion_auth->messages());
-						redirect("auth/login", 'refresh');
-					}
-					else
-					{
+						redirect("login", 'refresh');
+					}else{
 						$this->session->set_flashdata('message', $this->ion_auth->errors());
 						redirect('auth/reset_password/' . $code, 'refresh');
 					}
 				}
 			}
-		}
-		else
-		{
+		}else{
 			// if the code is invalid then send them back to the forgot password page
 			$this->session->set_flashdata('message', $this->ion_auth->errors());
 			redirect("auth/forgot_password", 'refresh');
@@ -489,7 +478,7 @@ class Auth extends CI_Controller
 		}
 		return $result;
 	}
-	
+
 	/**
 	 * Create a new user
 	 */
@@ -501,7 +490,7 @@ class Auth extends CI_Controller
 		// }
 		$hasBatchCode = '';
 		$addBatchFields = array();
-		
+
 		$tables = $this->config->item('tables', 'ion_auth');
 		$identity_column = $this->config->item('identity', 'ion_auth');
 		$this->data['identity_column'] = $identity_column;
@@ -525,10 +514,10 @@ class Auth extends CI_Controller
 			$email = $this->input->post('email');
 			$identity = ($identity_column === 'email') ? $email : $this->input->post('identity');
 			$password = $this->input->post('password');
-			
+
 			// create a random activation code
 			$activation_code = $this->create_activation_code(5);
-			
+
 			$additional_data = [
 				'first_name' => $this->input->post('first_name'),
 				'last_name' => $this->input->post('last_name'),
@@ -537,7 +526,7 @@ class Auth extends CI_Controller
 				'activation_code' => $activation_code,
 			];
 		}
-		
+
 		// has group default
 		if (strtolower($this->input->post('batchCode')) == 'panelist') {
 			// for panelist
@@ -558,10 +547,8 @@ class Auth extends CI_Controller
 			$group = 4;
 			$batchId = $hasBatchCode[0]->id;
 		}
-		
-		// pre($this->form_validation->run());
-		// die();
-		
+
+
 		// for batch connect insert fields
 		if (!empty($hasBatchCode) && !empty($this->input->post('batchCode')) && !empty($this->input->post('email')) || strtolower($this->input->post('batchCode')) == 'panelist' ) {
 			$addBatchFields = array(
@@ -569,24 +556,24 @@ class Auth extends CI_Controller
 				'email' => $this->input->post('email')
 			);
 		}
-		
-		
-		
+
+
+
 		if (!empty($this->input->post('group'))) {
 			$group = $this->input->post('group');
 		}
-		
+
 		if (
-			$this->form_validation->run() === TRUE && 
-			$this->ion_auth->register($identity, $password, $email, $additional_data,$group) && 
-			!empty($hasBatchCode) && 
+			$this->form_validation->run() === TRUE &&
+			$this->ion_auth->register($identity, $password, $email, $additional_data,$group) &&
+			!empty($hasBatchCode) &&
 			$this->universal->insert('batch_connect',$addBatchFields) || strtolower($this->input->post('batchCode')) == 'panelist'
 		){
 			// check to see if we are creating the user
 			// redirect them back to the admin page
 			// $this->session->set_flashdata('message', $this->ion_auth->messages());
 			// redirect("auth", 'refresh');
-			
+
 			$from = 'samvillarta05@gmail.com';
 			$to      = $this->input->post('email');
 			$subject = 'Verification code';
@@ -605,9 +592,9 @@ class Auth extends CI_Controller
 			$message .= "<tr><td><strong>Your Verification Code:</strong> </td><td>" . $activation_code . "</td></tr>";
 			$message .= '</table>';
 			$message .= '</body></html>';
-			
+
 			$this->swiftMailer->mailSend($from, $to, $subject, $headers, $message);
-			
+
 			$data = array(
 				'data' => 'success',
 				'message' => '<p>User Successfully Created</p>'
@@ -629,7 +616,7 @@ class Auth extends CI_Controller
 			if (empty($hasBatchCode) && !empty($this->input->post('batchCode'))) {
 				$this->data['message'] = 'Invalid Batch Code';
 			}
-			
+
 			//
 			$this->data['first_name'] = $this->input->post('first_name');
 			$this->data['last_name'] = $this->input->post('last_name');
@@ -638,16 +625,16 @@ class Auth extends CI_Controller
 			$this->data['batchCode'] = $this->form_validation->set_value('batchCode');
 			$this->data['password'] = $this->form_validation->set_value('password');
 			$this->data['password_confirm'] = $this->form_validation->set_value('password_confirm');
-			
+
 			$data = array(
 				'data' => 'error',
 				'message' => $this->data['message']
 			);
-			
+
 			if (!empty($this->input->post())) {
 				// echo json_encode($data);
 				$this->session->set_flashdata(
-					'message', 
+					'message',
 					'<div class="alert alert-danger">
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						  	<i class="pe-7s-close"> </i>
@@ -658,13 +645,13 @@ class Auth extends CI_Controller
 					</div>'
 				);
 			}
-			
+
 			$this->data['currentPageTitle'] = 'Register';
 			$this->data['mainContent'] = 'landingPage/login';
 			$this->load->view('includes/landingPage/header',$this->data);
 			$this->load->view('landingPage/register');
 			$this->load->view('includes/landingPage/footer');
-				
+
 			// redirect(base_url('admin/user/createNewUser'));
 			// $this->_render_page('auth' . DIRECTORY_SEPARATOR . 'create_user', $this->data);
 		}

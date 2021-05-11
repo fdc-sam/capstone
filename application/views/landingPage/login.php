@@ -49,13 +49,20 @@
                         <h6 class="mt-3">No account? <a href="<?php echo base_url('register'); ?>" class="text-primary">Sign up now</a></h6>
                         <div class="divider row"></div>
                         <div>
-							<?php echo $this->session->flashdata('message'); ?>
-							<div class="alert alert-danger hidden" id="alertMessage">
-			                  	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-			                    	<i class="pe-7s-close"> </i>
-			                  	</button>
-								<span id="infoMessage"></span>
-							</div>
+                            <?php if (isset($message) && $message): ?>
+                                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                    <button type="button" class="close" aria-label="Close" data-dismiss="alert">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                    <?php echo $message;?>
+                                </div>
+                            <?php endif; ?>
+                            <div class="alert alert-danger hidden" id="alertMessage">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <i class="pe-7s-close"> </i>
+                                </button>
+                                <span id="infoMessage"></span>
+                            </div>
                             <form class="" id="formLogin">
                                 <div class="form-row">
                                     <div class="col-md-6">
@@ -78,7 +85,7 @@
                                 <div class="divider row"></div>
                                 <div class="d-flex align-items-center">
                                     <div class="ml-auto">
-                                        <a href="javascript:void(0);" class="btn-lg btn btn-link">Recover Password</a>
+                                        <a href="<?php echo base_url('recoverPassword'); ?>" class="btn-lg btn btn-link">Recover Password</a>
                                         <button class="btn btn-primary btn-lg block-page-btn-example-2">Login to Dashboard</button>
                                     </div>
                                 </div>
