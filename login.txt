@@ -13,3 +13,9 @@ ig error to send mail please do this steps
     password: u know na Sai send email
 2. copy this link then run
     https://accounts.google.com/UnlockCaptcha
+
+
+
+# yahoo mail
+E-mail : project_capstone@yahoo.com
+password : Sam09213364006@

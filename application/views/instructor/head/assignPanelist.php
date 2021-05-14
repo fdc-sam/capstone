@@ -18,7 +18,7 @@
                     </ol>
                 </nav>
             </div>
-        </div>   
+        </div>
         <div class="" id="message"></div>
         <div class="tab-content">
             <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
@@ -26,25 +26,25 @@
                     <div class="col-lg-12 col-md-12">
                         <div class="main-card mb-3 card">
                             <div class="card-body">
-                                
+
                                 <div class="form-row">
-                                    <div class="col-md-6">
-                                        <input id="thesisGroupId" type="text" name="" value="<?php echo $thesisGroupId ?>">
+                                    <div class="col-md-7">
+                                        <input  id="thesisGroupId" type="hidden" name="" value="<?php echo $thesisGroupId ?>">
                                         <div class="position-relative form-group">
                                             <label for="exampleName" class=""><span class="text-danger">* </span> Panelist</label>
                                             <select id="panelist" class="form-control" multiple="multiple">
                                                 <?php foreach ($intructors as $key => $intructors): ?>
-                                                    <?php  
+                                                    <?php
                                                         $fullName = $intructors->first_name." ".$intructors->middle_name." ".$intructors->last_name;
                                                     ?>
                                                     <option value="<?php echo $intructors->id; ?>"><?php echo $fullName; ?></option>
                                                 <?php endforeach; ?>
-                                                
+
                                             </select>
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="divider"></div>
                                 <div class="clearfix">
                                     <!-- <button type="button" id="reset-btn" class="btn-shadow float-left btn btn-link">Reset</button> -->

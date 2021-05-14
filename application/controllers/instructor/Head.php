@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Head extends CI_Controller {
-    
+
     public $data = [];
 
 	public function __construct(){
@@ -14,37 +14,37 @@ class Head extends CI_Controller {
 		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
 		$this->lang->load('auth');
-        
+
         // load a model
         $this->load->model('instructor/Batch');
-        
+
         // - login verificaion
         if (!$this->ion_auth->logged_in()){
 			// redirect them to the login page
 			redirect('login', 'refresh');
 		}
 	}
-    
-	// - home 
+
+	// - home
 	public function index(){
         // - get the user information
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
-        
+
         $currentUserGroup = $this->getCurrentUserGroupDetails($data['userInfo']->id);
-        
+
         // - data
         $data['currentUserGroup'] = $currentUserGroup->name;
         $data['currentPageTitle'] = 'Head - Home';
         $data['mainContent'] = 'instructor/head';
         $data['subContent'] = 'head/index';
-        
-        // - load view 
+
+        // - load view
         $this->load->view('includes/instructor/header',$data);
 		$this->load->view('instructor/head/index');
 		$this->load->view('includes/instructor/footer');
     }
-    
+
     public function getAllInstructor(){
         // - variables from datatable
         $post = $this->input->post();
@@ -54,14 +54,14 @@ class Head extends CI_Controller {
         $search = $this->input->post('search');
         $order = $this->input->post('order');
         $columns = $this->input->post('columns');
-        
+
         // order of the data pass
         if(!empty($order)){
             $setorder =  array($columns[$order[0]['column']]['data'] => $order[0]['dir']);
         }else{
             $setorder = array();
         }
-        
+
         //search functionality
         if(empty($search['value'])){
             $like = array();
@@ -72,24 +72,24 @@ class Head extends CI_Controller {
                 'U.last_name' => $search['value']
             );
         }
-        
+
         // get the teacher details to the database using the usniversal model
         $usersDataResult = $this->universal->datatables(
             'users AS U',
             'U.*',
             array(
                 'G.name' => 'instructor'
-            ), 
+            ),
             array(
                 'users_groups AS UG' => 'UG.user_id = U.id',
                 'groups AS G' => 'UG.group_id = G.id'
             ),
             array($length => $offset),
             $setorder,
-            $like, 
+            $like,
             true
         );
-        
+
         echo json_encode(
             array(
                 'draw' => intval($draw),
@@ -99,13 +99,13 @@ class Head extends CI_Controller {
             )
         );
     }
-    
+
     public function changeStatus(){
         $activation = $this->input->post();
-        
+
         // - get the user information
         $data['userInfo'] = $this->ion_auth->user()->row();
-        
+
         $updateUserStatus = $this->universal->update(
             'users',
             array(
@@ -115,7 +115,7 @@ class Head extends CI_Controller {
                 'id' => $activation['userId']
             )
         );
-        
+
         $result = array(
             'message' => 'User Data not Updated',
             'error' => true
@@ -126,19 +126,19 @@ class Head extends CI_Controller {
                 'error' => false
             );
         }
-        
+
         echo json_encode($result);
     }
-    
+
     public function batch(){
-        
+
         // - get the user information
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
-        
+
         // genirate batch code
         $batch_code = $this->create_bactch_code(5);
-        
+
         $has_batch = $this->universal->get(
             'true',
             'batch',
@@ -148,26 +148,26 @@ class Head extends CI_Controller {
                 'code' => $batch_code
             )
         );
-        
+
         if ($has_batch) {
             $this->batch();
         }
-        
+
         $currentUserGroup = $this->getCurrentUserGroupDetails($data['userInfo']->id);
-        
+
         // - data
         $data['currentUserGroup'] = $currentUserGroup->name;
         $data['currentPageTitle'] = 'Head - Batch';
         $data['mainContent'] = 'instructor/head';
         $data['subContent'] = 'head/batch';
         $data['batch_code'] = $batch_code;
-        
-        // - load view 
+
+        // - load view
         $this->load->view('includes/instructor/header',$data);
 		$this->load->view('instructor/head/batch.php');
 		$this->load->view('includes/instructor/footer');
     }
-    
+
     // // genirate batch code function
     public function create_bactch_code($len){
 		$result = "";
@@ -179,27 +179,27 @@ class Head extends CI_Controller {
 		}
 		return $result;
 	}
-    
+
     public function viewStudent($batchCode = null){
         // - get the user information
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
-        
+
         $currentUserGroup = $this->getCurrentUserGroupDetails($data['userInfo']->id);
-        
+
         // - data
         $data['currentUserGroup'] = $currentUserGroup->name;
         $data['currentPageTitle'] = 'Head - Batch';
         $data['mainContent'] = 'instructor/head';
         $data['subContent'] = 'head/viewStudent';
         $data['batchCode'] = $batchCode;
-        
-        // - load view 
+
+        // - load view
         $this->load->view('includes/instructor/header',$data);
 		$this->load->view('instructor/head/viewStudent.php');
 		$this->load->view('includes/instructor/footer');
     }
-    
+
     public function getBatchStudent(){
         $post = $this->input->post();
         $batchCode = $post['batchCode'];
@@ -209,14 +209,14 @@ class Head extends CI_Controller {
         $search = $this->input->post('search');
         $order = $this->input->post('order');
         $columns = $this->input->post('columns');
-        
+
         // order of the data pass
         if(!empty($order)){
             $setorder =  array($columns[$order[0]['column']]['data'] => $order[0]['dir']);
         }else{
             $setorder = array();
         }
-        
+
         //search functionality
         if(empty($search['value'])){
             $like = array();
@@ -231,24 +231,24 @@ class Head extends CI_Controller {
                 'b.modified' => $search['value']
             );
         }
-        
+
         // get the teacher details to the database using the usniversal model
         $batchDataResult = $this->universal->datatables(
             'batch_connect AS BC',
             'U.*',
             array(
                 'B.code' => $batchCode
-            ), 
+            ),
             array(
                 'users AS U' => 'U.email = BC.email',
                 'batch AS B' => 'B.id = BC.batch_id'
             ),
             array($length => $offset),
             $setorder,
-            $like, 
+            $like,
             true
         );
-        
+
         $data['data'] = array();
         foreach ($batchDataResult['data'] as $k => $sheet){
             // get the count of
@@ -264,7 +264,7 @@ class Head extends CI_Controller {
             $sheet['count'] =  count($countBatch);
             array_push($data['data'], $sheet);
         }
-        
+
         echo json_encode(
             array(
                 'draw' => intval($draw),
@@ -274,7 +274,7 @@ class Head extends CI_Controller {
             )
         );
     }
-    
+
     public function insert_batch(){
         sleep(2);
         $post = $this->input->post();
@@ -283,13 +283,13 @@ class Head extends CI_Controller {
         $batch_code = $post['batch_code'];
         $batch_description = $post['batch_description'];
         $currentDateTime = date('Y-m-d H:i:s');
-        
+
         $batch_from = date_create($batch_from);
         $batch_from = date_format($batch_from, 'Y-m-d H:i:s');
-        
+
         $batch_to = date_create($batch_to);
         $batch_to = date_format($batch_to, 'Y-m-d H:i:s');
-        
+
         // isert batch data
         $getResult = $this->universal->insert(
             'batch',
@@ -302,24 +302,24 @@ class Head extends CI_Controller {
                 'modified' => $currentDateTime
             )
         );
-        
+
         $output = array(
             'message' => 'failed',
             'error' => true
         );
-        
+
         if ($getResult) {
             $output = array(
                 'message' => 'success',
                 'error' => false
             );
         }
-        
+
         echo json_encode($output);
     }
-    
+
     public function getBatchDataTable(){
-        
+
         // - variables from datatable
         $post = $this->input->post();
         $draw = $this->input->post('draw');
@@ -328,14 +328,14 @@ class Head extends CI_Controller {
         $search = $this->input->post('search');
         $order = $this->input->post('order');
         $columns = $this->input->post('columns');
-        
+
         // order of the data pass
         if(!empty($order)){
             $setorder =  array($columns[$order[0]['column']]['data'] => $order[0]['dir']);
         }else{
             $setorder = array();
         }
-        
+
         //search functionality
         if(empty($search['value'])){
             $like = array();
@@ -350,19 +350,19 @@ class Head extends CI_Controller {
                 'b.modified' => $search['value']
             );
         }
-        
+
         // get the teacher details to the database using the usniversal model
         $batchDataResult = $this->universal->datatables(
             'batch AS b',
             '*',
-            array(), 
+            array(),
             array(),
             array($length => $offset),
             $setorder,
-            $like, 
+            $like,
             true
         );
-        
+
         $data['data'] = array();
         foreach ($batchDataResult['data'] as $k => $sheet){
             // get the count of
@@ -378,7 +378,7 @@ class Head extends CI_Controller {
             $sheet['count'] =  count($countBatch);
             array_push($data['data'], $sheet);
         }
-        
+
         echo json_encode(
             array(
                 'draw' => intval($draw),
@@ -388,10 +388,10 @@ class Head extends CI_Controller {
             )
         );
     }
-    
+
     public function changeBatchStatus(){
         $post = $this->input->post();
-        
+
         if ($post['batchStatus'] == 1) {
             // to deactivate
             $status = 0;
@@ -399,7 +399,7 @@ class Head extends CI_Controller {
             // to active
             $status = 1;
         }
-        
+
         $updateBatchStatus = $this->universal->update(
             'batch',
             array(
@@ -411,31 +411,31 @@ class Head extends CI_Controller {
         );
         echo $updateBatchStatus;
     }
-    
-    // - proposal 
+
+    // - proposal
 	public function proposal(){
-        
+
         // - get the user information
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
-        
+
         $currentUserGroup = $this->getCurrentUserGroupDetails($data['userInfo']->id);
-        
+
         // - data
         $data['currentUserGroup'] = $currentUserGroup->name;
         $data['currentPageTitle'] = 'Head - Home';
         $data['mainContent'] = 'instructor/head';
         $data['subContent'] = 'head/proposal';
-        
-        // - load view 
+
+        // - load view
         $this->load->view('includes/instructor/header',$data);
 		$this->load->view('instructor/head/proposal');
 		$this->load->view('includes/instructor/footer');
     }
-    
+
     // head Notifications
     public function getAllProposal(){
-        
+
         // - variables from datatable
         $post = $this->input->post();
         $draw = $this->input->post('draw');
@@ -444,8 +444,8 @@ class Head extends CI_Controller {
         $search = $this->input->post('search');
         $order = $this->input->post('order');
         $columns = $this->input->post('columns');
-        
-        
+
+
         // order of the data pass
         if($draw == 1){
             $setorder = array(
@@ -455,7 +455,7 @@ class Head extends CI_Controller {
         }else{
             $setorder = array();
         }
-        
+
         //search functionality
         if(empty($search['value'])){
             $like = array();
@@ -463,18 +463,15 @@ class Head extends CI_Controller {
             $like = array(
                 'TG.thesis_group_name' => $search['value'],
                 'TG.created' => $search['value'],
-                'T.title' => $search['value'],
-                'U.first_name' => $search['value'],
-                'U.middle_name' => $search['value'],
-                'U.last_name' => $search['value']
+                'T.title' => $search['value']
             );
         }
-        
+
         //  get all proposals
         $thisesGroups = $this->universal->datatables(
             'thises_group AS TG',
             'TG.*, T.title',
-            array(), 
+            array(),
             array(
                 'thises AS T' => 'T.thesis_group_id = TG.id',
                 'thises_connect AS TC' => 'TC.thesis_group_id = TG.id',
@@ -482,16 +479,16 @@ class Head extends CI_Controller {
             ),
             array($length => $offset),
             $setorder,
-            $like, 
+            $like,
             true
         );
-        
+
         $data['data'] = array();
         if (isset($thisesGroups['data']) && $thisesGroups['data']) {
-            
+
             foreach ($thisesGroups['data'] as $k => $thisesGroup){
                 // get the count of
-                
+
                 $thisesProposals = $this->universal->get(
                     true,
                     'thises AS T',
@@ -515,7 +512,7 @@ class Head extends CI_Controller {
                     }
                     $thisesGroup['groupPoposals'] =  $groupPoposals;
                 }
-            
+
                 $usersData = $this->universal->get(
                     true,
                     'thises_connect AS TC',
@@ -536,21 +533,48 @@ class Head extends CI_Controller {
                             $fullName .= '<b> - '.$userData->first_name.' '.$userData->middle_name.' '.$userData->last_name.'</b><br>';
                         }
                     }
-                    
+
                 }
-                
+
                 $newKey = isset($thisesGroups['data'][$k + 1]['id'])? $thisesGroups['data'][$k + 1]['id'] : null;
-                
+                $assignedFlag = false;
+                $assignedPanelistFullName = '';
+                $countPanelist = 0;
                 if ($newKey != $thisesGroup['id']) {
+                    $assignedPanelist = $this->getAssignedPanelist($thisesGroup['id']);
+                    if ($assignedPanelist) {
+                        $instructors = json_decode($assignedPanelist->instructor_id);
+                        $countPanelist = count($instructors);
+                        if ($countPanelist > 1) {
+                            $assignedFlag = true;
+                        }
+                        $assignedPanelistFullName = '';
+                        foreach ($instructors as $key => $value) {
+                            $instructorDetails = $this->getPanelistDetails($value);
+                            $assignedPanelistFullName .= $instructorDetails->first_name.' '.$instructorDetails->middle_name.' '.$instructorDetails->last_name.'<br>';
+                        }
+                    }
+
+                    // count panelist who rejected the group
+                    $panelistRejectTheGroup = $this->getPanelistRejectTheGroup($thisesGroup['id']);
+                    $countPanelistRejectTheGroup = 0;
+                    if ($panelistRejectTheGroup) {
+                        $countPanelistRejectTheGroup = count($panelistRejectTheGroup);
+                    }
+
+
                     if (isset($thisesGroup['groupPoposals'])) {
-                        $thisesGroup['groupMembers'] =  $fullName;
+                        $thisesGroup['countPanelistRejectTheGroup'] =  $countPanelistRejectTheGroup;
+                        $thisesGroup['countPanelist'] =  $countPanelist;
+                        $thisesGroup['assignedFlag'] =  $assignedFlag;
+                        $thisesGroup['assignedPanelistFullName'] =  $assignedPanelistFullName;
                         array_push($data['data'], $thisesGroup);
                     }
                 }
             }
         }
-        
-        
+
+
         echo json_encode(
             array(
                 // 'order' => $columns[$order[0]['column']]['data'],
@@ -561,11 +585,11 @@ class Head extends CI_Controller {
             )
         );
     }
-    
+
     public function proposalDetails($thesisGroupId = null){
         $this->load->library('layout');
         $approvedFlag = false;
-        
+
         // get all team proposal
         $getCapstoneDetails = $this->universal->get(
             true,
@@ -583,7 +607,7 @@ class Head extends CI_Controller {
                 'thises_group AS TG' => 'TG.id = T.thesis_group_id'
             )
         );
-        
+
         foreach ($getCapstoneDetails as $key => $getCapstoneDetail) {
             $userDetails = $this->universal->get(
                 true,
@@ -592,7 +616,7 @@ class Head extends CI_Controller {
                     U.first_name, U.middle_name, U.last_name, U.email,
                     US.signatures,
                     R.role_name,
-                    
+
                 ',
                 'all',
                 array(
@@ -604,76 +628,76 @@ class Head extends CI_Controller {
                     'users_signature AS US' => 'US.users_id = U.id',
                     'users_roles AS UR' => 'UR.user_id = U.id',
                     'roles AS R' => 'R.id = UR.role_id',
-                    
+
                 )
             );
-            
+
             $getCapstoneDetail->users = $userDetails;
         }
-        
-        
-        
+
+
+
         // check if has approved proposal
         foreach ($getCapstoneDetails as $key => $thisesGroupData) {
             if ($thisesGroupData->status == 1) {
                 $approvedFlag = true;
             }
         }
-        
+
         $getProposalDetails = array();
-        foreach ($getCapstoneDetails as $key => $thisesGroupData) { 
-            
+        foreach ($getCapstoneDetails as $key => $thisesGroupData) {
+
             // convert date time to `5:56am | Fri 9th April 2021`
             $thisesGroupData->created = date("g:ia | D jS F Y", strtotime($thisesGroupData->created));
             $thisesGroupData->modified = date("g:ia | D jS F Y", strtotime($thisesGroupData->modified));
-            
+
             $thisesGroupData->approvedFlag = $approvedFlag;
             array_push($getProposalDetails, $thisesGroupData);
         }
-        
+
         // pre($getProposalDetails);
         // die();
-        
+
         if ($getProposalDetails) {
             $data['getCapstoneDetails'] = $getProposalDetails;
         }
-        
+
         // - get the user information
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
-        
+
         $currentUserGroup = $this->getCurrentUserGroupDetails($data['userInfo']->id);
-        
+
         // - data
         $data['currentUserGroup'] = $currentUserGroup->name;
         $data['currentPageTitle'] = 'Team Proposal';
         $data['mainContent'] = 'instructor/head';
         $data['subContent'] = 'head/proposalDetails';
         $data['thesisGroupId'] = $thesisGroupId;
-        
-        // - load view 
+
+        // - load view
         $this->load->view('includes/instructor/header',$data);
 		$this->load->view('instructor/head/proposalDetails');
 		$this->load->view('includes/instructor/footer');
     }
-    
+
     public function teamProposal($thesisGroupId = null){
         // - get the user information
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
-        
+
         // - data
         $data['currentPageTitle'] = 'Team Proposal';
         $data['mainContent'] = 'instructor/head';
         $data['subContent'] = 'head/teamProposal';
         $data['thesisGroupId'] = $thesisGroupId;
-        
-        // - load view 
+
+        // - load view
         $this->load->view('includes/instructor/header',$data);
 		$this->load->view('instructor/head/teamProposal');
 		$this->load->view('includes/instructor/footer');
     }
-    
+
     public function getProposalDetails(){
         // - variables from datatable
         $post = $this->input->post();
@@ -683,14 +707,14 @@ class Head extends CI_Controller {
         $search = $this->input->post('search');
         $order = $this->input->post('order');
         $columns = $this->input->post('columns');
-        
+
         // order of the data pass
         if(!empty($order)){
             $setorder =  array($columns[$order[0]['column']]['data'] => $order[0]['dir']);
         }else{
             $setorder = array();
         }
-        
+
         //search functionality
         if(empty($search['value'])){
             $like = array();
@@ -703,41 +727,41 @@ class Head extends CI_Controller {
                 'modified' => $search['value']
             );
         }
-        
+
         //  get all proposals
         $thisesGroups = $this->universal->datatables(
             'thises',
             '*',
             array(
                 'thesis_group_id' => $post['thesisGroupId']
-            ), 
+            ),
             array(),
             array($length => $offset),
             $setorder,
             $like,
             true
         );
-        
+
         $approvedFlag = false;
         $result = array();
-        
+
         // check if has approved proposal
         foreach ($thisesGroups['data'] as $key => $thisesGroupData) {
             if ($thisesGroupData['status'] == 1) {
                 $approvedFlag = true;
             }
         }
-        
-        foreach ($thisesGroups['data'] as $key => $thisesGroupData) { 
-            
+
+        foreach ($thisesGroups['data'] as $key => $thisesGroupData) {
+
             // convert date time to `5:56am | Fri 9th April 2021`
             $thisesGroupData['created'] = date("g:ia | D jS F Y", strtotime($thisesGroupData['created']));
             $thisesGroupData['modified'] = date("g:ia | D jS F Y", strtotime($thisesGroupData['modified']));
-            
+
             $thisesGroupData['approvedFlag'] = $approvedFlag;
             array_push($result, $thisesGroupData);
         }
-        
+
         echo json_encode(
             array(
                 'draw' => intval($draw),
@@ -747,18 +771,18 @@ class Head extends CI_Controller {
             )
         );
     }
-    
+
     public function thesisChangeStatus(){
         $post = $this->input->post();
         $status = 0;
-        
+
         if ($post['activation'] == 'Reject') {
             $status = 2;
         }
         if ($post['activation'] == 'Approve') {
             $status = 1;
         }
-        
+
         $updateThesisStatus = $this->universal->update(
             'thises',
             array(
@@ -769,34 +793,34 @@ class Head extends CI_Controller {
             )
         );
     }
-    
+
     public function groups(){
         // - get the user information
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
-        
-        
+
+
         // $instructorDetails = $this->universal->get(
         //     true,
         //     ''
         // );
-        
+
         $currentUserGroup = $this->getCurrentUserGroupDetails($data['userInfo']->id);
-        
+
         // - data
         $data['currentUserGroup'] = $currentUserGroup->name;
         $data['currentPageTitle'] = 'Team Proposal';
         $data['mainContent'] = 'instructor/head';
         $data['subContent'] = 'head/groups';
-        
-        // - load view 
+
+        // - load view
         $this->load->view('includes/instructor/header',$data);
 		$this->load->view('instructor/head/groups');
 		$this->load->view('includes/instructor/footer');
     }
-    
+
     public function getAllGroups(){
-        
+
         $post = $this->input->post();
         $draw = $this->input->post('draw');
         $length = $this->input->post('length');
@@ -804,14 +828,14 @@ class Head extends CI_Controller {
         $search = $this->input->post('search');
         $order = $this->input->post('order');
         $columns = $this->input->post('columns');
-        
+
         // order of the data pass
         if(!empty($order)){
             $setorder =  array($columns[$order[0]['column']]['data'] => $order[0]['dir']);
         }else{
             $setorder = array();
         }
-        
+
         //search functionality
         if(empty($search['value'])){
             $like = array();
@@ -825,24 +849,24 @@ class Head extends CI_Controller {
                 'TG.modified' => $search['value']
             );
         }
-        
+
         //  get all proposals
         $thisesGroups = $this->universal->datatables(
             'thises_group AS TG',
             'TG.*',
-            array(), 
+            array(),
             array(),
             array($length => $offset),
             $setorder,
             $like,
             true
         );
-        
+
         $result = array();
         $count = 0;
         $matchFlag = 0;
         foreach ($thisesGroups['data'] as $key => $thisesGroupData) {
-            
+
             if ($matchFlag == $thisesGroupData['id'] || $matchFlag == 0) {
                 $result[$count] = array(
                     "id" => $thisesGroupData['id'],
@@ -862,7 +886,7 @@ class Head extends CI_Controller {
                 $matchFlag = $thisesGroupData['id'];
             }
         }
-        
+
         foreach ($result as $reskey => $value) {
             $fullName = null;
             foreach ($thisesGroups['data'] as $key => $thisesGroupData) {
@@ -872,9 +896,9 @@ class Head extends CI_Controller {
                     $matchFlag = $thisesGroupData['id'];
                 }
             }
-            
+
         }
-        
+
         echo json_encode(
             array(
                 'draw' => intval($draw),
@@ -883,16 +907,16 @@ class Head extends CI_Controller {
                 "data" => $thisesGroups['data']
             )
         );
-        
+
     }
-    
-    
+
+
     public function assignPanelist($thesisGroupId = null){
         // - get the user information
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
         $data['thesisGroupId'] = $thesisGroupId;
-        
+
         $intructors = $this->universal->get(
             true,
             'users AS U',
@@ -906,37 +930,37 @@ class Head extends CI_Controller {
                 'users_groups AS UG' => 'UG.user_id = U.id',
             )
         );
-        
+
         $data['intructors'] = $intructors;
-        
+
         $currentUserGroup = $this->getCurrentUserGroupDetails($data['userInfo']->id);
-        
+
         // - data
         $data['currentUserGroup'] = $currentUserGroup->name;
         $data['currentPageTitle'] = 'Team Proposal';
         $data['mainContent'] = 'instructor/head';
         $data['subContent'] = 'head/assignPanelist';
-        
-        // - load view 
+
+        // - load view
         $this->load->view('includes/instructor/header',$data);
 		$this->load->view('instructor/head/assignPanelist');
 		$this->load->view('includes/instructor/footer');
     }
-    
-    public function assignPanelistToGroup(){
-        $post = $this->input->post();
-        
-        $thesisGroupId = $post['thesisGroupId'];
-        $instructorIds = $post['instructorIds'];
-        
-        $instructors = array(
-            'instructor1' => isset($instructorIds[0])? $instructorIds[0] : null,
-            'instructor2' => isset($instructorIds[1])? $instructorIds[1] : null,
-            'instructor3' => isset($instructorIds[2])? $instructorIds[2] : null
-        );
-        
-        $ids = json_encode($instructors);
-        
+
+    public function assignPanelistToGroup($params = array()){
+        $thesisGroupId = $params['thesisGroupId'];
+        $instructorIds = $params['instructorIds'];
+
+        // count assigned panelist
+        if (isset($instructorIds) && $instructorIds ) {
+            $countPanelist = count($instructorIds);
+            if ($countPanelist < 3) {
+                return true;
+            }
+        }
+
+        $ids = json_encode($instructorIds);
+
         // check if has already assigned
         $hasAssignedPanelist = $this->universal->get(
             true,
@@ -947,8 +971,8 @@ class Head extends CI_Controller {
                 'group_id' => $thesisGroupId
             )
         );
-        
-        if (isset($hasAssignedPanelist) && $hasAssignedPanelist) {
+
+        if (!isset($hasAssignedPanelist) && !$hasAssignedPanelist) {
             $assignedPanelist = $this->universal->insert(
                 'thises_group_assigned_panelist',
                 array(
@@ -958,7 +982,7 @@ class Head extends CI_Controller {
                     'date_modified' => date('Y-m-d H:i:s')
                 )
             );
-            
+
             if ($assignedPanelist) {
                 $updateGroup = $this->universal->update(
                     'thises_group',
@@ -970,19 +994,20 @@ class Head extends CI_Controller {
                     )
                 );
                 if ($updateGroup) {
-                    $result = array(
-                        'error' => false,
-                        'messsage' => 'Successfully panelist Assigned'
-                    );
+                    // $result = array(
+                    //     'error' => false,
+                    //     'messsage' => 'Successfully panelist Assigned'
+                    // );
                 }
-                
+
             }else {
-                $result = array(
-                    'error' => true,
-                    'messsage' => 'error'
-                );
+                // $result = array(
+                //     'error' => true,
+                //     'messsage' => 'error'
+                // );
             }
         }else{
+
             $updateAssignedPanelist = $this->universal->update(
                 'thises_group_assigned_panelist',
                 array(
@@ -990,7 +1015,7 @@ class Head extends CI_Controller {
                     'date_modified' => date('Y-m-d H:i:s')
                 )
             );
-            
+
             if ($updateAssignedPanelist) {
                 $updateGroup = $this->universal->update(
                     'thises_group',
@@ -1002,45 +1027,127 @@ class Head extends CI_Controller {
                     )
                 );
                 if ($updateGroup) {
-                    $result = array(
-                        'error' => false,
-                        'messsage' => 'Successfully panelist Assigned'
-                    );
+                    // $result = array(
+                    //     'error' => false,
+                    //     'messsage' => 'Successfully panelist Assigned'
+                    // );
                 }
-                
+
             }else {
-                $result = array(
-                    'error' => true,
-                    'messsage' => 'error'
-                );
+                // $result = array(
+                //     'error' => true,
+                //     'messsage' => 'error'
+                // );
             }
         }
-        
-        
-        
+    }
+
+    public function addProjectHearingSched(){
+        $posts = $this->input->post();
+        $hearingDateTime = $posts['hearingDateTime'];
+        $currentDate = date('Y-m-d H:i:s');
+
+        $result = array();
+        $errorFlag = true;
+        $message = '';
+
+        $params = array(
+            'thesisGroupId' => $posts['groupId'],
+            'instructorIds' => $posts['panelistId']
+        );
+        $assignPanelistToGroup = $this->assignPanelistToGroup($params);
+        $temp = json_decode($assignPanelistToGroup);
+        if (isset($temp) && $temp) {
+            $result = array(
+                'errorFlag' => true,
+                'message' => 'panelist lessthan 3'
+            );
+            echo json_encode($result);
+            return;
+        }
+
+        if (isset($posts['editFlag']) && $posts['editFlag'] == 1) {
+            $deltePanelist = $this->universal->delete(
+                'project_title_hearing',
+                array(
+                    'group_id' => $posts['groupId']
+                )
+            );
+            if ($deltePanelist) {
+                foreach ($posts['panelistId'] as $key => $panelistId) {
+                    $projectTitleHearing = $this->universal->insert(
+                        'project_title_hearing',
+                        array(
+                            'group_id' => $posts['groupId'],
+                            'panelist_id' => $panelistId,
+                            'hearing_date' => $hearingDateTime,
+                            'date_create' => $currentDate,
+                            'date_modified' => $currentDate
+                        )
+                    );
+
+                    if ($projectTitleHearing) {
+                        $errorFlag = false;
+                        $message = 'Data Saved';
+                    }
+                }
+            }
+        }else {
+            foreach ($posts['panelistId'] as $key => $panelist) {
+                $groupId = $posts['groupId'][$key];
+
+                $panelistIds = json_decode($panelist);
+                foreach ($panelistIds as $key1 => $panelistId) {
+
+                    // add to database
+                    $projectTitleHearing = $this->universal->insert(
+                        'project_title_hearing',
+                        array(
+                            'group_id' => $groupId,
+                            'panelist_id' => $panelistId,
+                            'hearing_date' => $hearingDateTime,
+                            'date_create' => $currentDate,
+                            'date_modified' => $currentDate
+                        )
+                    );
+
+                    if ($projectTitleHearing) {
+                        $errorFlag = false;
+                        $message = 'Data Saved';
+                    }
+                }
+            }
+        }
+
+
+        $result = array(
+            'errorFlag' => $errorFlag,
+            'message' => $message
+        );
+
         echo json_encode($result);
     }
-    
-    
+
+
     public function assignPanel(){
         // - get the user information
         $data['userInfo'] = $this->ion_auth->user()->row();
-        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;        
-        
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+
         $currentUserGroup = $this->getCurrentUserGroupDetails($data['userInfo']->id);
-        
+
         // - data
         $data['currentUserGroup'] = $currentUserGroup->name;
         $data['currentPageTitle'] = 'Team Proposal';
         $data['mainContent'] = 'instructor/head';
         $data['subContent'] = 'head/assignPanel';
-        
-        // - load view 
+
+        // - load view
         $this->load->view('includes/instructor/header',$data);
 		$this->load->view('instructor/head/assignPanel');
 		$this->load->view('includes/instructor/footer');
     }
-    
+
     public function getAllInstructorSelect2(){
         $instructors = $this->universal->get(
             true,
@@ -1049,14 +1156,14 @@ class Head extends CI_Controller {
             'array',
             array(
                 'G.name' => array('instructor', 'IT Head')
-            ), 
+            ),
             array(),
             array(
                 'users_groups AS UG' => 'UG.user_id = U.id',
                 'groups AS G' => 'UG.group_id = G.id'
             )
         );
-        
+
         $results = array();
         foreach ($instructors as $key => $instructor) {
             $fullName = $instructor['first_name']." ".$instructor['middle_name']." ".$instructor['last_name'];
@@ -1065,10 +1172,10 @@ class Head extends CI_Controller {
                 'text' => $fullName
             );
         }
-        
+
         echo json_encode($results);
     }
-    
+
     public function getAllGroupsSelect2(){
         $search = $this->input->get();
         if(empty($search['searchTerm'])){
@@ -1078,7 +1185,7 @@ class Head extends CI_Controller {
                 'GC.thesis_group_name' => $search['searchTerm']
             );
         }
-        
+
         $groups = $this->universal->get(
             true,
             'thises_group AS GC',
@@ -1087,10 +1194,10 @@ class Head extends CI_Controller {
             array(),
             $like
         );
-        
+
         $results = array();
         foreach ($groups as $key => $group) {
-        
+
             // check if has group id on project_title_hearing
             $hasGroup = $this->universal->get(
                 true,
@@ -1101,21 +1208,21 @@ class Head extends CI_Controller {
                     'group_id' =>  $group['id']
                 )
             );
-            
+
             if (!$hasGroup) {
                 $results[] = array(
                     'id' => $group['id'],
                     'text' => $group['thesis_group_name']
                 );
             }
-            
+
         }
         echo json_encode($results);
     }
-    
+
     public function getThisesProposal(){
         $post = $this->input->post();
-        
+
         $thisesProposals = $this->universal->get(
             true,
             'thises',
@@ -1138,101 +1245,40 @@ class Head extends CI_Controller {
             }
             $errorFlag = false;
         }
-        
-        
+
+
         $result = array(
             'messsage' => $output,
             'error_flag' => $errorFlag
         );
-    
+
         echo json_encode($result);
     }
-    
-    public function addProjectHearingSched(){
-        $posts = $this->input->post();
-        $hearingDateTime = $posts['hearingDateTime'];
-        $currentDate = date('Y-m-d H:i:s');
-        
-        $result = array();
-        $errorFlag = true;
-        $message = '';
-        
-        if (isset($posts['editFlag']) && $posts['editFlag'] == 1) {
-            $deltePanelist = $this->universal->delete(
-                'project_title_hearing',
-                array(
-                    'group_id' => $posts['groupId']
-                )
-            );
-            if ($deltePanelist) {
-                foreach ($posts['panelistId'] as $key => $panelistId) {
-                    $projectTitleHearing = $this->universal->insert(
-                        'project_title_hearing',
-                        array(
-                            'group_id' => $posts['groupId'],
-                            'panelist_id' => $panelistId,
-                            'hearing_date' => $hearingDateTime,
-                            'date_create' => $currentDate,
-                            'date_modified' => $currentDate
-                        )                    
-                    );
-                    
-                    if ($projectTitleHearing) {
-                        $errorFlag = false;
-                        $message = 'Data Saved';
-                    }
-                }
-            }
-        }else {
-            foreach ($posts['panelistId'] as $key => $panelist) {
-                $groupId = $posts['groupId'][$key];
-                
-                $panelistIds = json_decode($panelist);
-                foreach ($panelistIds as $key1 => $panelistId) {
-                    
-                    // add to database
-                    $projectTitleHearing = $this->universal->insert(
-                        'project_title_hearing',
-                        array(
-                            'group_id' => $groupId,
-                            'panelist_id' => $panelistId,
-                            'hearing_date' => $hearingDateTime,
-                            'date_create' => $currentDate,
-                            'date_modified' => $currentDate
-                        )                    
-                    );
-                    
-                    if ($projectTitleHearing) {
-                        $errorFlag = false;
-                        $message = 'Data Saved';
-                    }
-                }
-            }
-        }
-        
-        
-        $result = array(
-            'errorFlag' => $errorFlag,
-            'message' => $message
-        );
-        
-        echo json_encode($result);
-    }
-    
-    public function titleHearingDetails(){
+
+
+
+    public function titleHearingDetails($groupId = null){
         // - get the user information
         $data['userInfo'] = $this->ion_auth->user()->row();
-        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;        
-        
-        
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+
+        $where = array('status' => array(0,1));
+        if (isset($groupId) && $groupId) {
+            $where = array(
+                'group_id' => $groupId,
+                'status' => array(0,1)
+            );
+        }
+
         // get the title for hearing
         $projects = $this->universal->get(
             true,
             'project_title_hearing',
             '*',
-            'array'
+            'array',
+            $where
         );
-        
+
         $result = array();
         $outputs = array();
         $count = 0;
@@ -1251,12 +1297,12 @@ class Head extends CI_Controller {
                 $result = array();
             }
         }
-        
+
         $display = '';
         foreach ($outputs as $key => $output) {
             // get the groupDetails
             $groupDetails = $this->getGroupDetails($output['group_id']);
-            
+
             // get project details
             $projectDetails = $this->getProjectDetails($output['group_id']);
             $projectTitles = '';
@@ -1268,7 +1314,7 @@ class Head extends CI_Controller {
                     </li>
                 ';
             }
-            
+
             // get all panelist details
             $panelistNames = '';
             foreach ($output['panelistArr'] as $key => $panelistId) {
@@ -1276,8 +1322,8 @@ class Head extends CI_Controller {
                 $fullName = $panelistDetails->first_name.' '.$panelistDetails->middle_name.' '.$panelistDetails->last_name;
                 $panelistNames .='<span style="font-family: Arial; font-size: 12pt; font-weight: bold;">'.$fullName.', </span>';
             }
-            
-            
+
+
             $display .= '<div class="table-wrapper">
                 <a href="'.base_url('instructor/head/titleHearingEdit/'.$output['group_id']).'" class="btn btn-sm btn-light removeProjectHearing" style="float: right;">Edit</a>
                 <table class="TableGrid">
@@ -1321,68 +1367,188 @@ class Head extends CI_Controller {
                 <p>&nbsp;</p>
             </div>';
         }
-        
-        
+
+
         // - data
         $data['display'] = $display;
         $data['currentPageTitle'] = 'Team Proposal';
         $data['mainContent'] = 'instructor/head';
         $data['subContent'] = 'head/titleHearingDetails';
-        
-        // - load view 
+
+        // - load view
         $this->load->view('includes/instructor/header',$data);
 		$this->load->view('instructor/head/titleHearingDetails');
 		$this->load->view('includes/instructor/footer');
     }
-    
+
     public function titleHearingEdit($groupId = null){
         // - get the user information
         $data['userInfo'] = $this->ion_auth->user()->row();
-        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;        
-        
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+
         // get project hearing details
         $projectHearingDetails = $this->getProjectHearingDetails($groupId);
-        
+
         // get group details
         $groupDetail = $this->getGroupDetails($groupId);
-        
-        if ($this->input->is_ajax_request()) {
-            foreach ($projectHearingDetails as $key => $projectHearingDetail) {
-                $panelistDetails = $this->getPanelistDetails($projectHearingDetail['panelist_id']);
-                $fullName = $panelistDetails->first_name." ".$panelistDetails->last_name." ".$panelistDetails->middle_name;
-                $results[] = array(
-                    'id' => $panelistDetails->id,
-                    'text' => $fullName
-                );
+        if ($groupDetail) {
+            if ($this->input->is_ajax_request()) {
+                foreach ($projectHearingDetails as $key => $projectHearingDetail) {
+                    $panelistDetails = $this->getPanelistDetails($projectHearingDetail['panelist_id']);
+                    $fullName = $panelistDetails->first_name." ".$panelistDetails->last_name." ".$panelistDetails->middle_name;
+                    $results[] = array(
+                        'id' => $panelistDetails->id,
+                        'text' => $fullName
+                    );
+                }
+
+                echo json_encode($results);
+                die;
             }
-            
-            echo json_encode($results);
-            die;
         }
-        
+
+
         $currentUserGroup = $this->getCurrentUserGroupDetails($data['userInfo']->id);
-        
+
         // - data
         $data['currentUserGroup'] = $currentUserGroup->name;
         $data['groupId'] = $groupId;
         $data['groupDetail'] = $groupDetail;
-        $data['projectHearingDetail'] = $projectHearingDetails;
+        $data['projectHearingDetail'] = isset($projectHearingDetails)? $projectHearingDetails:'';
         $data['currentPageTitle'] = 'Team Proposal';
         $data['mainContent'] = 'instructor/head';
         $data['subContent'] = 'head/titleHearingEdit';
-        
-        // - load view 
+
+        // - load view
         $this->load->view('includes/instructor/header',$data);
 		$this->load->view('instructor/head/titleHearingEdit');
 		$this->load->view('includes/instructor/footer');
     }
-    
-    
-    
-    
-    
-    
-    
+
+    public function getGroupPanelist(){
+        $post = $this->input->post();
+        $draw = $this->input->post('draw');
+        $length = $this->input->post('length');
+        $offset = $this->input->post('start');
+        $search = $this->input->post('search');
+        $order = $this->input->post('order');
+        $columns = $this->input->post('columns');
+
+        // order of the data pass
+        if(!empty($order)){
+            $setorder =  array($columns[$order[0]['column']]['data'] => $order[0]['dir']);
+        }else{
+            $setorder = array();
+        }
+
+        //search functionality
+        if(empty($search['value'])){
+            $like = array();
+        }else{
+            $like = array();
+        }
+
+        //  get all proposals
+        $thisesGroups = $this->universal->datatables(
+            'project_title_hearing',
+            '*',
+            array(
+                'group_id' => $post['thesisGroupId']
+            ),
+            array(),
+            array($length => $offset),
+            $setorder,
+            $like,
+            true
+        );
+
+        foreach ($thisesGroups['data'] as $key => $projectHearingDetail) {
+            $panelistDetails = $this->getPanelistDetails($projectHearingDetail['panelist_id']);
+            $fullName = $panelistDetails->first_name." ".$panelistDetails->last_name." ".$panelistDetails->middle_name;
+            $thisesGroups['data'][$key]['panelistFullName'] = $fullName;
+
+        }
+        // pre($thisesGroups['data']);
+        // die;
+
+        echo json_encode(
+            array(
+                'draw' => intval($draw),
+                "recordsTotal" => $thisesGroups['recordsTotal'],
+                "recordsFiltered" => $thisesGroups['recordsFiltered'],
+                "data" => $thisesGroups['data']
+            )
+        );
+    }
+
+    public function panelistReject($hearingId = null){
+        // - get the user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+
+        $get = $this->input->get();
+        $data['message'] = "";
+        if (isset($get) && $get) {
+            $data['message'] = "Something went wrong";
+        }
+
+        $hearingDetails = $this->universal->get(
+            true,
+            'project_title_hearing',
+            '*',
+            'row',
+            array(
+                'id' => $hearingId
+            )
+        );
+
+        // pre($hearingDetails);
+        // die();
+        // - data
+        $data['hearingDetails'] = $hearingDetails;
+        $data['hearingId'] = $hearingId;
+        $data['currentPageTitle'] = 'Team Proposal';
+        $data['mainContent'] = 'instructor/head';
+        $data['subContent'] = 'head/panelistReject';
+
+        // - load view
+        $this->load->view('includes/instructor/header',$data);
+		$this->load->view('instructor/head/panelistReject');
+		$this->load->view('includes/instructor/footer');
+    }
+
+    public function removePanelist($hearingId = null){
+        // - get the user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+
+        $hearingDetails = $this->universal->get(
+            true,
+            'project_title_hearing',
+            '*',
+            'row',
+            array(
+                'id' => $hearingId
+            )
+        );
+
+        $hearingDetailsDelete = $this->universal->delete(
+            'project_title_hearing',
+            array(
+                'id' => $hearingId
+            )
+        );
+        if ($hearingDetailsDelete) {
+            redirect(base_url('instructor/head/teamProposal/'.$hearingDetails->group_id), 'refresh');
+        }else{
+            redirect(base_url('instructor/head/panelistReject/'.$hearingId.'?errorFlag=1'), 'refresh');
+        }
+
+
+    }
+
+
+
     // get any details function
     public function getGroupDetails($groupId = null){
         $groupDetails = $this->universal->get(
@@ -1394,10 +1560,10 @@ class Head extends CI_Controller {
                 'id' => $groupId
             )
         );
-        
+
         return $groupDetails;
     }
-    
+
     public function getProjectDetails($groupId = null){
         $getProjectDetailsArr = $this->universal->get(
             true,
@@ -1408,10 +1574,10 @@ class Head extends CI_Controller {
                 'thesis_group_id' => $groupId
             )
         );
-        
+
         return $getProjectDetailsArr;
     }
-    
+
     public function getPanelistDetails($userId = null){
         $getPanelistDetails = $this->universal->get(
             true,
@@ -1424,7 +1590,7 @@ class Head extends CI_Controller {
         );
         return $getPanelistDetails;
     }
-    
+
     public function getProjectHearingDetails($groupId = null){
         $getProjectHearingDetails = $this->universal->get(
             true,
@@ -1432,12 +1598,13 @@ class Head extends CI_Controller {
             '*',
             'array',
             array(
-                'group_id' => $groupId
+                'group_id' => $groupId,
+                'status' => array(0,1)
             )
         );
         return $getProjectHearingDetails;
     }
-    
+
     public function getCurrentUserGroupDetails($userId = null){
         $currentUserGroup = $this->universal->get(
             true,
@@ -1445,7 +1612,7 @@ class Head extends CI_Controller {
             'G.*',
             'row',
             array(
-                
+
             ),
             array(
                 'UG.user_id' => $userId
@@ -1454,7 +1621,38 @@ class Head extends CI_Controller {
                 'users_groups AS UG' => 'UG.group_id = G.id'
             )
         );
-        
+
         return $currentUserGroup;
+    }
+
+    public function getAssignedPanelist($groupId = null){
+        $assignedPanelist = $this->universal->get(
+            true,
+            'thises_group_assigned_panelist',
+            '*',
+            'row',
+            array(
+
+            ),
+            array(
+                'group_id' => $groupId
+            )
+        );
+
+        return $assignedPanelist;
+    }
+
+    public function getPanelistRejectTheGroup($groupId = null){
+        $getProjectHearingDetails = $this->universal->get(
+            true,
+            'project_title_hearing',
+            '*',
+            'array',
+            array(
+                'group_id' => $groupId,
+                'status' => 2
+            )
+        );
+        return $getProjectHearingDetails;
     }
 }

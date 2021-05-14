@@ -15,8 +15,8 @@
     <meta name="msapplication-tap-highlight" content="no">
 
     <link href="<?php echo base_url('assets/css/main.d810cf0ae7f39f28f336.css'); ?>  " rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" rel="stylesheet">
-    
+    <link href="<?php echo base_url('assets/css/jquery.dataTables.min.css'); ?>" rel="stylesheet">
+
     <style media="screen">
         .hrefProposal:hover {
             color: #3b5998;
@@ -26,8 +26,8 @@
             color: #787878;
             text-decoration:none;
         }
-        .pdfobject-container { 
-            height: 50rem !important; 
+        .pdfobject-container {
+            height: 50rem !important;
         }
     </style>
 </head>
@@ -53,7 +53,7 @@
     	    </div>
     	</div>
     </div>
-    
+
     <div class="app-container app-theme-white body-tabs-shadow fixed-header fixed-sidebar">
         <!-- navbar -->
         <div class="app-header header-shadow">
@@ -86,11 +86,11 @@
                         </span>
                     </button>
                 </span>
-            </div>    
+            </div>
             <div class="app-header__content">
                 <div class="app-header-right">
                     <div class="header-dots">
-                        
+
                         <div class="dropdown">
                             <button type="button" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown"
                                 class="p-0 mr-2 btn btn-link">
@@ -281,7 +281,7 @@
                                                                 </span>
                                                                 <div class="vertical-timeline-element-content bounce-in">
                                                                     <h4 class="timeline-title">All Hands Meeting</h4>
-                                                                    <p>Lorem ipsum dolor sic amet, today at 
+                                                                    <p>Lorem ipsum dolor sic amet, today at
                                                                         <a href="javascript:void(0);">12:00 PM</a>
                                                                     </p>
                                                                     <span class="vertical-timeline-element-date"></span>
@@ -333,7 +333,7 @@
                                                                 </span>
                                                                 <div class="vertical-timeline-element-content bounce-in">
                                                                     <h4 class="timeline-title">All Hands Meeting</h4>
-                                                                    <p>Lorem ipsum dolor sic amet, today at 
+                                                                    <p>Lorem ipsum dolor sic amet, today at
                                                                         <a href="javascript:void(0);">12:00 PM</a>
                                                                     </p>
                                                                     <span class="vertical-timeline-element-date"></span>
@@ -411,7 +411,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="header-btn-lg pr-0">
                         <div class="widget-content p-0">
                             <div class="widget-content-wrapper">
@@ -441,18 +441,18 @@
                                             </div>
                                             <div class="scrollbar-container ps">
                                                 <ul class="nav flex-column">
-                                                    
+
                                                     <li class="nav-item-header nav-item">Personal</li>
                                                     <li class="nav-item">
                                                         <a href="<?php echo base_url('student/home/myProfile'); ?>" class="nav-link">My Profile</a>
                                                     </li>
-                                                    
+
                                                     <li class="nav-item-header nav-item">My Account</li>
-                                                    
+
                                                     <li class="nav-item">
                                                         <a href="<?php echo base_url('student/home/changePassword'); ?>" class="nav-link">Change Password</a>
                                                     </li>
-                                                    
+
                                                     <li class="nav-item-header nav-item">Project</li>
                                                     <li class="nav-item">
                                                         <a href="<?php echo base_url('student/home/myGroup'); ?>" class="nav-link">My Group</a>
@@ -460,7 +460,7 @@
                                                     <li class="nav-item">
                                                         <a href="<?php echo base_url('student/home/myRole'); ?>" class="nav-link">My Role</a>
                                                     </li>
-                                                    
+
                                                 </ul>
                                             </div>
                                         </div>
@@ -470,12 +470,12 @@
                         </div>
                     </div>
                     <div class="header-btn-lg">
-                    </div>        
+                    </div>
                 </div>
             </div>
         </div>
         <!-- end navbar -->
-        
+
         <!-- sidebar -->
         <div class="app-main">
             <div class="app-sidebar sidebar-shadow">
@@ -508,59 +508,41 @@
                             </span>
                         </button>
                     </span>
-                </div>    
+                </div>
                 <div class="scrollbar-sidebar">
                     <div class="app-sidebar__inner">
                         <ul class="vertical-nav-menu">
-                            <li class="app-sidebar__heading">Head UI</li>
-                            <li  class="<?php echo isset($mainContent) && $mainContent == 'student/home' && $subContent != 'home/myGroup' && $subContent != 'home/myRole' ? 'mm-active': '' ?>">
-                                <a href="#">
-                                    <i class="metismenu-icon pe-7s-rocket"></i>Dashboards
-                                    <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
-                                </a>
-                                <ul>
-                                    <li>
-                                        <a href="<?php echo base_url('student/home') ?>"  
-                                            class="<?php echo isset($subContent) 
-                                                && $subContent == 'home/index' 
-                                                || $subContent == 'home/capstoneDetails' 
-                                                || $subContent == 'home/viewDocumentPDF'  ? 'mm-active': '' ?> " >
-                                            <i class="metismenu-icon"></i>Home
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="<?php echo base_url('instructor/head/batch') ?>" class="<?php echo isset($subContent) && $subContent == 'head/batch' ? 'mm-active': '' ?> "
-                                            <i class="metismenu-icon"></i>Batch
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="" >
-                                            <i class="metismenu-icon">
-                                            </i>Sales
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="dashboards-crm.html" >
-                                            <i class="metismenu-icon"></i> CRM
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="app-sidebar__heading">Panel UI</li>
+                            <li class="app-sidebar__heading">Project UI</li>
                             <li>
-                                <a href="#">
-                                    <i class="metismenu-icon pe-7s-car"></i> Components
-                                    <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                <a href="<?php echo base_url('student/home') ?>"
+                                    class="<?php echo isset($subContent)
+                                        && $subContent == 'home/index'
+                                        || $subContent == 'home/capstoneDetails'
+                                        || $subContent == 'home/viewDocumentPDF'  ? 'mm-active': '' ?> btn-sm" >
+                                    <i class="metismenu-icon pe-7s-rocket"></i>
+                                    <i class="metismenu-icon"></i>Home
                                 </a>
-                                <ul>
-                                    <li>
-                                        <a href="components-tabs.html" >
-                                            <i class="metismenu-icon"></i>Tabs
-                                        </a>
-                                    </li>
-                                </ul>
                             </li>
-                            
+                            <li>
+                                <a href="<?php echo base_url('student/panel'); ?>"
+                                    class="<?php echo isset($subContent)
+                                        && $subContent == 'panel/index'
+                                        ? 'mm-active': '' ?>  btn-sm">
+                                    <i class="metismenu-icon pe-7s-rocket"></i>
+                                    Panel
+                                    <span class="badge badge-pill badge-primary">3</span>
+                                </a>
+                            </li>
+
+                            <li class="app-sidebar__heading">Student UI</li>
+                            <li>
+                                <li>
+                                    <a href="charts-chartjs.html" >
+                                        <i class="metismenu-icon pe-7s-graph2"></i>Grades
+                                    </a>
+                                </li>
+                            </li>
+
                             <li class="app-sidebar__heading">ADVISER UI</li>
                             <li>
                                 <a href="#">
@@ -600,4 +582,3 @@
                 </div>
             </div>
             <!-- end sidebar -->
-        

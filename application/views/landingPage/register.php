@@ -55,7 +55,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="form-row">
                                     <div class="col-md-6">
                                         <div class="position-relative form-group">
@@ -70,8 +70,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                
-                                
+
+
                                 <div class="mt-4 d-flex align-items-center">
                                     <h5 class="mb-0">Already have an account? <a href="<?php echo base_url('login'); ?>" class="text-primary">Sign in</a></h5>
                                     <div class="ml-auto">
@@ -89,7 +89,7 @@
                                 <div class="position-relative h-100 d-flex justify-content-center align-items-center bg-premium-dark"
                                     tabindex="-1">
                                     <div class="slide-img-bg"
-                                        style="background-image: url('assets/images/originals/citynights.jpg');"></div>
+                                        style="background-image: url('assets/images/originals/favicon.png');"></div>
                                     <div class="slider-content">
                                         <h3>Scalable, Modular, Consistent</h3>
                                         <p>Easily exclude the components you don't require. Lightweight, consistent

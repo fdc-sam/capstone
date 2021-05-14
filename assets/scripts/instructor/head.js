@@ -8,7 +8,7 @@ if (sub_content == 'head/batch') {
         for ( batch_description in CKEDITOR.instances )
         var batch_description = CKEDITOR.instances[batch_description].getData();
         // CKEDITOR.instances[batch_description].updateElement();
-        
+
         var batch_from = $('#batch_from').val();
         var batch_to = $('#batch_to').val();
         var batch_code = $('#batch_code').val();
@@ -29,7 +29,7 @@ if (sub_content == 'head/batch') {
                     var alertClass = `alert-warning`;
                     var alertMessege = `Batch was not created`;
                 }
-                
+
                 $('#alertMessege').html(`
                     <div class="alert alert-dismissible fade show ${alertClass}" role="alert">
                         <button type="button" class="close" aria-label="Close" data-dismiss="alert">
@@ -38,7 +38,7 @@ if (sub_content == 'head/batch') {
                         ${alertMessege}
                     </div>`
                 );
-                
+
                 console.log(data);
             },
             error: function(xhr, status, error){
@@ -56,7 +56,7 @@ if (sub_content == 'head/batch') {
             }
         });
     });
-    
+
     // get the batch data
     //teacher view
     var batchDataTable = $('#batchDataTable').DataTable({
@@ -78,7 +78,7 @@ if (sub_content == 'head/batch') {
         // ],
         "columns" : [
             {"data": "code"},
-            {"data": "batch_from"}, 
+            {"data": "batch_from"},
             {"data": "batch_to"},
             {
                 "data": "status",
@@ -118,27 +118,27 @@ if (sub_content == 'head/batch') {
                         </a>
                     `;
                     return btnReturn;
-                                        
+
                 }
             }
         ]
     });// end of the data table variable
-    
+
     // run the getBatchData()
     // getBatchData();
-    
+
     // edit
     $(document).on("click", ".btn-edit", function(e){
-        
+
         var batchData = JSON.stringify({
             id: jQuery(this).attr('batchId')
         });
         console.log(batchData);
     });
-    
+
     // activate
     $(document).on("click", ".btn-changeStatus", function(e){
-        
+
         var batchStatus = jQuery(this).attr('batchStatus');
         var batchData = {id:jQuery(this).attr('batchId'), batchStatus:batchStatus };
         // console.log(batchStatus);
@@ -153,7 +153,7 @@ if (sub_content == 'head/batch') {
             var batchMessageText = 'Please be advise the if you do this, the batch will be seen by the student registered to this batch';
             var batchBtnText = 'Yes, Activate it!';
         }
-        
+
         Swal.fire({
             title: batchMessageTitle,
             text: batchMessageText,
@@ -167,7 +167,7 @@ if (sub_content == 'head/batch') {
                 changeBatchStatus(batchData);
             }
         })
-        
+
         function changeBatchStatus(batchData) {
             $.ajax({
                 url:`${base_url}/instructor/head/changeBatchStatus`,
@@ -185,7 +185,7 @@ if (sub_content == 'head/batch') {
                     //     var alertClass = `alert-warning`;
                     //     var alertMessege = `Batch was not created`;
                     // }
-                    // 
+                    //
                     // $('#alertMessege').html(`
                     //     <div class="alert alert-dismissible fade show ${alertClass}" role="alert">
                     //         <button type="button" class="close" aria-label="Close" data-dismiss="alert">
@@ -196,7 +196,7 @@ if (sub_content == 'head/batch') {
                     // );
                     batchDataTable.ajax.reload();
                     console.log(batchData);
-                    
+
                 },
                 error: function(xhr, status, error){
                     $('#alertMessege').html(`
@@ -213,31 +213,31 @@ if (sub_content == 'head/batch') {
                 }
             });
         }
-        
+
     });
-    
+
     // deactivate
     $(document).on("click", ".btn-deactivate", function(e){
-        
+
         var batchData = JSON.stringify({
             id: jQuery(this).attr('batchId')
         });
-        
+
     });
-    
+
     // view
     $(document).on("click", ".btn-view", function(e){
-        
+
         var batchData = JSON.stringify({
             id: jQuery(this).attr('batchId')
         });
-        
+
     });
 }
 
 
 if (sub_content == 'head/viewStudent') {
-    
+
     var viewStudentBatchDataTable = $('#viewStudentBatchDataTable').DataTable({
         "responsive" : true,
         "processing" : true,
@@ -255,7 +255,7 @@ if (sub_content == 'head/viewStudent') {
                     return `${row.first_name} ${row.middle_name} ${row.last_name}`;
                 }
             },
-            {"data": "email"}, 
+            {"data": "email"},
             {
                 "data": "gender",
                 "render": function(data, type, row, meta){
@@ -282,7 +282,7 @@ if (sub_content == 'head/viewStudent') {
 
 
 if (sub_content == 'head/index') {
-    
+
     var instaructorDataTable = $('#getAllInstructor').DataTable({
         "responsive" : true,
         "processing" : true,
@@ -298,7 +298,7 @@ if (sub_content == 'head/index') {
                 "render": function(data, type, row, meta){
                     return `${row.first_name} ${row.middle_name} ${row.last_name}`;
                 }
-            }, 
+            },
             {
                 "data": "gender",
                 "render": function(data, type, row, meta){
@@ -342,13 +342,13 @@ if (sub_content == 'head/index') {
                         `;
                     }
                     return btnReturn;
-                                        
+
                 }
             }
         ]
     });// end of the data table variable
-    
-    
+
+
     $(document).on('click','.btn-changeStatus', function(){
         var activation = $(this).attr('activation');
         var userId = $(this).attr('userId');
@@ -401,44 +401,74 @@ if (sub_content == 'head/proposal') {
           "type" : "POST"
         },
         "columns" : [
-            {"data": "id"}, 
+            {"data": "id"},
             {"data": "thesis_group_name"},
             {"data": "groupPoposals"},
-            {"data": "groupMembers"},
+            {
+                "data": "assignedFlag",
+                "render": function(data, type, row, meta){
+                    if (data) {
+                        return  `
+                            <a href="${base_url}instructor/head/titleHearingDetails/${row.thesisGroupId}" class="badge badge-success mb-2 mr-2 btn  btn-sm">
+                                Pannelist Assigned
+                            </a>
+                            `;
+                    }else {
+                        return  `<div class="mb-2 mr-2 badge badge-danger">No Pannelist Assigne</div>`;
+                    }
+                }
+            },
             {"data": "proposalCreated"},
             {"data": "proposalModified"},
             {
                 "data": 'id',
                 "render": function(data, type, row, meta){
                     var btnReturn = '';
-                    
+
                     if (row.assigned_panelist_flag == 1) {
+                        // start bell button
                         btnReturn += `
-                            <a href="${base_url}/instructor/head/teamProposal/${row.thesisGroupId}" 
-                                class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-secondary" 
-                                activation="Deactivated" 
+                            <a href="${base_url}instructor/head/teamProposal/${row.thesisGroupId}"
+                                class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-secondary"
+                                activation="Deactivated"
+                                data-toggle="tooltip" data-placement="top" title="View Panelist Status">
+                                <i class="lnr lnr-alarm btn-icon-wrapper"> </i>
+                        `;
+                        if (row.countPanelistRejectTheGroup >= 1) {
+                            btnReturn += `<span class="badge badge-pill badge-danger">${row.countPanelistRejectTheGroup}</span>`;
+                        }
+
+                        btnReturn += `
+                            </a>
+                        `;
+                        // end bell button
+
+                        btnReturn += `
+                            <a href="${base_url}instructor/head/titleHearingEdit/${row.thesisGroupId}"
+                                class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary"
+                                activation="Deactivated"
                                 data-toggle="tooltip" data-placement="top" title="Add Panelist">
                                 <i class="lnr-users btn-icon-wrapper"> </i>
                             </a>
                         `;
                     }else{
                         btnReturn += `
-                            <a href="${base_url}instructor/head/assignPanelist/${row.thesisGroupId}" 
-                                class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary" 
-                                activation="Deactivated" 
+                            <a href="${base_url}instructor/head/titleHearingEdit/${row.thesisGroupId}"
+                                class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary"
+                                activation="Deactivated"
                                 data-toggle="tooltip" data-placement="top" title="Add Panelist">
                                 <i class="lnr-users btn-icon-wrapper"> </i>
                             </a>
                         `;
                     }
-                    
+
                     btnReturn += `
                         <a href="${base_url}instructor/head/proposalDetails/${row.thesisGroupId}" class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary" activation="Deactivated" data-toggle="tooltip" data-placement="top" title="View Proposal(s)">
                             <i class="lnr-eye btn-icon-wrapper"> </i>
                         </a>
                     `;
                     return btnReturn;
-                                        
+
                 }
             }
         ]
@@ -446,19 +476,19 @@ if (sub_content == 'head/proposal') {
 }
 
 if (sub_content == 'head/assignPanelist') {
-    
+
     // initialize select2
     var panelist = $("#panelist").select2({
         tags: "true",
         theme:"bootstrap4",
         placeholder: "Panelist here..."
     });
-    
+
     $('#assignPanelist').on('click', function(e){
         e.preventDefault();
-        var instructorIds = $("#panelist").val(); 
-        var thesisGroupId = $("#thesisGroupId").val(); 
-        
+        var instructorIds = $("#panelist").val();
+        var thesisGroupId = $("#thesisGroupId").val();
+
         $.ajax({
             url:`${base_url}instructor/head/assignPanelistToGroup`,
             type:'post',
@@ -475,11 +505,14 @@ if (sub_content == 'head/assignPanelist') {
                     var alertClass = `alert-success`;
                     var alertMessege = `Group member has successfully <b>Added</b>`;
                     panelist.val(null).trigger("change");
-                }else{
+                }else if(data.error && data.messsage == "panelist lessthan 3"){
+                    var alertClass = `alert-warning`;
+                    var alertMessege = `Panelist must have 3 or more`;
+                }else {
                     var alertClass = `alert-warning`;
                     var alertMessege = `Group member was not Added`;
                 }
-                
+
                 $('#message').html(`
                     <div class="alert alert-dismissible fade show ${alertClass}" role="alert">
                         <button type="button" class="close" aria-label="Close" data-dismiss="alert">
@@ -541,16 +574,15 @@ if (sub_content == 'head/teamProposal') {
         "serverSide" : true,
         "order": [[0,'asc']],
         "ajax" : {
-          "url" : `${base_url}/instructor/head/getProposalDetails`,
+          "url" : `${base_url}/instructor/head/getGroupPanelist`,
           "data":{thesisGroupId:thesisGroupId},
           "type" : "POST"
         },
         "columns" : [
-            {"data": "id"}, 
-            {"data": "title"},
-            {"data": "discreption"},
-            {"data": "created"},
-            {"data": "modified"},
+            {"data": "id"},
+            {"data": "panelistFullName"},
+            {"data": "reject_ression"},
+            {"data": "date_create"},
             {
                 "data": 'status',
                 "render": function(data, type, row, meta){
@@ -559,71 +591,70 @@ if (sub_content == 'head/teamProposal') {
                         badge = `<div class="badge badge-success ml-2">Approved</div>`;
                     }else  {
                         if (row.approvedFlag) {
-                            badge = `<div class="badge badge-danger ml-2">Rejected</div>`;
+                            badge = `<a href="asdasd"><div class="badge badge-danger ml-2">Rejected</div></a>`;
                         }else{
                             if (data == 0) {
                                 badge = `<div class="badge badge-warning ml-2">Pending</div>`;
                             }else if (data == 1) {
-                                badge = `<div class="badge badge-success ml-2">Approved</div>`;
+                                badge = `<div class="badge badge-success ml-2">Confirmed</div>`;
                             }else if (data == 2) {
-                                badge = `<div class="badge badge-danger ml-2">Rejected</div>`;
+                                badge = `<a href="${base_url}instructor/head/panelistReject/${row.id}" class="badge badge-danger ml-2 btn-shadow btn-danger btn-sm">
+                                        Rejected
+                                    </a>`;
                             }
                         }
-                        
                     }
-                    
                     return badge;
-                                        
                 }
             },
-            {
-                "data": 'status',
-                "render": function(data, type, row, meta){
-                    var btnReturn = '';
-                    if (data == 1) {
-                        var chagneStat = `Reject`;
-                        var btnStat = `btn-outline-danger`;
-                    }else if (data == 2) {
-                        var chagneStat = `Approve`;
-                        var btnStat = `btn-outline-primary`;
-                    }
-                    
-                    if (row.approvedFlag && data == 1) {
-                        btnReturn = `
-                            <button class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-danger" proposalId="${row.id}" activation="Reject" data-toggle="tooltip" data-placement="top" title="Reject">
-                                <i class="lnr-cross-circle btn-icon-wrapper"> </i>
-                            </button>
-                        `;
-                    }else if(!row.approvedFlag && data == 0){
-                        btnReturn = `
-                            <button class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary" proposalId="${row.id}" activation="Approve" data-toggle="tooltip" data-placement="top" title="Approve">
-                                <i class="lnr-checkmark-circle btn-icon-wrapper"> </i>
-                            </button>
-                            <button class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-danger" proposalId="${row.id}" activation="Reject" data-toggle="tooltip" data-placement="top" title="Reject">
-                                <i class="lnr-cross-circle btn-icon-wrapper"> </i>
-                            </button>
-                        `;
-                    }else if(!row.approvedFlag &&  data == 2){
-                        btnReturn = `
-                            <button class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary" proposalId="${row.id}" activation="Approve" data-toggle="tooltip" data-placement="top" title="Approve">
-                                <i class="lnr-checkmark-circle btn-icon-wrapper"> </i>
-                            </button>
-                        `;
-                    }
-                    
-                    btnReturn += `
-                        <button class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary" proposalId="${row.id}"  data-toggle="tooltip" data-placement="top" title="View">
-                            <i class="lnr-eye btn-icon-wrapper"> </i>
-                        </button>
-                    `;
-                    
-                    return btnReturn;
-                                        
-                }
-            }
+            // {
+            //     "data": 'status',
+            //     "render": function(data, type, row, meta){
+            //         var btnReturn = '';
+            //         if (data == 1) {
+            //             var chagneStat = `Reject`;
+            //             var btnStat = `btn-outline-danger`;
+            //         }else if (data == 2) {
+            //             var chagneStat = `Approve`;
+            //             var btnStat = `btn-outline-primary`;
+            //         }
+            //
+            //         if (row.approvedFlag && data == 1) {
+            //             btnReturn = `
+            //                 <button class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-danger" proposalId="${row.id}" activation="Reject" data-toggle="tooltip" data-placement="top" title="Reject">
+            //                     <i class="lnr-cross-circle btn-icon-wrapper"> </i>
+            //                 </button>
+            //             `;
+            //         }else if(!row.approvedFlag && data == 0){
+            //             btnReturn = `
+            //                 <button class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary" proposalId="${row.id}" activation="Approve" data-toggle="tooltip" data-placement="top" title="Approve">
+            //                     <i class="lnr-checkmark-circle btn-icon-wrapper"> </i>
+            //                 </button>
+            //                 <button class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-danger" proposalId="${row.id}" activation="Reject" data-toggle="tooltip" data-placement="top" title="Reject">
+            //                     <i class="lnr-cross-circle btn-icon-wrapper"> </i>
+            //                 </button>
+            //             `;
+            //         }else if(!row.approvedFlag &&  data == 2){
+            //             btnReturn = `
+            //                 <button class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary" proposalId="${row.id}" activation="Approve" data-toggle="tooltip" data-placement="top" title="Approve">
+            //                     <i class="lnr-checkmark-circle btn-icon-wrapper"> </i>
+            //                 </button>
+            //             `;
+            //         }
+            //
+            //         btnReturn += `
+            //             <button class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary" proposalId="${row.id}"  data-toggle="tooltip" data-placement="top" title="View">
+            //                 <i class="lnr-eye btn-icon-wrapper"> </i>
+            //             </button>
+            //         `;
+            //
+            //         return btnReturn;
+            //
+            //     }
+            // }
         ]
     });// end of the data table variable
-    
+
     $(document).on('click','.btn-changeStatus', function(){
         var activation = $(this).attr('activation');
         var proposalId = $(this).attr('proposalId');
@@ -680,7 +711,7 @@ if (sub_content == 'head/groups') {
           "type" : "POST"
         },
         "columns" : [
-            {"data": "id"}, 
+            {"data": "id"},
             {"data": "discreption"},
             {"data": "title"},
             {"data": "members"},
@@ -689,18 +720,18 @@ if (sub_content == 'head/groups') {
                 "render": function(data, type, row, meta){
                     var btnReturn = '';
                     btnReturn += `
-                        <button 
+                        <button
                             data-toggle="modal" data-target="#addAdviserModal"
-                            class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary" 
-                            activation="Deactivated" data-toggle="tooltip" 
-                            data-placement="top" 
+                            class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary"
+                            activation="Deactivated" data-toggle="tooltip"
+                            data-placement="top"
                             title="Assign Adviser"
                         >
                             <i class="fa fa-audio-description" aria-hidden="true"></i>
                         </button>
                     `;
                     return btnReturn;
-                                        
+
                 }
             }
         ]
@@ -731,7 +762,7 @@ if (sub_content == 'head/assignPanel') {
                 cache: true
             }
         });
-        
+
         // get all Groups
         $('.select2-group').select2({
             createTag: function () {
@@ -754,13 +785,13 @@ if (sub_content == 'head/assignPanel') {
                     return {
                         results:response
                     };
-                    
+
                 },
                 cache: true
             }
         });
-        
-        //  
+
+        //
         $('.select2-group').on('change', function(){
             var groupId = $('.select2-group').val();
             // console.log(`groupID: ${data}`);
@@ -785,22 +816,22 @@ if (sub_content == 'head/assignPanel') {
                 }
             });
         });
-        
-        // max limit of proposal 
+
+        // max limit of proposal
         var maxFields = 5;
         var x = 1;
         // add propose
         $(document).on('click','.addMoreProjectHearing',function(e) {
             e.preventDefault();
-            // count of proposal 
-            
+            // count of proposal
+
             var panelist = $('#panelist').val();
             var proposalTitles = $('#proposalTitles').html();
             var groupName = $('#groupName').val();
             var hearingDateTime = $('#hearingDateTime').val();
             var parsedDate = moment(hearingDateTime,"YYYY-MM-DD H m s");
-            
-            
+
+
             // foreach the id
             var panelistObj = new Object();
             panelist.forEach(myFunction);
@@ -808,19 +839,19 @@ if (sub_content == 'head/assignPanel') {
                 panelistObj[index] = item;
             }
             var panelistPost = JSON.stringify(panelistObj);
-            
-        
+
+
             if ( panelist.length == 0 || !proposalTitles || !groupName || !hearingDateTime) {
                 alert('Please Fill all Fields');
                 return;
             }
-            
+
             // font end
             var groupNameFont = $(".select2-group option:selected").text();
             var panelistNames = '';
             $("#panelist option:selected").each(function () {
                 var $this = $(this);
-                
+
                 if ($this.length == 0) {
                     alert('Please Fill all Fields');
                     return;
@@ -829,12 +860,12 @@ if (sub_content == 'head/assignPanel') {
                     panelistNames += `<span style="font-family: 'Arial'; font-size: 12pt; font-weight: bold;">${$this.text()},</span>`;
                 }
             });
-            
+
             var fontEndHearingDateTime = parsedDate.format("MMMM DD, YYYY  (hh:mm A)");
             console.log(fontEndHearingDateTime);
             $('#hearingDateTimeDis').html(fontEndHearingDateTime);
             $('#hearingDateTimePost').val(parsedDate.format("YYYY-MM-DD HH:MM:SS"));
-            
+
             // var date = new Date(`${hearingTime}`).toLocaleString('en-us',{month:'long', year:'numeric', day:'numeric'});
             // console.log(date);
             // return;
@@ -883,7 +914,7 @@ if (sub_content == 'head/assignPanel') {
                     </table>
                     <p>&nbsp;</p>
                 </div>`;
-                
+
                 if (x == 1) {
                     $('.tableContainer').html(`${output}`); //add input box
                 }else{
@@ -893,10 +924,10 @@ if (sub_content == 'head/assignPanel') {
             } else {
                 alert('You Reached the limits')
             }
-            
+
             // $('#countAvailableProposalLeft').html(x);
         });
-        
+
         $(document).on("click", ".removeProjectHearing", function(e) {
             e.preventDefault();
             $(this).parents('.table-wrapper').remove();
@@ -910,23 +941,23 @@ if (sub_content == 'head/assignPanel') {
             }
             // $('#countAvailableProposalLeft').html(x);
         });
-        
-        
+
+
         $('.btn-submit').on('click', function(){
-            
+
             // hearing date
             var hearingDateTimePost = $('#hearingDateTimePost').val();
-            
+
             // groupid
-            var groupNamePost = $('input[name="groupNamePost[]"]').map(function(){ 
-                return this.value; 
+            var groupNamePost = $('input[name="groupNamePost[]"]').map(function(){
+                return this.value;
             }).get();
-            
+
             // panelist json form
-            var panelistPost = $('textarea[name="panelistPost[]"]').map(function(){ 
-                return this.value; 
+            var panelistPost = $('textarea[name="panelistPost[]"]').map(function(){
+                return this.value;
             }).get();
-            
+
             if (panelistPost.length == 0) {
                 $('#message').html(`
                     <div class="alert alert-dismissible fade show alert-warning" role="alert">
@@ -937,7 +968,7 @@ if (sub_content == 'head/assignPanel') {
                     </div>
                 `);
             }
-            
+
             $.ajax({
                 url:`${base_url}/instructor/head/addProjectHearingSched`,
                 type:'post',
@@ -945,20 +976,25 @@ if (sub_content == 'head/assignPanel') {
                 data:{
                     groupId:groupNamePost,
                     panelistId:panelistPost,
-                    hearingDateTime:hearingDateTimePost
+                    hearingDateTime:hearingDateTimePost,
+                    editFlag:1
                 },
                 beforeSend: function() {
                     $('#loadingState').show();
                 },
                 success: function(data){
                     $('#loadingState').hide();
-                    if (!data.errorFlag) {
+                    if (!data.errorFlag && data.message != "panelist lessthan 3") {
                         var alertClass = `alert-success`;
                         var alertMessege = `Data successfully <b>Saved</b>`;
+                    }else if(data.errorFlag && data.message == "panelist lessthan 3"){
+                        var alertClass = `alert-warning`;
+                        var alertMessege = `Panelist must have 3 or more`;
                     }else{
                         var alertClass = `alert-warning`;
                         var alertMessege = `Error Data not save`;
                     }
+                    console.log(data);
                     $('#message').html(`
                         <div class="alert alert-dismissible fade show ${alertClass}" role="alert">
                             <button type="button" class="close" aria-label="Close" data-dismiss="alert">
@@ -972,18 +1008,16 @@ if (sub_content == 'head/assignPanel') {
                     $('#loadingState').hide();
                 }
             });
-            
-            console.log("here"+groupNamePost);
         });
     }); // doncument ready end
-    
+
 }
 
 
 if (sub_content == 'head/titleHearingEdit') {
     $(document).ready(function(){
         // get all instructor
-    
+
         $('.select2-panelist').select2({
             tags: true,
             theme:"bootstrap4",
@@ -1005,7 +1039,7 @@ if (sub_content == 'head/titleHearingEdit') {
                 }
             }
         });
-        
+
         // / Fetch the preselected item, and add to the control
         var panelistSelect = $('.select2-panelist');
         $.ajax({
@@ -1027,9 +1061,9 @@ if (sub_content == 'head/titleHearingEdit') {
                 });
             }
         });
-        
-        
-        
+
+
+
         // get all Groups
         $('.select2-group').select2({
             createTag: function () {
@@ -1044,7 +1078,7 @@ if (sub_content == 'head/titleHearingEdit') {
                 dataType: 'json',
                 data: function (data) {
                     return {
-                        searchTerm: data.term // search term 
+                        searchTerm: data.term // search term
                     };
                 },
                 processResults: function (response) {
@@ -1052,13 +1086,13 @@ if (sub_content == 'head/titleHearingEdit') {
                     return {
                         results:response
                     };
-                    
+
                 },
                 cache: true
             }
         });
-        
-        //  
+
+        //
         $('.select2-group').on('change', function(){
             var groupId = $('.select2-group').val();
             // console.log(`groupID: ${data}`);
@@ -1083,25 +1117,25 @@ if (sub_content == 'head/titleHearingEdit') {
                 }
             });
         });
-        
+
         $('#hearingDateTime').on('change',function(){
             var hearingDateTime = $('#hearingDateTime').val();
             console.log(hearingDateTime);
         });
-        
+
         $('#updatePanelist').on('click', function(){
             console.log();
             console.log();
-            
+
             // for date
             var hearingDateTime = $('#hearingDateTime').val();
             var parsedDate = moment(hearingDateTime,"YYYY-MM-DD H m s");
-            
-            
+
+
             var groupNamePost = $('#groupName').val();
             var panelistPost = $('#panelist').val();
             var hearingDateTimePost = parsedDate.format("YYYY-MM-DD HH:MM:SS");
-            
+
             if (panelistPost.length == 0) {
                 $('#message').html(`
                     <div class="alert alert-dismissible fade show alert-warning" role="alert">
@@ -1112,7 +1146,7 @@ if (sub_content == 'head/titleHearingEdit') {
                     </div>
                 `);
             }
-            
+
             $.ajax({
                 url:`${base_url}/instructor/head/addProjectHearingSched`,
                 type:'post',
@@ -1131,6 +1165,9 @@ if (sub_content == 'head/titleHearingEdit') {
                     if (!data.errorFlag) {
                         var alertClass = `alert-success`;
                         var alertMessege = `Data successfully <b>Saved</b>`;
+                    }else if(data.errorFlag && data.message == "panelist lessthan 3"){
+                        var alertClass = `alert-warning`;
+                        var alertMessege = `Panelist must have 3 or more`;
                     }else{
                         var alertClass = `alert-warning`;
                         var alertMessege = `Error Data not save`;
@@ -1148,9 +1185,9 @@ if (sub_content == 'head/titleHearingEdit') {
                     $('#loadingState').hide();
                 }
             });
-            
+
             console.log("here"+groupNamePost);
         });
     }); // doncument ready end
-    
+
 }

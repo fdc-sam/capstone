@@ -13,12 +13,12 @@
                             <a href="<?php echo base_url('instructor/head/proposal'); ?>" >Proposal</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a>Hearing Details Edit</a>
+                            <a>Hearing Details</a>
                         </li>
                     </ol>
                 </nav>
             </div>
-        </div>   
+        </div>
         <div class="" id="message"></div>
         <div class="tab-content">
             <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
@@ -26,19 +26,19 @@
                     <div class="col-lg-12 col-md-12">
                         <div class="main-card mb-3 card">
                             <div class="card-body">
-                                
+
                                 <div class="form-row">
     								<div class="col-md-12">
     									<div class="position-relative form-group">
     										<label for="" class=""> Hearing Date</label>
-                                            <?php  
-                                                    $timeStamp = date('Y-m-d\TH:i', strtotime($projectHearingDetail[0]['hearing_date'])); // yyyy-MM-dd'T'HH:mm:ss.SSSZ
+                                            <?php
+                                                    $timeStamp =isset($projectHearingDetail[0]['hearing_date'])? date('Y-m-d\TH:i', strtotime($projectHearingDetail[0]['hearing_date'])): ''; // yyyy-MM-dd'T'HH:mm:ss.SSSZ
                                             ?>
     										<input id="hearingDateTime" type="datetime-local" name="hearingDate" value="<?php echo $timeStamp; ?>" class="form-control proposeTitle" required>
     									</div>
     								</div>
     							</div>
-    
+
     							<form id="form-addMoreProjectHearing" class="" action="index.html" method="post">
     								<div class="form-row">
     									<div class="col-md-12">
@@ -50,12 +50,12 @@
     										</div>
     									</div>
     								</div>
-    								
+
     								<div class="form-row">
     									<div class="col-md-12">
     										<div class="position-relative form-group">
     											<ul id="proposalTitles" class="proposalTitles">
-    												
+
     											</ul>
     										</div>
     									</div>
@@ -65,18 +65,18 @@
     										<div class="position-relative form-group">
     											<label for="" class=""> Panelist</label>
     											<select id="panelist" class="select2-panelist form-control">
-                                                    
+
     		                                    </select>
     										</div>
     									</div>
     								</div>
     							</form>
-                                
+
                                 <div class="divider"></div>
                                 <div class="clearfix">
                                     <!-- <button type="button" id="reset-btn" class="btn-shadow float-left btn btn-link">Reset</button> -->
-                                    <button type="button" id="updatePanelist" class="btn-shadow btn-wide float-right btn-hover-shine btn btn-primary">Update</button>
-                                    <a href="<?php echo base_url('instructor/head/titleHearingDetails'); ?>"  class="btn-shadow float-right btn-wide mr-3 btn btn-outline-secondary">Cancel</a>
+                                    <button type="button" id="updatePanelist" class="btn-shadow btn-wide float-right btn-hover-shine btn btn-primary">Save</button>
+                                    <a href="<?php echo base_url('instructor/head/proposal'); ?>"  class="btn-shadow float-right btn-wide mr-3 btn btn-outline-secondary">Cancel</a>
                                 </div>
                             </div>
                         </div>

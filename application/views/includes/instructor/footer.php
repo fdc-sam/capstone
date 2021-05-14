@@ -4,7 +4,7 @@
 </html>
 
 
-<?php  
+<?php
 if ($subContent == 'head/groups') {
 	require_once(APPPATH.'elements/instructor/headModal.php');
 }
@@ -19,8 +19,8 @@ if ($subContent == 'head/groups') {
 
 	// set variables
 	var base_url = '<?php echo base_url()?>';
-	var main_content = '<?php echo isset($mainContent)? $mainContent : null ?>'; 
-	var sub_content =  '<?php echo isset($subContent)? $subContent : null ?>'; 
+	var main_content = '<?php echo isset($mainContent)? $mainContent : null ?>';
+	var sub_content =  '<?php echo isset($subContent)? $subContent : null ?>';
 </script>
 
 <?php if ($subContent == 'head/teamProposal'): ?>
@@ -46,16 +46,22 @@ if ($subContent == 'head/groups') {
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
 <?php endif; ?>
 
-<?php if ($mainContent == 'instructor/head'): ?>
+<!-- start -->
 	<script src="<?php echo base_url('assets/scripts/ckeditor/ckeditor.js'); ?>"></script>
 	<script src="<?php echo base_url('assets/scripts/jquery.dataTables.min.js'); ?>"></script>
-	<script src="<?php echo base_url('assets/scripts/instructor/head.js'); ?>"></script>
+	<?php if ($mainContent == 'instructor/head'): ?>
+		<script src="<?php echo base_url('assets/scripts/instructor/head.js'); ?>"></script>
+	<?php endif; ?>
+	<?php if ($mainContent == 'instructor/panel'): ?>
+		<script src="<?php echo base_url('assets/scripts/instructor/panel.js'); ?>"></script>
+	<?php endif; ?>
+
 	<script src="<?php echo base_url('assets/scripts/sweetalert2.js'); ?>"></script>
-<?php endif; ?>
+<!-- end -->
 
 <?php if ($mainContent == 'instructor/head'): ?>
 	<script type="text/javascript">
-	
+
 	// notifications
 	function notification(){
 		$.ajax({
@@ -74,7 +80,7 @@ if ($subContent == 'head/groups') {
 		});
 	}
 	notification();
-	
+
 	</script>
 <?php endif; ?>
 
@@ -124,17 +130,17 @@ $(document).ready(function(){
 										<div class="position-relative form-group">
 											<label for="" class=""> Group Name</label>
 											<select id="groupName" class="select2-group form-control">
-		                                        
+
 		                                    </select>
 										</div>
 									</div>
 								</div>
-								
+
 								<div class="form-row">
 									<div class="col-md-12">
 										<div class="position-relative form-group">
 											<ul id="proposalTitles" class="proposalTitles">
-												
+
 											</ul>
 										</div>
 									</div>
@@ -144,7 +150,7 @@ $(document).ready(function(){
 										<div class="position-relative form-group">
 											<label for="" class=""> Panelist</label>
 											<select id="panelist" multiple="multiple" class="select2-panelist form-control">
-		                                        
+
 		                                    </select>
 										</div>
 									</div>

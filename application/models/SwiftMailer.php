@@ -24,32 +24,32 @@ class SwiftMailer extends CI_Model {
         $message .= "<tr><td><strong>Your Verification Code:</strong> </td><td>" . $randstr . "</td></tr>";
         $message .= '</table>';
         $message .= '</body></html>';
-    */ 
+    */
     public function mailSend($from = null, $to = null, $subject = null, $headers = '', $message = ''){
         if (
-            isset($from) && 
-            isset($to) && 
-            isset($subject) && 
-            isset($headers) && 
+            isset($from) &&
+            isset($to) &&
+            isset($subject) &&
+            isset($headers) &&
             isset($message)
         ) {
             // Create the Transport
             $transport = (new Swift_SmtpTransport("smtp.gmail.com", 587, "tls"))
-            ->setUsername("samvillarta05@gmail.com")
-            ->setPassword("Sam09213364006");
-          
+            ->setUsername("samvillarta01@gmail.com")
+            ->setPassword("09213364006");
+
             // Create the Mailer using your created Transport
             $mailer = new Swift_Mailer($transport);
-      
+
             // Create a message
             $message = (new Swift_Message($subject))
             ->setFrom(['samvillarta05@gmail.com' => 'EVSU-OCC'])
             ->setTo([$to])
             ->setBody($message, 'text/html');
-      
+
             // Send the message
             $result = $mailer->send($message);
-          
+
             // set variables
             $resultArr = array(
                 'flag_email' => null,
@@ -60,13 +60,13 @@ class SwiftMailer extends CI_Model {
                     'flag_email' => true,
                     'output' => 'email_send'
                 );
-              
+
                 return $resultArr;
             }
         }
-        
+
         return false;
     }
- 
+
 
 }

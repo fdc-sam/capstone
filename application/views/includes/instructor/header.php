@@ -15,7 +15,7 @@
     <meta name="msapplication-tap-highlight" content="no">
 
     <link href="<?php echo base_url('assets/css/main.d810cf0ae7f39f28f336.css'); ?>  " rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="<?php echo base_url('assets/css/jquery.dataTables.min.css'); ?>" rel="stylesheet">
     <style media="screen">
         .notification:hover {
             color: #3b5998;
@@ -57,7 +57,7 @@
     	    </div>
     	</div>
     </div>
-    
+
     <div class="app-container app-theme-white body-tabs-shadow fixed-header fixed-sidebar">
         <!-- navbar -->
         <div class="app-header header-shadow">
@@ -90,11 +90,11 @@
                         </span>
                     </button>
                 </span>
-            </div>    
+            </div>
             <div class="app-header__content">
                 <div class="app-header-right">
                     <div class="header-dots">
-                        
+
                         <div class="dropdown">
                             <button type="button" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown"
                                 class="p-0 mr-2 btn btn-link">
@@ -120,7 +120,7 @@
                                             <div class="scrollbar-container">
                                                 <div class="p-3">
                                                     <div class="vertical-without-time vertical-timeline vertical-timeline--animate vertical-timeline--one-column" id="getNotifications">
-                                                        
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -136,7 +136,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="header-btn-lg pr-0">
                         <div class="widget-content p-0">
                             <div class="widget-content-wrapper">
@@ -229,12 +229,12 @@
                         </div>
                     </div>
                     <div class="header-btn-lg">
-                    </div>        
+                    </div>
                 </div>
             </div>
         </div>
         <!-- end navbar -->
-        
+
         <!-- sidebar -->
         <div class="app-main">
             <div class="app-sidebar sidebar-shadow">
@@ -267,7 +267,7 @@
                             </span>
                         </button>
                     </span>
-                </div>    
+                </div>
                 <div class="scrollbar-sidebar">
                     <div class="app-sidebar__inner">
                         <ul class="vertical-nav-menu">
@@ -285,41 +285,60 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a 
-                                                href="<?php echo base_url('instructor/head/batch') ?>" 
+                                            <a
+                                                href="<?php echo base_url('instructor/head/batch') ?>"
                                                 class="<?php echo isset($subContent) && $subContent == 'head/batch' || $subContent == 'head/viewStudent' ? 'mm-active': '' ?> "
                                             >
                                                 <i class="metismenu-icon"></i>Batch
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo base_url('instructor/head/proposal') ?>" 
-                                                class="<?php echo isset($subContent) 
-                                                    && $subContent == 'head/proposal' 
+                                            <a href="<?php echo base_url('instructor/head/proposal') ?>"
+                                                class="<?php echo isset($subContent)
+                                                    && $subContent == 'head/proposal'
                                                     || $subContent == 'head/proposalDetails'
                                                     || $subContent == 'head/assignPanel'
+                                                    || $subContent == 'head/titleHearingEdit'
+                                                    || $subContent == 'head/teamProposal'
                                                     || $subContent == 'head/titleHearingDetails' ? 'mm-active': '' ?> ">
                                                 <i class="metismenu-icon">
                                                 </i>Proposal
                                             </a>
                                         </li>
-                                        
+
                                     </ul>
                                 </li>
                             <?php endif; ?>
                             <li class="app-sidebar__heading">Panel UI</li>
-                            <li>
-                                <a href="<?php echo base_url('instructor/panel'); ?>" class="<?php echo isset($subContent) && $subContent == 'panel/index' ? 'mm-active': '' ?> ">
-                                    <i class="metismenu-icon pe-7s-note2"></i> Project Title Hearing
-                                    <div class="ml-auto badge badge-pill badge-info" id="badge-prohearing-count">8</div>
+                            <li class="<?php echo isset($mainContent) && $mainContent == 'instructor/panel' ? 'mm-active': '' ?>">
+                                <a href="#">
+                                    <i class="metismenu-icon pe-7s-note2"></i>Title Hearing
+                                    <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                 </a>
+                                <ul>
+                                    <li>
+                                        <a href="<?php echo base_url('instructor/panel'); ?>"
+                                            class="<?php echo isset($subContent)
+                                                && $subContent == 'panel/index'
+                                                || $subContent == 'panel/assignedGroupReject'
+                                                ? 'mm-active': '' ?>  btn-sm">
+                                            Assigned Group
+                                            <span class="badge badge-pill badge-primary">3</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="forms-layouts.html" class="btn-sm">
+                                            <i class="metismenu-icon"></i>Project Title Hearing
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                             <li>
                                 <a href="" >
                                     <i class="metismenu-icon pe-7s-graph2"></i>ChartJS
                                 </a>
                             </li>
-                            
+
                             <li class="app-sidebar__heading">ADVISER UI</li>
                             <li>
                                 <a href="#">
@@ -359,4 +378,3 @@
                 </div>
             </div>
             <!-- end sidebar -->
-        

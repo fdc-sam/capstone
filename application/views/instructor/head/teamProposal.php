@@ -1,5 +1,5 @@
 <div class="app-main__outer">
-    <div class="app-main__inner">    
+    <div class="app-main__inner">
     <div class="page-title-heading">
         <div>
             <div class="page-title-subheading opacity-10">
@@ -32,26 +32,24 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Title</th>
-                                <th>Discreption</th>
+                                <th>Name</th>
                                 <th>Created</th>
                                 <th>Modified</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                <!-- <th>Action</th> -->
                             </tr>
                         </thead>
                         <tbody>
-                            
+
                         </tbody>
                         <tfoot>
                             <tr>
                                 <th>ID</th>
-                                <th>Title</th>
-                                <th>Discreption</th>
+                                <th>Name</th>
                                 <th>Created</th>
                                 <th>Modified</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                <!-- <th>Action</th> -->
                             </tr>
                         </tfoot>
                     </table>

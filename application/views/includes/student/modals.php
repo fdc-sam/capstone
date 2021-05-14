@@ -17,14 +17,14 @@
             </div>
             <div class="modal-body">
                 <h5 class="card-title">Select Group Member's</h5>
-                <div class="" id="alertMessageModal"></div>       
+                <div class="" id="alertMessageModal"></div>
                 <select id="groupMember" class="form-control" multiple="multiple">
                     <?php foreach ($studentInfo as $key => $value): ?>
                         <?php $fullName = $value->first_name." ".$value->middle_name." ".$value->last_name; ?>
                         <option value="<?php echo $value->id ?>"><?php echo $fullName; ?></option>
                     <?php endforeach; ?>
                 </select>
-                
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -88,11 +88,11 @@
                 </div>
                 <div class="modal-footer">
                      <span>
-                         Remaining Proposal Left 
-                         <b> 
+                         Remaining Proposal Left
+                         <b>
                             <span id="countAvailableProposalLeft"> 0 </span>
-                            / 
-                            <span>5</span> 
+                            /
+                            <span>5</span>
                         </b>
                     </span>  |
                     <!-- <button type="button" class="btn btn-secondary "></button> -->
@@ -112,25 +112,16 @@
 <script type="text/javascript">
 	// set variables
 	var base_url = '<?php echo base_url()?>';
-	var main_content = '<?php echo isset($mainContent)? $mainContent : null ?>'; 
-	var sub_content =  '<?php echo isset($subContent)? $subContent : null ?>'; 
+	var main_content = '<?php echo isset($mainContent)? $mainContent : null ?>';
+	var sub_content =  '<?php echo isset($subContent)? $subContent : null ?>';
 </script>
-
-<?php if ($subContent == 'home/index'): ?>
-    <script src="<?php echo base_url('assets/scripts/ckeditor/ckeditor.js'); ?>"></script>
-	<script src="<?php echo base_url('assets/scripts/jquery.dataTables.min.js'); ?>"></script>
-	<script src="<?php echo base_url('assets/scripts/select2.min.js'); ?>"></script>
-	<script src="<?php echo base_url('assets/scripts/student/home.js'); ?>"></script>
-<?php endif; ?>
-
-<?php if ($subContent == 'home/capstoneDetails'): ?>
-	<script src="<?php echo base_url('assets/scripts/student/home.js'); ?>"></script>
-<?php endif; ?>
+<script src="<?php echo base_url('assets/scripts/ckeditor/ckeditor.js'); ?>"></script>
+<script src="<?php echo base_url('assets/scripts/jquery.dataTables.min.js'); ?>"></script>
+<script src="<?php echo base_url('assets/scripts/select2.min.js'); ?>"></script>
+<script src="<?php echo base_url('assets/scripts/student/home.js'); ?>"></script>
 
 <?php if ($subContent == 'home/viewDocumentPDF'): ?>
-    
-	<script src="<?php echo base_url('assets/scripts/student/home.js'); ?>"></script>
-    
+
     <!-- for pdf js -->
     <script type="text/javascript" src="https://unpkg.com/pdfobject@2.1.1/pdfobject.js"></script>
     <script type="text/javascript">
@@ -153,25 +144,25 @@
 <?php endif; ?>
 
 <?php if ($subContent == 'home/mySignature'): ?>
-    
+
     <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/south-street/jquery-ui.css" rel="stylesheet">
-    <link type="text/css" href="<?php echo base_url('assets/signature/css/jquery.signature.css') ?>" rel="stylesheet"> 
-    
+    <link type="text/css" href="<?php echo base_url('assets/signature/css/jquery.signature.css') ?>" rel="stylesheet">
+
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    
+
     <script type="text/javascript" src="<?php echo base_url('assets/signature/js/jquery.signature.min.js') ?>"></script>
     <script type="text/javascript">
-    
-    
+
+
     $.extend($.kbw.signature.options, {
         color: '#000000',
         background: "transparent"
     });
-    
+
     var sig = $('#sig').signature({syncField: '#signature64', syncFormat: 'PNG'});
     var sig = $('#sig').signature();
-    
+
     $('#clear').click(function(e) {
         e.preventDefault();
         sig.signature('clear');
@@ -180,6 +171,9 @@
     </script>
 <?php endif; ?>
 
+<?php if ($mainContent == 'student/panel'): ?>
+	<script src="<?php echo base_url('assets/scripts/student/panel.js'); ?>"></script>
+<?php endif; ?>
 
 <script type="text/javascript">
 $(document).ready(function(){
