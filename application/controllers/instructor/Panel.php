@@ -218,6 +218,26 @@ class Panel extends CI_Controller {
         );
     }
 
+
+    public function projectTitleHearing(){
+        // - get the user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+
+        $currentUserGroup = $this->getCurrentUserGroupDetails($data['userInfo']->id);
+
+        // - data
+        $data['currentUserGroup'] = $currentUserGroup->name;
+        $data['currentPageTitle'] = 'Head - Home';
+        $data['mainContent'] = 'instructor/panel';
+        $data['subContent'] = 'panel/projectTitleHearing';
+
+        // - load view
+        $this->load->view('includes/instructor/header',$data);
+		$this->load->view('instructor/panel/projectTitleHearing');
+		$this->load->view('includes/instructor/footer');
+    }
+
     // get any details function
     public function getCurrentUserGroupDetails($userId = null){
 
@@ -240,7 +260,126 @@ class Panel extends CI_Controller {
         return $currentUserGroup;
     }
 
+    public function viewProposal($panelistId = null, $groupId = null){
+        // - get the user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
 
+        $currentUserGroup = $this->getCurrentUserGroupDetails($data['userInfo']->id);
+
+        // - data
+        $data['currentUserGroup'] = $currentUserGroup->name;
+        $data['panelistId'] = $panelistId;
+        $data['groupId'] = $groupId;
+        $data['currentPageTitle'] = 'View Proposal';
+        $data['mainContent'] = 'instructor/panel';
+        $data['subContent'] = 'panel/viewProposal';
+
+        // - load view
+        $this->load->view('includes/instructor/header',$data);
+		$this->load->view('instructor/panel/viewProposal');
+		$this->load->view('includes/instructor/footer');
+    }
+
+
+    public function getProposalDetails(){
+        $post = $this->input->post();
+        // - get the user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+
+        $getProposalDetails = $this->universal->get(
+            true,
+            'thises',
+            '*',
+            'array',
+            array(
+                'thesis_group_id' => $post['groupId']
+            )
+        );
+
+        foreach ($getProposalDetails as $key => $value) {
+            $hasData = $this->universal->get(
+                true,
+                'thises_copy',
+                '*',
+                'array',
+                array(
+                    'thesis_group_id' => $post['groupId'],
+                    'panelist_id' => $data['userInfo']->id,
+                    'thises_id' => $value['id']
+                )
+            );
+
+            if ($hasData) {
+                // code...
+
+            }else{
+                
+                $insertDataToCoppy = $this->universal->insert(
+                    'thises_copy',
+                    array(
+                        'thises_id' => $value['id'],
+                        'panelist_id' => $data['userInfo']->id,
+                        'thesis_group_id' =>$post['groupId'],
+                        'title' => $value['title'],
+                        'discreption' => $value['discreption'],
+                        'limitations_of_the_studies' => $value['limitations_of_the_studies'],
+                        'design_development_plans' => $value['design_development_plans'],
+                        'created' => $value['created'],
+                        'modified' => $value['modified'],
+                        'status' => $value['status']
+                    )
+                );
+            }
+        }
+
+        // - variables from datatable
+        $post = $this->input->post();
+        $draw = $this->input->post('draw');
+        $length = $this->input->post('length');
+        $offset = $this->input->post('start');
+        $search = $this->input->post('search');
+        $order = $this->input->post('order');
+        $columns = $this->input->post('columns');
+
+        // order of the data pass
+        if(!empty($order)){
+            $setorder =  array($columns[$order[0]['column']]['data'] => $order[0]['dir']);
+        }else{
+            $setorder = array();
+        }
+
+        //search functionality
+        if(empty($search['value'])){
+            $like = array();
+        }else{
+            $like = array();
+        }
+
+        // get the teacher details to the database using the usniversal model
+        $proposalDetails = $this->universal->datatables(
+            'thises_copy',
+            '*',
+            array(
+                'thesis_group_id' => $post['groupId']
+            ),
+            array(),
+            array($length => $offset),
+            $setorder,
+            $like,
+            true
+        );
+
+        echo json_encode(
+            array(
+                'draw' => intval($draw),
+                "recordsTotal" => $proposalDetails['recordsTotal'],
+                "recordsFiltered" => $proposalDetails['recordsFiltered'],
+                "data" => $proposalDetails['data']
+            )
+        );
+    }
 
 
     // get any details function

@@ -46,6 +46,13 @@ if ($subContent == 'head/groups') {
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
 <?php endif; ?>
 
+<?php if ($subContent == 'panel/viewProposal'): ?>
+	<script type="text/javascript">
+		var groupId = "<?php echo $groupId ?>";
+		var panelistId = "<?php echo $panelistId ?>";
+	</script>
+<?php endif; ?>
+
 <!-- start -->
 	<script src="<?php echo base_url('assets/scripts/ckeditor/ckeditor.js'); ?>"></script>
 	<script src="<?php echo base_url('assets/scripts/jquery.dataTables.min.js'); ?>"></script>

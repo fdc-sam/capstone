@@ -321,13 +321,17 @@
                                             class="<?php echo isset($subContent)
                                                 && $subContent == 'panel/index'
                                                 || $subContent == 'panel/assignedGroupReject'
+                                                || $subContent == 'panel/viewProposal'
                                                 ? 'mm-active': '' ?>  btn-sm">
                                             Assigned Group
                                             <span class="badge badge-pill badge-primary">3</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="forms-layouts.html" class="btn-sm">
+                                        <a href="<?php echo base_url('instructor/panel/projectTitleHearing') ?>"
+                                            class="<?php echo isset($subContent)
+                                                && $subContent == 'panel/projectTitleHearing'
+                                                ? 'mm-active': '' ?>  btn-sm">
                                             <i class="metismenu-icon"></i>Project Title Hearing
                                         </a>
                                     </li>

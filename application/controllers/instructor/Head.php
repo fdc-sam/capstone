@@ -1547,8 +1547,6 @@ class Head extends CI_Controller {
 
     }
 
-
-
     // get any details function
     public function getGroupDetails($groupId = null){
         $groupDetails = $this->universal->get(
