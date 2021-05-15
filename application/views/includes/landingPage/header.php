@@ -16,7 +16,7 @@
     <!-- FB and twitter -->
     <meta property="og:title" content="Capstone Project">
     <meta property="og:description" content="A Proposed Web-Based Capstone Project Management System">
-    <meta property="og:image" content="<?php echo base_url('assets/images/originals/favicon.png'); ?>">
+    <meta property="og:image" content="<?php echo base_url('assets/images/originals/it_logo.png'); ?>">
     <meta property="og:url" content="<?php echo base_url('login'); ?>">
 
     <!-- Disable tap highlight on IE -->
