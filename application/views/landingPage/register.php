@@ -4,7 +4,10 @@
             <div class="h-100 no-gutters row">
                 <div class="h-100 d-md-flex d-sm-block bg-white justify-content-center align-items-center col-md-12 col-lg-8">
                     <div class="mx-auto app-login-box col-sm-12 col-md-10 col-lg-10">
-                        <div class="app-logo"></div>
+                        <!-- <div class="app-logo"></div> -->
+                        <h3>
+                            <div>A Proposed Web-Based Capstone Project Management System</div>
+                        </h3>
                         <h4>
                             <div>Welcome,</div>
                             <span>It only takes a <span class="text-success">few seconds</span> to create your account</span>
@@ -82,20 +85,38 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-lg-flex d-xs-none col-lg-4">
+                <div class="d-none d-lg-block col-lg-4">
                     <div class="slider-light">
-                        <div class="slick-slider slick-initialized">
+                        <div class="slick-slider">
                             <div>
-                                <div class="position-relative h-100 d-flex justify-content-center align-items-center bg-premium-dark"
-                                    tabindex="-1">
-                                    <div class="slide-img-bg"
-                                        style="background-image: url('assets/images/originals/favicon.png');"></div>
+                                <div class="position-relative h-100 d-flex justify-content-center align-items-center bg-tempting-evsu" tabindex="-1">
+                                    <div class="slide-img-bg" style="background-image: url(<?php echo base_url('assets/images/originals/it_logo.png'); ?>);"></div>
+                                    <!-- <div class="slider-content">
+                                        <h3>Perfect Balance</h3>
+                                        <p>ArchitectUI is like a dream. Some think it's too good to be true! Extensive
+                                            collection of unified React Boostrap Components and Elements.
+                                        </p>
+                                    </div> -->
+                                </div>
+                            </div>
+                            <div>
+                                <div class="position-relative h-100 d-flex justify-content-center align-items-center bg-tempting-evsu" tabindex="-1">
+                                    <div class="slide-img-bg" style="background-image: url(<?php echo base_url('assets/images/originals/favicon.png'); ?>);"></div>
                                     <div class="slider-content">
-                                        <h3>Scalable, Modular, Consistent</h3>
+                                        <!-- <h3>Scalable, Modular, Consistent</h3>
                                         <p>Easily exclude the components you don't require. Lightweight, consistent
                                             Bootstrap based styles across all elements and components
-                                        </p>
+                                        </p> -->
                                     </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="position-relative h-100 d-flex justify-content-center align-items-center bg-tempting-evsu" tabindex="-1">
+                                    <div class="slide-img-bg" style="background-image: url(<?php echo base_url('assets/images/originals/it_logo.png'); ?>);"></div>
+                                    <!-- <div class="slider-content">
+                                        <h3>Complex, but lightweight</h3>
+                                        <p>We've included a lot of components that cover almost all use cases for any type of application.</p>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>

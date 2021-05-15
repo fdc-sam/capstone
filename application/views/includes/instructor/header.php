@@ -328,7 +328,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="<?php echo base_url('instructor/panel/projectTitleHearing') ?>"
+                                        <a href=""
                                             class="<?php echo isset($subContent)
                                                 && $subContent == 'panel/projectTitleHearing'
                                                 ? 'mm-active': '' ?>  btn-sm">

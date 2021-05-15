@@ -172,7 +172,7 @@ $(document).ready(function(){
                         }else if(data == 1){
                             return `<div class="badge badge-success ml-2">Accept</div>`;
                         }else if(data == 2){
-                            return `<div class="badge badge-success ml-2">Reject</div>`;
+                            return `<div class="badge badge-danger ml-2">Reject</div>`;
                         }else{
                             return `<div class="badge badge-danger ml-2">Error</div>`;
                         }
@@ -184,29 +184,60 @@ $(document).ready(function(){
                         var btnReturn = '';
                         if (row.status == 0 ) {
                             // pending buttons
+                            // reject button
                             btnReturn += `
-                                <a href="${base_url}instructor/panel/assignedGroupReject/${data}/${row.group_id}" class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-danger" data-toggle="tooltip" data-placement="top" title="Reject">
+                                <button href="${base_url}instructor/panel/assignedGroupReject/${data}/${row.thesis_group_id}"
+                                    class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-danger"
+                                    data-toggle="tooltip"
+                                    data-placement="top"
+                                    changeStatusFlag="2"
+                                    thesisId="${row.thises_id}"
+                                    thesisGroupId="${row.thesis_group_id}"
+                                    title="Reject">
                                     <i class="lnr-cross-circle btn-icon-wrapper"> </i>
-                                </a>
+                                </button>
                             `;
+
+                            //  approved button
                             btnReturn +=  `
-                                <a href="${base_url}instructor/panel/assignedGroupAccept/${data}/${row.group_id}" class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Accept">
+                                <button href="${base_url}instructor/panel/approvedTitle/${data}/${row.thesis_group_id}"
+                                    class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary"
+                                    data-toggle="tooltip"
+                                    data-placement="top"
+                                    changeStatusFlag="1"
+                                    thesisId="${row.thises_id}"
+                                    thesisGroupId="${row.thesis_group_id}"
+                                    title="Accept">
                                     <i class="lnr-checkmark-circle btn-icon-wrapper"> </i>
-                                </a>
+                                </button>
                             `;
                         }else if(row.status == 1){
                             // reject button
                             btnReturn += `
-                                <a href="${base_url}instructor/panel/assignedGroupReject/${data}/${row.group_id}" class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-danger" data-toggle="tooltip" data-placement="top" title="Reject">
+                                <button href="${base_url}instructor/panel/assignedGroupReject/${data}/${row.thesis_group_id}"
+                                    class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-danger"
+                                    data-toggle="tooltip"
+                                    data-placement="top"
+                                    changeStatusFlag="2"
+                                    thesisId="${row.thises_id}"
+                                    thesisGroupId="${row.thesis_group_id}"
+                                    title="Reject">
                                     <i class="lnr-cross-circle btn-icon-wrapper"> </i>
-                                </a>
+                                </button>
                             `;
                         }else if(row.status == 2){
-                            // accept button
+                            // approved button
                             btnReturn +=  `
-                                <a  href="${base_url}instructor/panel/assignedGroupAccept/${data}/${row.group_id}" class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Accept">
+                                <button  href="${base_url}instructor/panel/assignedGroupAccept/${data}/${row.thesis_group_id}"
+                                    class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary"
+                                    data-toggle="tooltip"
+                                    data-placement="top"
+                                    changeStatusFlag="1"
+                                    thesisId="${row.thises_id}"
+                                    thesisGroupId="${row.thesis_group_id}"
+                                    title="Accept">
                                     <i class="lnr-checkmark-circle btn-icon-wrapper"> </i>
-                                </a>
+                                </button>
                             `;
                         }
                         return btnReturn;
@@ -215,5 +246,48 @@ $(document).ready(function(){
                 }
             ]
         });// end of the data table variable
+
+        // chagneStat
+        $(document).on('click', '.btn-changeStatus ', function(e){
+            e.preventDefault();
+            var changeStatusFlag = $(this).attr('changeStatusFlag');
+            var thesisGroupId = $(this).attr('thesisGroupId');
+            var thesisId = $(this).attr('thesisId');
+            console.log(changeStatusFlag);
+            $.ajax({
+                url:`${base_url}/instructor/panel/thesisChangeStatus`,
+                type:'post',
+                dataType:'json',
+                data:{
+                    changeStatusFlag:changeStatusFlag,
+                    thesisGroupId:thesisGroupId,
+                    thesisId:thesisId,
+                },
+                beforeSend: function() {
+                    $('#loadingState').show();
+                },
+                success: function(data){
+                    console.log(data);
+                    if (!data.error) {
+                        Swal.fire(
+                            'INFO!',
+                            'Updated',
+                            'success'
+                        )
+                    }else{
+                        Swal.fire(
+                            'Error! ',
+                            'Something went wrong',
+                            'error'
+                        )
+                    }
+
+                },
+                complete: function(){
+                    $('#loadingState').hide();
+                    getProposalDetailDatatable.ajax.reload();
+                }
+            });
+        })
     }
 });

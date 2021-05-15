@@ -6,8 +6,13 @@
                 <nav class="" aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a>
+                            <a href="<?php echo base_url('instructor/panel'); ?>">
                                 <i aria-hidden="true" class="fa fa-home"></i>
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a>
+                                View Proposals
                             </a>
                         </li>
                     </ol>

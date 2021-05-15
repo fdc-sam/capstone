@@ -315,7 +315,7 @@ class Panel extends CI_Controller {
                 // code...
 
             }else{
-                
+
                 $insertDataToCoppy = $this->universal->insert(
                     'thises_copy',
                     array(
@@ -380,6 +380,37 @@ class Panel extends CI_Controller {
             )
         );
     }
+
+    public function thesisChangeStatus(){
+        $post = $this->input->post();
+        $hangeStatusFlag = $post['changeStatusFlag'];
+        $thesisGroupId = $post['thesisGroupId'];
+        $thesisId = $post['thesisId'];
+
+        $data['userInfo'] = $this->ion_auth->user()->row();
+
+        $output = array('error' => true);
+        $update = $this->universal->update(
+            'thises_copy',
+            array(
+                'status' => $hangeStatusFlag
+            ),
+            array(
+                'thesis_group_id' => $thesisGroupId,
+                'thises_id' => $thesisId,
+                'panelist_id' => $data['userInfo']->id
+            )
+        );
+        if ($update) {
+            $output = array(
+                'error' => false
+            );
+        }
+        
+        echo json_encode($output);
+    }
+
+
 
 
     // get any details function
