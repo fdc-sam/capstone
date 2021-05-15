@@ -9,7 +9,15 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title><?php echo isset($currentPageTitle)? $currentPageTitle: 'Capstone'; ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
-    <meta name="description" content="ArchitectUI HTML Bootstrap 4 Dashboard Template">
+
+    <meta name="description" content="A Proposed Web-Based Capstone Project Management System">
+
+
+    <!-- FB and twitter -->
+    <meta property="og:title" content="Capstone Project">
+    <meta property="og:description" content="A Proposed Web-Based Capstone Project Management System">
+    <meta property="og:image" content="<?php echo base_url('assets/images/originals/favicon.png'); ?>">
+    <meta property="og:url" content="<?php echo base_url('login'); ?>">
 
     <!-- Disable tap highlight on IE -->
     <meta name="msapplication-tap-highlight" content="no">
