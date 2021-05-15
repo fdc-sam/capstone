@@ -272,7 +272,7 @@
                     <div class="app-sidebar__inner">
                         <ul class="vertical-nav-menu">
                             <?php if (isset($mainContent) && $mainContent == 'instructor/head' || $currentUserGroup == 'IT head'): ?>
-                                <li class="app-sidebar__heading">Head UI</li>
+                                <li class="app-sidebar__heading">Instructor</li>
                                 <li  class="<?php echo isset($mainContent) && $mainContent == 'instructor/head' ? 'mm-active': '' ?>">
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-rocket"></i>Dashboards
@@ -309,7 +309,7 @@
                                     </ul>
                                 </li>
                             <?php endif; ?>
-                            <li class="app-sidebar__heading">Panel UI</li>
+                            <li class="app-sidebar__heading">Panelist</li>
                             <li class="<?php echo isset($mainContent) && $mainContent == 'instructor/panel' ? 'mm-active': '' ?>">
                                 <a href="#">
                                     <i class="metismenu-icon pe-7s-note2"></i>Title Hearing
@@ -343,7 +343,7 @@
                                 </a>
                             </li>
 
-                            <li class="app-sidebar__heading">ADVISER UI</li>
+                            <li class="app-sidebar__heading">Adviser</li>
                             <li>
                                 <a href="#">
                                     <i class="metismenu-icon pe-7s-light"></i> Elements
