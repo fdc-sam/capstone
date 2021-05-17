@@ -1,6 +1,5 @@
 <div class="app-main__outer">
     <div class="app-main__inner">
-
         <div>
             <div class="page-title-subheading opacity-10">
                 <nav class="" aria-label="breadcrumb">
@@ -39,6 +38,7 @@
                                 <th>Group Name</th>
                                 <th>Proposal</th>
                                 <th>Panelist Status</th>
+                                <th>Chairman</th>
                                 <th>Created</th>
                                 <th>Modified</th>
                                 <th>Action</th>
@@ -53,6 +53,7 @@
                                 <th>Group Name</th>
                                 <th>Proposal</th>
                                 <th>Panelist Status</th>
+                                <th>Chairman</th>
                                 <th>Created</th>
                                 <th>Modified</th>
                                 <th>Action</th>

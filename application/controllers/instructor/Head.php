@@ -542,7 +542,9 @@ class Head extends CI_Controller {
                 $countPanelist = 0;
                 if ($newKey != $thisesGroup['id']) {
                     $assignedPanelist = $this->getAssignedPanelist($thisesGroup['id']);
-                    if ($assignedPanelist) {
+                    // pre($assignedPanelist);
+                    // die();
+                    if (isset($assignedPanelist) && $assignedPanelist && $assignedPanelist != null) {
                         $instructors = json_decode($assignedPanelist->instructor_id);
                         $countPanelist = count($instructors);
                         if ($countPanelist > 1) {
@@ -562,6 +564,39 @@ class Head extends CI_Controller {
                         $countPanelistRejectTheGroup = count($panelistRejectTheGroup);
                     }
 
+                    // get the chairman og the panel
+                    $getChairman =  $this->universal->get(
+                        true,
+                        'project_title_hearing AS PTH',
+                        'U.*, PTH.group_id',
+                        'row',
+                        array(
+                            'PTH.group_id' => $thisesGroup['id'],
+                            'PTH.chairman_flag' => 1
+                        ),
+                        array(),
+                        array(
+                            'users AS U' => 'U.id = PTH.panelist_id'
+                        )
+                    );
+
+                    if (isset($getChairman) && $getChairman) {
+                        $chairmanFullname = $getChairman->first_name.' '.$getChairman->middle_name.' '.$getChairman->last_name;
+                        $chairmanBtn ='
+
+                            <a href="'.base_url('instructor/head/chairman/'.$thisesGroup['id'].'/'.$getChairman->id).'">
+                                '.$chairmanFullname.'
+                            </a>
+                        ';
+                        $thisesGroup['chairman'] = $chairmanBtn;
+                    }else{
+                        $chairmanBtn ='
+                            <a href="'.base_url('instructor/head/chairman/'.$thisesGroup['id']).'">
+                                <div class="mb-2 mr-2 badge badge-danger">No C  hairman Assigne</div>
+                            </a>
+                        ';
+                        $thisesGroup['chairman'] = $chairmanBtn;
+                    }
 
                     if (isset($thisesGroup['groupPoposals'])) {
                         $thisesGroup['countPanelistRejectTheGroup'] =  $countPanelistRejectTheGroup;
@@ -584,6 +619,68 @@ class Head extends CI_Controller {
                 "data" => $data['data']
             )
         );
+    }
+
+    public function chairman($thisesGroup = null, $panelistId = null){
+        // - get the user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+
+        $panelists = $this->getProjectHearingDetails($thisesGroup);
+        $panelistDetails = array();
+        if (isset($panelists) && $panelists) {
+            foreach ($panelists as $key => $panelist) {
+                $panelistDetails[] = $this->getPanelistDetails($panelist['panelist_id']);
+            }
+        }
+
+
+        // pre($panelistDetails);
+        // die();
+        // - data
+        $data['panelistId'] = isset($panelistId)? $panelistId : null;
+        $data['panelistDetails'] = $panelistDetails;
+        $data['thisesGroup'] = $thisesGroup;
+        $data['currentPageTitle'] = 'Team Proposal';
+        $data['mainContent'] = 'instructor/head';
+        $data['subContent'] = 'head/chairman';
+
+        // - load view
+        $this->load->view('includes/instructor/header',$data);
+		$this->load->view('instructor/head/chairman');
+		$this->load->view('includes/instructor/footer');
+    }
+
+    public function addChairman(){
+        $post = $this->input->post();
+
+
+        if ($post['oldChairman']) {
+            $updateOldChairman = $this->universal->update(
+                'project_title_hearing',
+                array(
+                    'chairman_flag' => 0,
+                    'date_modified' => date('Y-m-d H:i:s')
+                ),
+                array(
+                    'panelist_id' => $post['oldChairman'],
+                    'group_id' => $post['thisesGroup']
+                )
+            );
+        }
+
+        $updateChairman = $this->universal->update(
+            'project_title_hearing',
+            array(
+                'chairman_flag' => 1,
+                'date_modified' => date('Y-m-d H:i:s')
+            ),
+            array(
+                'panelist_id' => $post['panelist'],
+                'group_id' => $post['thisesGroup']
+            )
+        );
+
+        redirect(base_url('instructor/head/proposal') , 'refresh');
     }
 
     public function proposalDetails($thesisGroupId = null){
@@ -1075,11 +1172,13 @@ class Head extends CI_Controller {
             );
             if ($deltePanelist) {
                 foreach ($posts['panelistId'] as $key => $panelistId) {
+
                     $projectTitleHearing = $this->universal->insert(
                         'project_title_hearing',
                         array(
                             'group_id' => $posts['groupId'],
                             'panelist_id' => $panelistId,
+                            'chairman_flag' => $chairmanFlag,
                             'hearing_date' => $hearingDateTime,
                             'date_create' => $currentDate,
                             'date_modified' => $currentDate
@@ -1105,6 +1204,7 @@ class Head extends CI_Controller {
                         array(
                             'group_id' => $groupId,
                             'panelist_id' => $panelistId,
+                            'chairman_flag' => $chairmanFlag,
                             'hearing_date' => $hearingDateTime,
                             'date_create' => $currentDate,
                             'date_modified' => $currentDate

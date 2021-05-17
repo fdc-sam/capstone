@@ -418,6 +418,7 @@ if (sub_content == 'head/proposal') {
                     }
                 }
             },
+            {"data": "chairman"},
             {"data": "proposalCreated"},
             {"data": "proposalModified"},
             {

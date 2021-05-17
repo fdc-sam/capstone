@@ -265,8 +265,56 @@ class Panel extends CI_Controller {
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
 
+        $get = $this->input->get();
+        if (isset($get['errorFlag'])) {
+            // pre($get['errorFlag']);
+            // die();
+            if (!$get['errorFlag']) {
+                $data['message'] = "Project Title Approved";
+            }else{
+                $data['message'] = "Something Went Wrong";
+            }
+        }
+
         $currentUserGroup = $this->getCurrentUserGroupDetails($data['userInfo']->id);
 
+        // if current user is chairman
+        $getChairman = $this->universal->get(
+            true,
+            'project_title_hearing',
+            '*',
+            'row',
+            array(
+                'chairman_flag' => 1,
+                'panelist_id' => $panelistId,
+                'group_id' => $groupId
+            )
+        );
+
+        $data['chairmanFlag'] = false;
+        if (isset($getChairman) && $getChairman) {
+            $data['chairmanFlag'] = true;
+        }
+
+        // approved flagging
+        $approvedFlagging = $this->universal->get(
+            true,
+            'thises',
+            '*',
+            'row',
+            array(
+                'thesis_group_id' => $groupId,
+                'status' => 1
+            )
+        );
+
+        if (isset($approvedFlagging) && $approvedFlagging) {
+            $data['approvedProposalDetails'] = array(
+                'approvedFlag' => 1,
+                'approvedProposalDetails' => $approvedFlagging
+            );
+        }
+        
         // - data
         $data['currentUserGroup'] = $currentUserGroup->name;
         $data['panelistId'] = $panelistId;
@@ -281,6 +329,66 @@ class Panel extends CI_Controller {
 		$this->load->view('includes/instructor/footer');
     }
 
+    public function approvedProposal($groupId = null){
+        $data['userInfo'] = $this->ion_auth->user()->row();
+
+        // if current user is chairman
+        $getAllProjects = $this->universal->get(
+            true,
+            'thises',
+            '*',
+            'array',
+            array(
+                'thesis_group_id' => $groupId
+            )
+        );
+        $arr = array();
+        foreach ($getAllProjects as $key => $getAllProject) {
+            // get all count
+            $getChairman = $this->universal->get(
+                true,
+                'thises_copy',
+                'panelist_id, thises_id, count(id) AS count',
+                'row',
+                array(
+                    'status' => 1,
+                    'thesis_group_id' => $groupId,
+                    'thises_id' => $getAllProject['id']
+                )
+            );
+            $arr[] = $getChairman;
+        }
+
+        foreach ($arr as $key => $value) {
+
+            if (isset($arr[$key+1]) && $arr[$key+1]) {
+                if ($value->count >= $arr[$key+1]) {
+                    $thises_id = $value->thises_id;
+                }else{
+                    $thises_id = $arr[$key+1]->thises_id;
+                }
+            }
+
+        }
+
+        $approvedProposal = $this->universal->update(
+            'thises',
+            array(
+                'status' => 1
+            ),
+            array(
+                'id' => $thises_id
+            )
+        );
+
+        $errorFlag = 1;
+        if (isset($approvedProposal) && $approvedProposal) {
+            $errorFlag = 0;
+        }
+
+        redirect(base_url('instructor/panel/viewProposal/'.$data['userInfo']->id.'/'.$groupId.'?errorFlag='.$errorFlag),'refresh');
+    }
+
 
     public function getProposalDetails(){
         $post = $this->input->post();
@@ -288,51 +396,65 @@ class Panel extends CI_Controller {
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
 
-        $getProposalDetails = $this->universal->get(
+        $getAllPanelists = $this->universal->get(
             true,
-            'thises',
+            'project_title_hearing',
             '*',
             'array',
             array(
-                'thesis_group_id' => $post['groupId']
+                'group_id' => $post['groupId']
             )
         );
 
-        foreach ($getProposalDetails as $key => $value) {
-            $hasData = $this->universal->get(
+        foreach ($getAllPanelists as $key => $getAllPanelist) {
+            $getProposalDetails = $this->universal->get(
                 true,
-                'thises_copy',
+                'thises',
                 '*',
                 'array',
                 array(
-                    'thesis_group_id' => $post['groupId'],
-                    'panelist_id' => $data['userInfo']->id,
-                    'thises_id' => $value['id']
+                    'thesis_group_id' => $post['groupId']
                 )
             );
 
-            if ($hasData) {
-                // code...
-
-            }else{
-
-                $insertDataToCoppy = $this->universal->insert(
+            foreach ($getProposalDetails as $key => $value) {
+                $hasData = $this->universal->get(
+                    true,
                     'thises_copy',
+                    '*',
+                    'array',
                     array(
-                        'thises_id' => $value['id'],
-                        'panelist_id' => $data['userInfo']->id,
-                        'thesis_group_id' =>$post['groupId'],
-                        'title' => $value['title'],
-                        'discreption' => $value['discreption'],
-                        'limitations_of_the_studies' => $value['limitations_of_the_studies'],
-                        'design_development_plans' => $value['design_development_plans'],
-                        'created' => $value['created'],
-                        'modified' => $value['modified'],
-                        'status' => $value['status']
+                        'thesis_group_id' => $post['groupId'],
+                        'panelist_id' => $getAllPanelist['panelist_id'],
+                        'thises_id' => $value['id']
                     )
                 );
+
+                if ($hasData) {
+                    // code...
+
+                }else{
+
+                    $insertDataToCoppy = $this->universal->insert(
+                        'thises_copy',
+                        array(
+                            'thises_id' => $value['id'],
+                            'panelist_id' => $getAllPanelist['panelist_id'],
+                            'thesis_group_id' =>$post['groupId'],
+                            'title' => $value['title'],
+                            'discreption' => $value['discreption'],
+                            'limitations_of_the_studies' => $value['limitations_of_the_studies'],
+                            'design_development_plans' => $value['design_development_plans'],
+                            'created' => $value['created'],
+                            'modified' => $value['modified'],
+                            'status' => $value['status']
+                        )
+                    );
+                }
             }
         }
+
+
 
         // - variables from datatable
         $post = $this->input->post();
@@ -362,7 +484,8 @@ class Panel extends CI_Controller {
             'thises_copy',
             '*',
             array(
-                'thesis_group_id' => $post['groupId']
+                'thesis_group_id' => $post['groupId'],
+                'panelist_id' => $data['userInfo']->id
             ),
             array(),
             array($length => $offset),
@@ -406,7 +529,7 @@ class Panel extends CI_Controller {
                 'error' => false
             );
         }
-        
+
         echo json_encode($output);
     }
 
