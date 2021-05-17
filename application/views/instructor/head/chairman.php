@@ -54,8 +54,8 @@
                                                 <h4>Please Assigne Panelist before assigning Chairman</h4>
                                             <?php endif; ?>
     									</div>
-                                        <input type="text" name="oldChairman" value="<?php echo $panelistId ?>">
-                                        <input type="text" name="thisesGroup" value="<?php echo $thisesGroup ?>">
+                                        <input type="hidden" name="oldChairman" value="<?php echo $panelistId ?>">
+                                        <input type="hidden" name="thisesGroup" value="<?php echo $thisesGroup ?>">
     								</div>
 
 
