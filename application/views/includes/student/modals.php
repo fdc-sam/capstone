@@ -145,11 +145,11 @@
 
 <?php if ($subContent == 'home/mySignature'): ?>
 
-    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/south-street/jquery-ui.css" rel="stylesheet">
+    <link type="text/css" href="<?php echo base_url('assets/signature/css/jquery-ui.css') ?>" rel="stylesheet">
     <link type="text/css" href="<?php echo base_url('assets/signature/css/jquery.signature.css') ?>" rel="stylesheet">
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="<?php echo base_url('assets/signature/js/jquery.min.js') ?>"></script>
+    <script src="<?php echo base_url('assets/signature/js/jquery-ui.min.js') ?>"></script>
 
     <script type="text/javascript" src="<?php echo base_url('assets/signature/js/jquery.signature.min.js') ?>"></script>
     <script type="text/javascript">
