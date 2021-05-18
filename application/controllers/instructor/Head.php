@@ -546,7 +546,7 @@ class Head extends CI_Controller {
                     // die();
                     if (isset($assignedPanelist) && $assignedPanelist && $assignedPanelist != null) {
                         $instructors = json_decode($assignedPanelist->instructor_id);
-                        $countPanelist = count($instructors);
+                        $countPanelist = isset($instructors)? count($instructors): 0;
                         if ($countPanelist > 1) {
                             $assignedFlag = true;
                         }
