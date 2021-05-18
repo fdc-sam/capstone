@@ -381,6 +381,8 @@ class Panel extends CI_Controller {
         }
 
         foreach ($arr as $key => $value) {
+
+            if (isset($arr[$key]) && $arr[$key]) {
                 if (isset($arr[$key+1]) && $arr[$key+1]) {
                     if ($value->count >= $arr[$key+1]) {
                         $thises_id = $value->thises_id;
@@ -390,8 +392,10 @@ class Panel extends CI_Controller {
                 }else{
                     $thises_id = $value->thises_id;
                 }
+            }
         }
-        
+        pre($thises_id);
+        die();
         $approvedProposal = $this->universal->update(
             'thises',
             array(
