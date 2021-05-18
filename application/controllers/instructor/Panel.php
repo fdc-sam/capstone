@@ -370,7 +370,12 @@ class Panel extends CI_Controller {
                     'status' => 1,
                     'thesis_group_id' => $groupId,
                     'thises_id' => $getAllProject['id']
-                )
+                ),
+                array(),
+                array(),
+                array(),
+                array(),
+                array('id')
             );
             $arr[] = $getChairman;
         }
