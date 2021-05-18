@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Home extends CI_Controller {
-    
+
     public $data = [];
 
 	public function __construct(){
@@ -13,37 +13,37 @@ class Home extends CI_Controller {
 		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
 		$this->lang->load('auth');
-        
+
         // - login verificaion
         if (!$this->ion_auth->logged_in()){
 			// redirect them to the login page
 			redirect('login', 'refresh');
 		}
 	}
-    
+
 	public function index(){
         // get the current user information
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
-        
-        // get the current user batch code 
+
+        // get the current user batch code
         $data['currentUserBatchCodeId'] = $this->getStudentBatchCodeId($data['userInfo']->email);
-        
-        // get all user 
+
+        // get all user
         $data['studentInfo'] = $this->getStudent($data['currentUserBatchCodeId']);
-        
+
         // - data
         $data['currentPageTitle'] = 'Student - Home';
         $data['mainContent'] = 'student/home';
         $data['subContent'] = 'home/index';
-        
+
         $this->load->view('includes/student/header',$data);
 		$this->load->view('student/index');
 		$this->load->view('includes/student/footer');
         $this->load->view('includes/student/modals');
 	}
-    
-    // get the current user batch code 
+
+    // get the current user batch code
     public function getStudentBatchCodeId($email = null){
         $currentUserBatchCode = $this->universal->get(
             true,
@@ -56,13 +56,13 @@ class Home extends CI_Controller {
         );
         return isset($currentUserBatchCode->batch_id)? $currentUserBatchCode->batch_id:null;
     }
-    
+
     // get all student
     public function getStudent($currentUserBatchCodeId = null){
-        
+
         // get the current user information
         $data['userInfo'] = $this->ion_auth->user()->row();
-        
+
         $getAllBatchStudent = $this->universal->get(
             true,
             'batch_connect AS batchConnect',
@@ -77,47 +77,47 @@ class Home extends CI_Controller {
                 'users AS User' => 'User.email = batchConnect.email'
             )
         );
-        
+
         $getUserAlreadyHasGroup = $this->universal->get(
             true,
             'thises_connect',
             'user_id',
             'all'
         );
-        
+
         $result = array();
         $result1 = array();
         foreach ($getUserAlreadyHasGroup as $key => $value) {
             array_push($result, $value->user_id);
         }
-        
+
         foreach ($getAllBatchStudent as $key => $value) {
-            
+
             if (!in_array($value->id,$result)) {
                 array_push($result1, $value);
             }
-        
+
         }
-        
+
         // pre($result1);
         // die();
         return isset($result1)? $result1: null;
     }
-    
+
     public function addGroupMember(){
         $post = $this->input->post();
         $errorFlag = 0;
-        
+
         // get the current user information
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
-        
-        // get the current user batch code 
+
+        // get the current user batch code
         $currentUserBatchCodeId = $this->getStudentBatchCodeId($data['userInfo']->email);
-        
+
         // create a random Thesis Group Name code
         $thesisGroupName = $this->getRandomString(10);
-        
+
         //  add curent user to the group
         $hasGroup = $this->universal->get(
             true,
@@ -128,7 +128,7 @@ class Home extends CI_Controller {
                 'user_id' => $data['userInfo']->id
             )
         );
-        
+
         if (!$hasGroup) {
             $insertGroup = $this->universal->insert(
                 'thises_group',
@@ -152,7 +152,7 @@ class Home extends CI_Controller {
         }else{
             $thesisGroupId = $hasGroup->thesis_group_id;
         }
-        
+
         // add members to the group
         foreach ($post['groupMemberId'] as $key => $value) {
             // determine if has already a group
@@ -165,7 +165,7 @@ class Home extends CI_Controller {
                     'user_id' => $value
                 )
             );
-            
+
             if (!$hasGroup1) {
                 $addGroupMember = $this->universal->insert(
                     'thises_connect',
@@ -178,15 +178,15 @@ class Home extends CI_Controller {
                     )
                 );
             }else{
-                
+
             }
-            
-            //  determine if has an error 
+
+            //  determine if has an error
             if (!$addGroupMember) {
                 $errorFlag ++;
             }
         }
-        
+
         if ($errorFlag > 0) {
             $result = array(
                 'message' => 'failed',
@@ -198,10 +198,10 @@ class Home extends CI_Controller {
                 'error' => false
             );
         }
-        
+
         echo json_encode($result);
     }
-    
+
     // create a random activation code
 	public function getRandomString($len){
 		$result = "";
@@ -213,12 +213,12 @@ class Home extends CI_Controller {
 		}
 		return $result;
 	}
-    
+
     public function myProfile(){
         // get the current user information
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
-        
+
         $data['getMySignature'] = $this->universal->get(
             true,
             'users_signature',
@@ -228,25 +228,25 @@ class Home extends CI_Controller {
                 'users_id' => $data['userInfo']->id
             )
         );
-        
+
         // pre($getMySignature);
         // die();
-        
+
         // - data
         $data['currentPageTitle'] = 'Student - My Profile';
         $data['mainContent'] = 'home/MyProfile';
         $data['subContent'] = 'home/MyProfile';
-        
+
         $this->load->view('includes/student/header',$data);
-		$this->load->view('student/MyProfile');
+		$this->load->view('student/myProfile');
         $this->load->view('includes/student/footer');
         $this->load->view('includes/student/modals');
     }
-    
+
     public function updateMyProfile(){
         // request post data
         $post = $this->input->post();
-        
+
         $updateCurrentUserProfile = $this->universal->update(
             'users',
             array(
@@ -261,12 +261,12 @@ class Home extends CI_Controller {
                 'id' => $this->ion_auth->user()->row()->id
             )
         );
-        
+
         $output = array(
             'message' => 'Failed to update',
             'error' => true
         );
-        
+
         if ($updateCurrentUserProfile) {
             $output = array(
                 'message' => 'Successfully updated',
@@ -275,42 +275,42 @@ class Home extends CI_Controller {
         }
         echo json_encode($output);
 	}
-    
+
     public function changePassword(){
         // get the current user information
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
-        
-    
-        
+
+
+
         // - data
         $data['currentPageTitle'] = 'Student - Chagne Password';
         $data['mainContent'] = 'student/home';
         $data['subContent'] = 'home/changePassword';
-        
+
         $this->load->view('includes/student/header',$data);
 		$this->load->view('student/changePassword');
         $this->load->view('includes/student/footer');
         $this->load->view('includes/student/modals');
     }
-    
+
     public function addPropose(){
-        // $proposeData = array(); 
-        
+        // $proposeData = array();
+
         // get the current user information
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
-        
+
         // get the current user Thises Group Id
         $currentThisesGroupId = $this->getThisesGroupId($data['userInfo']->id);
-        
-        // get the current user batch code 
+
+        // get the current user batch code
         $currentUserBatchCodeId = $this->getStudentBatchCodeId($data['userInfo']->email);
-        
+
         if (!$currentThisesGroupId) {
             // create a random Thesis Group Name code
             $thesisGroupName = $this->getRandomString(10);
-            
+
             $insertGroup = $this->universal->insert(
                 'thises_group',
                 array(
@@ -331,22 +331,22 @@ class Home extends CI_Controller {
             );
             $currentThisesGroupId = $insertGroup;
         }
-        
+
         // get the input post
         $post = $this->input->post();
-        
+
         $result = array(
             'message' => 'Data Not Save',
             'error' => 1
         );
-        
+
         if (!empty($post)) {
             foreach ($post['titles'] as $key => $title) {
                 // $proposeData[] = array(
                 //     'title' => $title,
                 //     'description' => $post['descriptions'][$key]
                 // );
-                
+
                 $addProposal = $this->universal->insert(
                     'thises',
                     array(
@@ -359,7 +359,7 @@ class Home extends CI_Controller {
                         'modified' => date('Y-m-d H:i:s')
                     )
                 );
-                
+
                 $result = array(
                     'message' => 'Data Save',
                     'error' => 0
@@ -368,7 +368,7 @@ class Home extends CI_Controller {
         }
         echo json_encode($result);
     }
-    
+
     public function getThisesGroupId($currentUserId = null){
         $currentThisesGroupId = $this->universal->get(
             true,
@@ -379,19 +379,19 @@ class Home extends CI_Controller {
                 'user_id' => $currentUserId
             )
         );
-        
+
         // if (!$currentThisesGroupId) {
-        // 
+        //
         //     // get the current user information
         //     $data['userInfo'] = $this->ion_auth->user()->row();
         //     $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
-        // 
-        //     // get the current user batch code 
+        //
+        //     // get the current user batch code
         //     $currentUserBatchCodeId = $this->getStudentBatchCodeId($data['userInfo']->email);
-        // 
+        //
         //     // create a random Thesis Group Name code
         //     $thesisGroupName = $this->getRandomString(10);
-        // 
+        //
         //     $insertGroup = $this->universal->insert(
         //         'thises_group',
         //         array(
@@ -410,21 +410,21 @@ class Home extends CI_Controller {
         //             'modified' => date('Y-m-d H:i:s')
         //         )
         //     );
-        // 
+        //
         //     $currentThisesGroupId = $insertGroup;
         // }
-        
+
         return isset($currentThisesGroupId->thesis_group_id)? $currentThisesGroupId->thesis_group_id: null;
     }
-    
+
     public function countAvailableProposalLeft(){
-        
+
         // get the current user information
         $data['userInfo'] = $this->ion_auth->user()->row();
-        
+
         // get the current user Thises Group Id
         $currentThisesGroupId = $this->getThisesGroupId($data['userInfo']->id);
-        
+
         $countAvailableProposalLeft = $this->universal->get(
             true,
             'thises',
@@ -455,7 +455,7 @@ class Home extends CI_Controller {
                 }
                 $proposeData .= '
                     <li class="list-group-item">
-                        
+
                             <div class="todo-indicator '.$sideStatusBar.' "></div>
                             <div class="widget-content p-0">
                                 <div class="widget-content-wrapper">
@@ -485,8 +485,8 @@ class Home extends CI_Controller {
                                     </div>
                                 </div>
                             </div>
-                        
-                        
+
+
                     </li>
                 ';
             }
@@ -503,7 +503,7 @@ class Home extends CI_Controller {
         );
         echo json_encode($result);
     }
-    
+
     public function deletePropossal(){
         $post = $this->input->post();
         $deletePropossal = $this->universal->delete(
@@ -512,30 +512,30 @@ class Home extends CI_Controller {
                 'id' => $post['id']
             )
         );
-        
+
         $result = array(
             'message' => 'Unable to Delete',
             'error' => 1
         );
-        
+
         if ($deletePropossal) {
             $result = array(
                 'message' => 'Data Deleted',
                 'error' => 0
             );
         }
-        
+
         echo json_encode($result);
     }
-    
+
     public function getGroupMembers(){
         // get the current user information
         $data['userInfo'] = $this->ion_auth->user()->row();
-        
+
         // get the current user Thises Group Id
         $currentThisesGroupId = $this->getThisesGroupId($data['userInfo']->id);
-        
-        
+
+
         // - variables from datatable
         $post = $this->input->post();
         $draw = $this->input->post('draw');
@@ -544,14 +544,14 @@ class Home extends CI_Controller {
         $search = $this->input->post('search');
         $order = $this->input->post('order');
         $columns = $this->input->post('columns');
-        
+
         // order of the data pass
         if(!empty($order)){
             $setorder =  array($columns[$order[0]['column']]['data'] => $order[0]['dir']);
         }else{
             $setorder = array();
         }
-        
+
         //search functionality
         if(empty($search['value'])){
             $like = array();
@@ -566,13 +566,13 @@ class Home extends CI_Controller {
                 'TC.modified' => $search['value']
             );
         }
-        
+
         // get the teacher details to the database using the usniversal model
         $batchDataResult = $this->universal->datatables(
             'thises_connect AS TC',
-            'TC.id,	
-            TC.thesis_group_id, 
-            TC.thises_id, 
+            'TC.id,
+            TC.thesis_group_id,
+            TC.thises_id,
             TC.batch_id,
             TC.user_id,
             TC.created,
@@ -586,18 +586,18 @@ class Home extends CI_Controller {
             array(
                 'TC.thesis_group_id' => $currentThisesGroupId,
                 'TC.user_id !=' => $data['userInfo']->id
-            ), 
+            ),
             array(
                 'users as U' => 'U.id = TC.user_id'
             ),
             array($length => $offset),
             $setorder,
-            $like, 
+            $like,
             true
         );
-        
+
         foreach ($batchDataResult['data'] as $key => $value) {
-        
+
             //  get member roles
             $getGroupMemberRoles = $this->universal->get(
                 true,
@@ -612,11 +612,11 @@ class Home extends CI_Controller {
                     'roles AS R' => 'R.id = UR.role_id'
                 )
             );
-        
+
             $batchDataResult['data'][$key]['role_name'] =  isset($getGroupMemberRoles->role_name)? $getGroupMemberRoles->role_name : 'Not Role';
         }
-        
-        
+
+
         echo json_encode(
             array(
                 'draw' => intval($draw),
@@ -626,7 +626,7 @@ class Home extends CI_Controller {
             )
         );
     }
-    
+
     public function deleteGroupMember(){
         $post = $this->input->post();
         $deletePropossal = $this->universal->delete(
@@ -635,35 +635,35 @@ class Home extends CI_Controller {
                 'user_id' => $post['user_id']
             )
         );
-        
+
         $result = array(
             'message' => 'Unable to Delete',
             'error' => 1
         );
-        
+
         if ($deletePropossal) {
             $result = array(
                 'message' => 'Data Deleted',
                 'error' => 0
             );
         }
-        
+
         echo json_encode($result);
     }
-    
+
     public function capstoneDetails($proposalId = null){
         // get the current user information
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
-        
+
         // get the current user group id
         $currentThisesGroupId = $this->getThisesGroupId($data['userInfo']->id);
-        
+
         $getCapstoneDetails = $this->universal->get(
             true,
             'thises AS T',
             '
-                T.id, T.thesis_group_id, T.title, T.discreption, T.limitations_of_the_studies, T.design_development_plans, T.created, T.created, T.modified, T.status, 
+                T.id, T.thesis_group_id, T.title, T.discreption, T.limitations_of_the_studies, T.design_development_plans, T.created, T.created, T.modified, T.status,
                 U.first_name, U.middle_name, U.last_name, U.email,
                 US.signatures,
                 R.role_name,
@@ -683,13 +683,13 @@ class Home extends CI_Controller {
                 'thises_group AS TG' => 'TG.id = T.thesis_group_id'
             )
         );
-        
+
         // pre($getCapstoneDetails);
         // die();
         if ($getCapstoneDetails) {
             $data['getCapstoneDetails'] = $getCapstoneDetails;
         }
-        
+
         // get the thesis document
         $thesisDocument = $this->universal->get(
             true,
@@ -701,26 +701,26 @@ class Home extends CI_Controller {
                 'D.thesis_id' => $proposalId
             )
         );
-        
+
         if ($thesisDocument) {
             $data['thesisDocuments'] = $thesisDocument;
         }
-        
+
         // - data
         $data['proposalId'] = $proposalId;
         $data['currentPageTitle'] = 'Student - Proposal Details';
         $data['mainContent'] = 'student/home';
         $data['subContent'] = 'home/capstoneDetails';
-        
+
         $this->load->view('includes/student/header',$data);
 		$this->load->view('student/capstoneDetails');
         $this->load->view('includes/student/footer');
         $this->load->view('includes/student/modals');
     }
-    
+
     public function deleteDocument(){
         $post = $this->input->post();
-        
+
         // get the thesis document
         $thesisDocument = $this->universal->get(
             true,
@@ -731,32 +731,32 @@ class Home extends CI_Controller {
                 'D.id' => $post['documentId']
             )
         );
-        
+
         $result = $this->universal->delete(
             'documents',
             array(
                 'id' => $post['documentId']
             )
         );
-        
+
         $output = false;
         if ($result) {
             // delete file to the local
             unlink(FCPATH.'uploads/'.$thesisDocument->file_name);
             $output = true;
         }
-        
+
         echo $output;
     }
-    
+
     public function viewDocumentPDF($documentId = null){
         // get the current user information
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
-        
+
         // get the current user group id
         $currentThisesGroupId = $this->getThisesGroupId($data['userInfo']->id);
-        
+
         // get the thesis document
         $thesisDocument = $this->universal->get(
             true,
@@ -768,32 +768,32 @@ class Home extends CI_Controller {
                 'D.id' => $documentId
             )
         );
-        
+
         if ($thesisDocument) {
             // pre($thesisDocument);
             // die();
             $data['thesisDocuments'] = $thesisDocument;
         }
-        
+
         // - data
         $data['currentPageTitle'] = 'Student - Proposal Details';
         $data['mainContent'] = 'student/home';
         $data['subContent'] = 'home/viewDocumentPDF';
-        
+
         $this->load->view('includes/student/header',$data);
 		$this->load->view('student/viewDocumentPDF');
         $this->load->view('includes/student/footer');
         $this->load->view('includes/student/modals');
     }
-    
+
     public function myGroup(){
         // get the current user information
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
-        
+
         // get the current user group id
         $currentThisesGroupId = $this->getThisesGroupId($data['userInfo']->id);
-        
+
         $data['updateFlag'] = false;
         $post = $this->input->post();
         if ($post) {
@@ -806,12 +806,12 @@ class Home extends CI_Controller {
                     'id' => $post['id']
                 )
             );
-            
+
             if ($updateGroupName) {
                 $data['updateFlag'] = true;
             }
         }
-        
+
         $data['groupDetails'] = $this->universal->get(
             true,
             'thises_group',
@@ -821,26 +821,26 @@ class Home extends CI_Controller {
                 'id' => $currentThisesGroupId
             )
         );
-        
+
         // pre($data['groupDetails']);
         // die();
         // - data
         $data['currentPageTitle'] = 'Student - Proposal Details';
         $data['mainContent'] = 'student/home';
         $data['subContent'] = 'home/myGroup';
-        
+
         $this->load->view('includes/student/header',$data);
 		$this->load->view('student/myGroup');
         $this->load->view('includes/student/footer');
         $this->load->view('includes/student/modals');
     }
-    
+
     public function myRole(){
         // get the current user information
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
-        
-        
+
+
         $data['usersRoles'] = $this->universal->get(
             true,
             'users_roles',
@@ -850,11 +850,11 @@ class Home extends CI_Controller {
                 'user_id' => $data['userInfo']->id
             )
         );
-        
+
         $data['updateFlag'] = false;
         $post = $this->input->post();
         if ($data['usersRoles']) {
-            
+
             if ($post) {
                 $updateRole = $this->universal->update(
                     'users_roles',
@@ -865,13 +865,13 @@ class Home extends CI_Controller {
                         'user_id' =>  $data['userInfo']->id
                     )
                 );
-                
+
                 if ($updateRole) {
                     $data['updateFlag'] = true;
                 }
             }
         }else{
-            
+
             if ($post) {
                 $insertRole = $this->universal->insert(
                     'users_roles',
@@ -880,39 +880,39 @@ class Home extends CI_Controller {
                         'user_id' => $data['userInfo']->id
                     )
                 );
-                
+
                 if ($insertRole) {
                     $data['updateFlag'] = true;
                 }
             }
         }
-        
+
         $data['roles'] = $this->universal->get(
             true,
             'roles',
             '*',
             'all'
         );
-        
+
         // pre($data['roles']);
         // die();
-        
+
         // - data
         $data['currentPageTitle'] = 'Student - Proposal Details';
         $data['mainContent'] = 'student/home';
         $data['subContent'] = 'home/myRole';
-        
+
         $this->load->view('includes/student/header',$data);
 		$this->load->view('student/myRole');
         $this->load->view('includes/student/footer');
         $this->load->view('includes/student/modals');
     }
-    
+
     public function mySignature(){
         // get the current user information
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
-        
+
         $getMySignature = $this->universal->get(
             true,
             'users_signature',
@@ -922,11 +922,11 @@ class Home extends CI_Controller {
                 'users_id' => $data['userInfo']->id
             )
         );
-        
+
         $data['signatureFlag'] = false;
         $post = $this->input->post();
         if ($post) {
-            
+
             $image = array();
             $image['image_parts'] = explode(";base64,", $post['signed']);
 
@@ -935,7 +935,7 @@ class Home extends CI_Controller {
             $image['image_type'] = $image['image_type_aux'][1];
 
             $image['image_base64'] = base64_decode($image['image_parts'][1]);
-            
+
             if ($getMySignature) {
                 $updateSignature = $this->universal->update(
                     'users_signature',
@@ -955,20 +955,20 @@ class Home extends CI_Controller {
                     )
                 );
             }
-            
+
             if ($updateSignature || $insertSignature) {
                 redirect(base_url('student/home/myProfile'));
             }
-            
+
         }
-        
-        
-        
+
+
+
         // - data
         $data['currentPageTitle'] = 'Student - Proposal Details';
         $data['mainContent'] = 'student/home';
         $data['subContent'] = 'home/mySignature';
-        
+
         $this->load->view('includes/student/header',$data);
 		$this->load->view('student/mySignature');
         $this->load->view('includes/student/footer');

@@ -15,7 +15,7 @@
                     </ol>
                 </nav>
             </div>
-        </div>       
+        </div>
         <?php if ($updateFlag): ?>
             <div class="alert alert-info alert-dismissible fade show" role="alert">
                 <button type="button" class="close" aria-label="Close" data-dismiss="alert">
@@ -29,13 +29,13 @@
                 <div class="main-card mb-3 card">
                     <div class="card-body">
                         <div class="" id="message"></div>
-                        
+
                         <form class="" action="<?php echo base_url('student/home/myRole'); ?>" method="post">
-                            
+
                             <div class="form-row">
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
-                                        <label for="exampleEmail" class=""><span class="text-danger">*</span> Sex/Gender</label>
+                                        <label for="exampleEmail" class=""><span class="text-danger">*</span> My role to the team</label>
                                         <select name="selectedRole" class="mb-2 form-control">
                                             <?php foreach ($roles as $key => $value): ?>
                                                 <option value="<?php echo $value->id; ?>" <?php echo (isset($usersRoles->role_id) && $value->id == $usersRoles->role_id)? 'Selected': null; ?> >
