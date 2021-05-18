@@ -379,7 +379,8 @@ class Panel extends CI_Controller {
             );
             $arr[] = $getChairman;
         }
-
+        pre($arr);
+        die();
         foreach ($arr as $key => $value) {
 
             if (isset($arr[$key+1]) && $arr[$key+1]) {
