@@ -547,13 +547,13 @@ class Head extends CI_Controller {
                     if (isset($assignedPanelist) && $assignedPanelist && $assignedPanelist != null) {
                         $instructors = json_decode($assignedPanelist->instructor_id);
                         $countPanelist = isset($instructors)? count($instructors): 0;
+                        $assignedPanelistFullName = '';
                         if ($countPanelist > 1) {
                             $assignedFlag = true;
-                        }
-                        $assignedPanelistFullName = '';
-                        foreach ($instructors as $key => $value) {
-                            $instructorDetails = $this->getPanelistDetails($value);
-                            $assignedPanelistFullName .= $instructorDetails->first_name.' '.$instructorDetails->middle_name.' '.$instructorDetails->last_name.'<br>';
+                            foreach ($instructors as $key => $value) {
+                                $instructorDetails = $this->getPanelistDetails($value);
+                                $assignedPanelistFullName .= $instructorDetails->first_name.' '.$instructorDetails->middle_name.' '.$instructorDetails->last_name.'<br>';
+                            }
                         }
                     }
 
