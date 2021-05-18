@@ -379,18 +379,17 @@ class Panel extends CI_Controller {
             );
             $arr[] = $getChairman;
         }
-        pre($arr);
-        die();
-        foreach ($arr as $key => $value) {
 
-            if (isset($arr[$key+1]) && $arr[$key+1]) {
-                if ($value->count >= $arr[$key+1]) {
-                    $thises_id = $value->thises_id;
-                }else{
-                    $thises_id = $arr[$key+1]->thises_id;
+        foreach ($arr as $key => $value) {
+            if (isset($arr[$key]) && $arr[$key]) {
+                if (isset($arr[$key+1]) && $arr[$key+1]) {
+                    if ($value->count >= $arr[$key+1]) {
+                        $thises_id = $value->thises_id;
+                    }else{
+                        $thises_id = $arr[$key+1]->thises_id;
+                    }
                 }
             }
-
         }
 
         $approvedProposal = $this->universal->update(
