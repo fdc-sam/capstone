@@ -364,7 +364,7 @@ class Panel extends CI_Controller {
             $getChairman = $this->universal->get(
                 true,
                 'thises_copy',
-                'panelist_id, thises_id, count(id) AS count',
+                'id, panelist_id, thises_id, count(id) AS count',
                 'row',
                 array(
                     'status' => 1,
@@ -375,11 +375,11 @@ class Panel extends CI_Controller {
                 array(),
                 array(),
                 array(),
-                array('thises_id')
+                array('id')
             );
             $arr[] = $getChairman;
         }
-        
+
         foreach ($arr as $key => $value) {
 
             if (isset($arr[$key+1]) && $arr[$key+1]) {
