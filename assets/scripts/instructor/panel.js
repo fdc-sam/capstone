@@ -15,6 +15,9 @@ $(document).ready(function(){
                 {
                     "data": "status",
                     "render": function(data, type, row, meta){
+                        if (row.approvedFlag == 1) {
+                            return `<div class="badge badge-primary ml-2">Title Already Approved</div>`;
+                        }
                         if (data == 0) {
                             return `<div class="badge badge-warning ml-2">Pending</div>`;
                         }else if(data == 1){
@@ -62,11 +65,14 @@ $(document).ready(function(){
                                 </a>
                             `;
                         }
-                        // btnReturn +=  `
-                        //     <a href="${base_url}instructor/head/viewStudent/${row.code}" class="btn-view btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-secondary"  data-toggle="tooltip" data-placement="top" title="View">
-                        //         <i class="lnr-eye btn-icon-wrapper"> </i>
-                        //     </a>
-                        // `;
+
+                        if (row.approvedFlag == 1) {
+                            btnReturn =  `
+                                <a  href="${base_url}instructor/panel/viewProposal/${row.panelist_id}/${row.group_id}" class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Accept">
+                                    <i class="lnr lnr-eye btn-icon-wrapper"> </i>
+                                </a>
+                            `;
+                        }
                         return btnReturn;
 
                     }

@@ -204,6 +204,22 @@ class Panel extends CI_Controller {
             // get grup details
             $groupDetails = $this->getGroupDetails($projectHearingDetail['group_id']);
             $assignedGroup['data'][$key]['groupName'] = $groupDetails->thesis_group_name;
+
+            $getThisesDetails = $this->universal->get(
+                true,
+                'thises',
+                '*',
+                'array',
+                array(
+                    'thesis_group_id' => $projectHearingDetail['group_id'],
+                    'status' => 1
+                ),
+            );
+            $assignedGroup['data'][$key]['approvedFlag'] = 0;
+            if (isset($getThisesDetails) && $getThisesDetails) {
+                $assignedGroup['data'][$key]['approvedFlag'] = 1;
+            }
+
         }
         // pre($assignedGroup['data']);
         // die;
@@ -314,7 +330,7 @@ class Panel extends CI_Controller {
                 'approvedProposalDetails' => $approvedFlagging
             );
         }
-        
+
         // - data
         $data['currentUserGroup'] = $currentUserGroup->name;
         $data['panelistId'] = $panelistId;

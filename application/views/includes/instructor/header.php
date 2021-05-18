@@ -332,7 +332,7 @@
                                             class="<?php echo isset($subContent)
                                                 && $subContent == 'panel/projectTitleHearing'
                                                 ? 'mm-active': '' ?>  btn-sm">
-                                            <i class="metismenu-icon"></i>Project Title Hearing
+                                            <i class="metismenu-icon"></i>Project Title Hearing Result
                                         </a>
                                     </li>
                                 </ul>

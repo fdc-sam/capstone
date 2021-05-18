@@ -12,7 +12,7 @@
                         </li>
                         <li class="breadcrumb-item">
                             <a>
-                                View Proposals
+                                View Project - Project Title Hearing
                             </a>
                         </li>
                     </ol>
@@ -33,7 +33,7 @@
                     <div class="card-header-tab card-header">
                         <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
                             <i class="header-icon lnr-laptop-phone mr-3 text-muted opacity-6"> </i>
-                            Proposals
+                            Project Title Hearing
                         </div>
                         <?php if (isset($chairmanFlag) && $chairmanFlag): ?>
                             <div class="btn-actions-pane-right actions-icon-btn">
