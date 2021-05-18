@@ -394,8 +394,7 @@ class Panel extends CI_Controller {
                 }
             }
         }
-        pre($thises_id);
-        die();
+        
         $approvedProposal = $this->universal->update(
             'thises',
             array(
