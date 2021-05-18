@@ -35,15 +35,15 @@ class SwiftMailer extends CI_Model {
         ) {
             // Create the Transport
             $transport = (new Swift_SmtpTransport("smtp.gmail.com", 587, "tls"))
-            ->setUsername("samvillarta05@gmail.com")
-            ->setPassword("Sam09213364006");
+            ->setUsername("cpmsevsuocc@gmail.com") // samvillarta05@gmail.com
+            ->setPassword("capstone123"); // Sam09213364006
 
             // Create the Mailer using your created Transport
             $mailer = new Swift_Mailer($transport);
 
             // Create a message
             $message = (new Swift_Message($subject))
-            ->setFrom(['samvillarta05@gmail.com' => 'EVSU-OCC'])
+            ->setFrom(['cpmsevsuocc@gmail.com' => 'EVSU-OCC']) // samvillarta05@gmail.com
             ->setTo([$to])
             ->setBody($message, 'text/html');
 
