@@ -8,8 +8,20 @@
                         <h3>
                             <div>A Proposed Web-Based Capstone Project Management System</div>
                         </h3>
+                        <ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
+                            <li class="nav-item">
+                                <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-0">
+                                    <span>Register As Student</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a role="tab" class="nav-link" id="tab-1" data-toggle="tab" href="#tab-content-1">
+                                    <span>Register As Panelist</span>
+                                </a>
+                            </li>
+                        </ul>
                         <h4>
-                            <div>Welcome,</div>
+                            <div>Welcome, <b id="student-panelist">Student / Proponent</b> </div>
                             <span>It only takes a <span class="text-success">few seconds</span> to create your account</span>
                         </h4>
                         <div>
@@ -36,13 +48,13 @@
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="position-relative form-group">
                                             <label for="exampleEmail" class=""><span class="text-danger">*</span> Email</label>
                                             <input name="email" id="email" placeholder="Email here..." type="email" class="form-control" value="<?php echo $email; ?>">
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="position-relative form-group">
                                             <label for="exampleEmail" class=""><span class="text-danger">*</span> Sex/Gender</label>
                                             <select name="gender" class="mb-2 form-control">
@@ -51,10 +63,10 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="" hidden>
                                         <div class="position-relative form-group">
                                             <label for="exampleEmail" class=""><span class="text-danger">*</span> Batch Code</label>
-                                            <input name="batchCode" id="batchCode" placeholder="Enter Batch Code here..." type="text" class="form-control"  value="<?php echo $batchCode; ?>">
+                                            <input name="batchCode" id="batchCode" placeholder="Enter Batch Code here..." type="text" class="form-control"  value="z6j0n">
                                         </div>
                                     </div>
                                 </div>

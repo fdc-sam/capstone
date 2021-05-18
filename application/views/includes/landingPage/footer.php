@@ -5,10 +5,10 @@
 
 <script type="text/javascript">
 var base_url = '<?php echo base_url()?>';
-var main_content = '<?php echo isset($mainContent)? $mainContent : null ?>'; 
+var main_content = '<?php echo isset($mainContent)? $mainContent : null ?>';
 $(document).ready(function(){
     $('#loadingState').hide();
-    
+
     if (main_content == 'landingPage/login') {
         $('#alertMessage').hide();
         $('#formLogin').on('submit',function(e){
@@ -52,17 +52,32 @@ $(document).ready(function(){
                     // console.log(jQuery.parseJSON(result));
                 },
                 complete:function(){
-                    
+
                 }
             });
         });
     } // end landingPage/login
-    
+
     if (main_content == 'landingPage/register') {
         $('#formRegister').on('submit',function(e){
             $('#loadingState').show();
         });
     }// end landingPage/register
-    
+
+
+    // for input batch code for student
+    $(document).on('click', '#tab-0', function(e){
+        e.preventDefault();
+        $('#batchCode').val('z6j0n');
+        $('#student-panelist').html('Student / Proponent');
+    });
+
+    // for input batch code for panelist
+    $(document).on('click', '#tab-1', function(e){
+        e.preventDefault();
+        $('#batchCode').val('Panelist');
+        $('#student-panelist').html('Instructor / Panelist');
+    });
+
 });
 </script>
