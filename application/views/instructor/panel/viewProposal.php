@@ -43,9 +43,67 @@
                                 </a>
                             </div>
                         <?php endif; ?>
-
                     </div>
                     <div class="card-body">
+                        <ul class="tabs-animated-shadow tabs-animated nav">
+                            <?php foreach ($groupMemersDetails as $key => $groupMemersDetail): ?>
+                                <?php $fullName = $groupMemersDetail['first_name'].' '.$groupMemersDetail['middle_name'].' '.$groupMemersDetail['last_name'];  ?>
+                                <li class="nav-item">
+                                    <a role="tab"
+                                        class="nav-link <?php echo ($key == 0)? 'active' : ''; ?>"
+                                        id="tab-c-<?php echo $groupMemersDetail['id']; ?>"
+                                        data-toggle="tab"
+                                        href="#tab-animated-<?php echo $groupMemersDetail['id']; ?>"
+                                        aria-selected="true"
+                                    >
+                                        <span><?php echo $fullName; ?></span>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                        <div class="divider"></div>
+                        <div class="tab-content">
+                            <?php foreach ($groupMemersDetails as $key => $groupMemersDetail): ?>
+                                <?php $fullName = $groupMemersDetail['first_name'].' '.$groupMemersDetail['middle_name'].' '.$groupMemersDetail['last_name'];  ?>
+
+                                <div class="tab-pane <?php echo ($key == 0)? 'active' : ''; ?>" id="tab-animated-<?php echo $groupMemersDetail['id']; ?>" role="tabpanel">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="position-relative form-group">
+                                                <label for="exampleEmail" class="">E-mail</label>
+                                                <p><?php echo $groupMemersDetail['email']; ?></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative form-group">
+                                                <label for="exampleEmail" class="">Gender / Sex</label>
+                                                <?php if ($groupMemersDetail['gender'] == 1): ?>
+                                                    <p>Male</p>
+                                                <?php else: ?>
+                                                    <p>Female</p>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative form-group">
+                                                <label for="exampleEmail" class="">Role</label>
+                                                <p><?php echo isset($groupMemersDetail['role_name'])? $groupMemersDetail['role_name']: 'No Role Assigned'; ?></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative form-group">
+                                                <label for="exampleEmail" class="">Role Discreption</label>
+                                                <p><?php echo $groupMemersDetail['discreption'] ?> </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+
+                        <div class="divider"></div>
+
                         <?php if (isset($approvedProposalDetails)): ?>
                             <?php if ($approvedProposalDetails['approvedFlag'] == 1): ?>
                                 <b>Project Title : </b><br>

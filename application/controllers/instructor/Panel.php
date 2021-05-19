@@ -281,6 +281,9 @@ class Panel extends CI_Controller {
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
 
+        // get group members
+        $groupMemersDetails = $this->getGroupMemersDetails($groupId);
+
         $get = $this->input->get();
         if (isset($get['errorFlag'])) {
             // pre($get['errorFlag']);
@@ -332,6 +335,7 @@ class Panel extends CI_Controller {
         }
 
         // - data
+        $data['groupMemersDetails'] = $groupMemersDetails;
         $data['currentUserGroup'] = $currentUserGroup->name;
         $data['panelistId'] = $panelistId;
         $data['groupId'] = $groupId;
@@ -394,7 +398,7 @@ class Panel extends CI_Controller {
                 }
             }
         }
-        
+
         $approvedProposal = $this->universal->update(
             'thises',
             array(
@@ -600,5 +604,25 @@ class Panel extends CI_Controller {
             )
         );
         return $getProjectHearingDetails;
+    }
+
+    public function getGroupMemersDetails($groupId = null){
+        $groupMembersDetails = $this->universal->get(
+            true,
+            'thises_connect AS TC',
+            'U.*, R.role_name, R.discreption',
+            'array',
+            array(
+                'TC.thesis_group_id' => $groupId
+            ),
+            array(),
+            array(
+                'users AS U' => 'U.id = TC.user_id',
+                'users_roles AS UR' => 'UR.user_id = U.id',
+                'roles AS R' => 'R.id = UR.role_id'
+            )
+        );
+
+        return $groupMembersDetails;
     }
 }
