@@ -16,6 +16,7 @@
 
     <link href="<?php echo base_url('assets/css/main.d810cf0ae7f39f28f336.css'); ?>  " rel="stylesheet">
     <link href="<?php echo base_url('assets/css/jquery.dataTables.min.css'); ?>" rel="stylesheet">
+    <link href="<?php echo base_url('assets/css/responsive.dataTables.css'); ?>" rel="stylesheet">
     <style media="screen">
         .notification:hover {
             color: #3b5998;
@@ -32,6 +33,12 @@
             display: -webkit-box;
             -webkit-line-clamp: 1;
             -webkit-box-orient: vertical;
+        }
+        @media only screen and (max-width: 760px), (min-width: 768px) and (max-width: 1024px) {
+            /* ... */
+            select {
+                width: 150px;
+            }
         }
     </style>
 </head>
@@ -324,26 +331,44 @@
                                                 || $subContent == 'panel/viewProposal'
                                                 ? 'mm-active': '' ?>  btn-sm">
                                             Assigned Group
-                                            <span class="badge badge-pill badge-primary">3</span>
+                                            <div id="count-assignedGroup">
+
+                                            </div>
+
                                         </a>
                                     </li>
                                     <li>
-                                        <a href=""
+                                        <a href="<?php echo base_url('instructor/panel/projectTitleHearingResult'); ?>"
                                             class="<?php echo isset($subContent)
-                                                && $subContent == 'panel/projectTitleHearing'
+                                            && $subContent == 'panel/projectTitleHearingResult'
+                                            || $subContent == 'panel/assignAdviser'
+                                            || $subContent == 'panel/groupDetails'
                                                 ? 'mm-active': '' ?>  btn-sm">
-                                            <i class="metismenu-icon"></i>Project Title Hearing Result
+                                            <i class="metismenu-icon"></i>Title Hearing Result
                                         </a>
                                     </li>
                                 </ul>
                             </li>
                             <li>
                                 <a href="" >
-                                    <i class="metismenu-icon pe-7s-graph2"></i>ChartJS
+                                    <i class="metismenu-icon pe-7s-graph2"></i>Chapstone 1
+                                </a>
+                            </li>
+                            <li>
+                                <a href="" >
+                                    <i class="metismenu-icon pe-7s-graph2"></i>Chapstone 2
                                 </a>
                             </li>
 
                             <li class="app-sidebar__heading">Adviser</li>
+                            <li>
+                                <a href="<?php echo base_url('instructor/adviser'); ?>" class="<?php echo isset($subContent)
+                                && $subContent == 'adviser/index'
+                                || $subContent == 'adviser/rejectGroup'
+                                    ? 'mm-active': '' ?>  btn-sm" >
+                                    <i class="metismenu-icon pe-7s-home"></i>Assigned Groups
+                                </a>
+                            </li>
                             <li>
                                 <a href="#">
                                     <i class="metismenu-icon pe-7s-light"></i> Elements
@@ -372,11 +397,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li>
-                                <a href="charts-chartjs.html" >
-                                    <i class="metismenu-icon pe-7s-graph2"></i>ChartJS
-                                </a>
-                            </li>
+
                         </ul>
                     </div>
                 </div>

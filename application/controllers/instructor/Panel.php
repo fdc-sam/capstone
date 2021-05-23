@@ -201,9 +201,10 @@ class Panel extends CI_Controller {
             $fullName = $panelistDetails->first_name." ".$panelistDetails->last_name." ".$panelistDetails->middle_name;
             $assignedGroup['data'][$key]['panelistFullName'] = $fullName;
 
-            // get grup details
+            // get group details
             $groupDetails = $this->getGroupDetails($projectHearingDetail['group_id']);
-            $assignedGroup['data'][$key]['groupName'] = $groupDetails->thesis_group_name;
+
+            $assignedGroup['data'][$key]['groupName'] = isset($groupDetails->thesis_group_name)? $groupDetails->thesis_group_name: "";
 
             $getThisesDetails = $this->universal->get(
                 true,
@@ -221,7 +222,12 @@ class Panel extends CI_Controller {
             }
 
         }
-        // pre($assignedGroup['data']);
+
+        if (isset($post['countResult']) && $post['countResult'] == 1) {
+            echo count($assignedGroup['data']);
+            return;
+        }
+        // pre();
         // die;
 
         echo json_encode(
@@ -234,6 +240,29 @@ class Panel extends CI_Controller {
         );
     }
 
+
+    public function countAllAssignedCapstone(){
+        // - get the user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+
+        //  get all proposals
+        $assignedGroup = $this->universal->get(
+            true,
+            'project_title_hearing',
+            '*',
+            'array',
+            array(
+                'panelist_id' => $data['userInfo']->id,
+                'status' => 0
+            )
+        );
+
+        $output = 0;
+        if (isset($assignedGroup) && $assignedGroup) {
+            $output = count($assignedGroup);
+        }
+        echo $output;
+    }
 
     public function projectTitleHearing(){
         // - get the user information
@@ -561,10 +590,295 @@ class Panel extends CI_Controller {
         echo json_encode($output);
     }
 
+    public function projectTitleHearingResult(){
+        // - get the user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+        $currentUserGroup = $this->getCurrentUserGroupDetails($data['userInfo']->id);
 
+        $approvedProposals = $this->universal->get(
+            true,
+            'thises',
+            '*',
+            'array',
+            array(
+                'status' => 1
+            )
+        );
+
+        if (isset($approvedProposals) && $approvedProposals) {
+
+            foreach ($approvedProposals as $key => $approvedProposal) {
+                // get the group adviser
+                $projectAdviser = $this->universal->get(
+                    true,
+                    'thises_group_assigned_adviser',
+                    '*',
+                    'row',
+                    array(
+                        'group_id' => $approvedProposal['thesis_group_id']
+                    )
+                );
+
+                if (isset($projectAdviser) && $projectAdviser) {
+                    // get instructor details
+                    $adviser = $this->getPanelistDetails($projectAdviser->instructor_id);
+                    $AdviserFullName = $adviser->first_name.' '.$adviser->middle_name.' '.$adviser->last_name;
+                }
+
+                $groupMembers = $this->universal->get(
+                    true,
+                    'users AS U',
+                    'U.*',
+                    'array',
+                    array(
+                        'TC.thesis_group_id' => $approvedProposal['thesis_group_id']
+                    ),
+                    array(),
+                    array(
+                        'thises_connect AS TC' => 'TC.user_id = U.id'
+                    )
+                );
+
+                $groupMemberFullname = array();
+                if (isset($groupMembers) && $groupMembers) {
+                    foreach ($groupMembers as $groupMembersKey => $groupMember) {
+                        $groupMemberFullname[] = $groupMember['first_name'].' '.$groupMember['middle_name'].' '.$groupMember['last_name'];
+                    }
+                }
+
+                $groupDetails = $this->getGroupDetails($approvedProposal['thesis_group_id']);
+
+                // all data
+                $approvedProposals[$key]['groupMemberFullname'] = $groupMemberFullname;
+                $approvedProposals[$key]['adviserFlag'] = isset($AdviserFullName)? true: false;
+                $approvedProposals[$key]['adviser'] = isset($AdviserFullName)? $AdviserFullName: '<div class="badge badge-warning ml-2">No Assign Adviser</div>';
+                $approvedProposals[$key]['groupName'] = isset($groupDetails->thesis_group_name)? $groupDetails->thesis_group_name: "";
+
+            }
+        }
+        // pre($approvedProposals);
+        // die;
+        // - data
+        $data['approvedProposals'] = $approvedProposals;
+        $data['currentUserGroup'] = $currentUserGroup->name;
+        $data['currentPageTitle'] = 'View Proposal';
+        $data['mainContent'] = 'instructor/panel';
+        $data['subContent'] = 'panel/projectTitleHearingResult';
+
+        // - load view
+        $this->load->view('includes/instructor/header',$data);
+		$this->load->view('instructor/panel/projectTitleHearingResult');
+		$this->load->view('includes/instructor/footer');
+    }
+
+    public function assignAdviser($groupId = null, $thisesId = null){
+        // - get the user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+        $currentUserGroup = $this->getCurrentUserGroupDetails($data['userInfo']->id);
+
+        // if add adviser using post method
+        $post = $this->input->post();
+        if (isset($post) && $post) {
+            $hasAdviser = $this->universal->get(
+                true,
+                'thises_group_assigned_adviser',
+                'id',
+                'row',
+                array(
+                    'group_id' => $groupId
+                )
+            );
+
+            // check ig has adviser
+            if (isset($hasAdviser) && $hasAdviser) {
+                $updateAssignAdviser = $this->universal->update(
+                    'thises_group_assigned_adviser',
+                    array(
+                        'instructor_id' => $post['selec2-assignAdviser'],
+                        'thises_id' => $thisesId,
+                        'date_modified' => date('Y-m-d H:i:s')
+                    ),
+                    array(
+                        'group_id' => $groupId,
+                        'thises_id' => $thisesId
+                    )
+                );
+
+                // update capstone1
+                $updateCapstone1 = $this->universal->update(
+                    'capstone1',
+                    array(
+                        'thesis_group_id' => $groupId,
+                        'thises_id' => $thisesId,
+                        'date_created' => date('Y-m-d H:i:s'),
+                        'date_modified' => date('Y-m-d H:i:s')
+                    ),
+                    array(
+                        'group_id' => $groupId,
+                        'thises_id' => $thisesId
+                    )
+                );
+            }else{
+                $inserteAssignAdviser = $this->universal->insert(
+                    'thises_group_assigned_adviser',
+                    array(
+                        'group_id' => $groupId,
+                        'thises_id' => $thisesId,
+                        'instructor_id' => $post['selec2-assignAdviser'],
+                        'date_created' => date('Y-m-d H:i:s'),
+                        'date_modified' => date('Y-m-d H:i:s'),
+                    )
+                );
+
+                // insert data to capstone1
+                $insertCapstone1 = $this->universal->insert(
+                    'capstone1',
+                    array(
+                        'thesis_group_id' => $groupId,
+                        'thises_id' => $thisesId,
+                        'date_created' => date('Y-m-d H:i:s'),
+                        'date_modified' => date('Y-m-d H:i:s')
+                    )
+                );
+            }
+
+            if (
+                (isset($inserteAssignAdviser) && $inserteAssignAdviser)
+                ||
+                (isset($updateAssignAdviser) && $updateAssignAdviser)
+            ) {
+                $hasDataCapstone = $this->universal->get(
+                    true,
+                    'capstone1',
+                    '*',
+                    'array',
+                    array(
+                        'thesis_group_id' => $groupId
+                    )
+                );
+            }
+
+
+
+        }
+
+        // get all panelist id og current param group id
+        $groupPanelists = $this->universal->get(
+            true,
+            'project_title_hearing',
+            'panelist_id',
+            'array',
+            array(
+                'group_id' => $groupId,
+                'status' => array(0,1)
+            )
+        );
+
+        $panelistId = array();
+        if (isset($groupPanelists) && $groupPanelists) {
+            foreach ($groupPanelists as $key => $groupPanelist) {
+                $panelistId[] = $groupPanelist['panelist_id'];
+            }
+        }
+
+        $allInstructors = $this->universal->get(
+            true,
+            'users AS U',
+            'U.*, G.name AS groupName',
+            'array',
+            array(
+                'U.id NOT' => $panelistId,
+                'G.id' => array(3,5)
+            ),
+            array(),
+            array(
+                'users_groups AS UG' => 'UG.user_id = U.id',
+                'groups AS G' => 'G.id = UG.group_id'
+            )
+        );
+
+        $currentGroupAdviser = $this->universal->get(
+            true,
+            'thises_group_assigned_adviser',
+            'instructor_id',
+            'row',
+            array(
+                'group_id ' => $groupId
+            )
+        );
+        // pre($currentGroupAdviser->instructor_id);
+        // die();
+
+        // - data
+        $data['currentGroupAdviserId'] = isset($currentGroupAdviser->instructor_id)? $currentGroupAdviser->instructor_id: null;
+        $data['allInstructors'] = $allInstructors;
+        $data['groupId'] = $groupId;
+        $data['thisesId'] = $thisesId;
+        $data['currentUserGroup'] = $currentUserGroup->name;
+        $data['currentPageTitle'] = 'View Proposal';
+        $data['mainContent'] = 'instructor/panel';
+        $data['subContent'] = 'panel/assignAdviser';
+
+        // - load view
+        $this->load->view('includes/instructor/header',$data);
+		$this->load->view('instructor/panel/assignAdviser');
+		$this->load->view('includes/instructor/footer');
+    }
+
+    public function groupDetails($groupId = null){
+        // - get the user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+        $currentUserGroup = $this->getCurrentUserGroupDetails($data['userInfo']->id);
+
+        $groupDetails = $this->getGroupDetails($groupId);
+        $groupMemberDetails = $this->getGroupMemersDetails($groupId);
+
+        $allPanelist = $this->getAllPanelist($groupId);
+        // pre($allPanelist);
+        // die();
+
+        // view data
+        $data['allPanelist'] = $allPanelist;
+        $data['groupMemberDetails'] = $groupMemberDetails;
+        $data['groupName'] = $groupDetails->thesis_group_name;
+        $data['groupId'] = $groupId;
+        $data['currentUserGroup'] = $currentUserGroup->name;
+        $data['currentPageTitle'] = 'View Proposal';
+        $data['mainContent'] = 'instructor/panel';
+        $data['subContent'] = 'panel/groupDetails';
+
+        // - load view
+        $this->load->view('includes/instructor/header',$data);
+		$this->load->view('instructor/panel/groupDetails');
+		$this->load->view('includes/instructor/footer');
+    }
 
 
     // get any details function
+    public function getAllPanelist($groupId = null){
+        $getAllPanelists = $this->universal->get(
+            true,
+            'project_title_hearing',
+            '*',
+            'array',
+            array(
+                'group_id' => $groupId
+            )
+        );
+
+        foreach ($getAllPanelists as $key => $value) {
+            $getPanelistDetails = $this->getPanelistDetails($value['panelist_id']);
+            $getAllPanelists[$key]['panelistFullName'] = $getPanelistDetails->first_name.' '.$getPanelistDetails->middle_name.' '.$getPanelistDetails->last_name;
+            $getAllPanelists[$key]['panelistEmail'] = $getPanelistDetails->email;
+            $getAllPanelists[$key]['gender'] =  ($getPanelistDetails->gender == 1) ? "Male" : "Female" ;
+        }
+
+        return $getAllPanelists;
+    }
+
     public function getGroupDetails($groupId = null){
         $groupDetails = $this->universal->get(
             true,

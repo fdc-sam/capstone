@@ -285,6 +285,10 @@ if (sub_content == 'head/index') {
 
     var instaructorDataTable = $('#getAllInstructor').DataTable({
         "responsive" : true,
+        "columnDefs": [
+            { responsivePriority: 1, targets: 0 },
+            { responsivePriority: 1, targets: 4 }
+        ],
         "processing" : true,
         "serverSide" : true,
         "order": [[0,'asc']],
@@ -392,6 +396,10 @@ if (sub_content == 'head/proposal') {
     var instaructorDataTable = $('#getAllProposal').DataTable({
         "searching": true,
         "responsive" : true,
+        "columnDefs": [
+            { responsivePriority: 1, targets: 0 },
+            { responsivePriority: 1, targets: 7 }
+        ],
         "processing" : true,
         "serverSide" : true,
         "ordering" : false,

@@ -41,7 +41,11 @@ if ($subContent == 'head/groups') {
 	</script>
 <?php endif; ?>
 
-<?php if ($subContent == 'head/assignPanelist' || $subContent == 'head/titleHearingEdit'): ?>
+<?php if ($subContent == 'head/assignPanelist'
+		|| $subContent == 'head/titleHearingEdit'
+		|| $subContent == 'panel/assignAdviser'
+		|| $subContent == 'adviser/index'
+	): ?>
 	<script src="<?php echo base_url('assets/scripts/select2.min.js'); ?>"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
 <?php endif; ?>
@@ -56,17 +60,21 @@ if ($subContent == 'head/groups') {
 <!-- start -->
 	<script src="<?php echo base_url('assets/scripts/ckeditor/ckeditor.js'); ?>"></script>
 	<script src="<?php echo base_url('assets/scripts/jquery.dataTables.min.js'); ?>"></script>
+	<script src="<?php echo base_url('assets/scripts/dataTables.responsive.min.js'); ?>"></script>
 	<?php if ($mainContent == 'instructor/head'): ?>
 		<script src="<?php echo base_url('assets/scripts/instructor/head.js'); ?>"></script>
 	<?php endif; ?>
 	<?php if ($mainContent == 'instructor/panel'): ?>
 		<script src="<?php echo base_url('assets/scripts/instructor/panel.js'); ?>"></script>
 	<?php endif; ?>
+	<?php if ($mainContent == 'instructor/adviser'): ?>
+		<script src="<?php echo base_url('assets/scripts/instructor/adviser.js'); ?>"></script>
+	<?php endif; ?>
 
 	<script src="<?php echo base_url('assets/scripts/sweetalert2.js'); ?>"></script>
 <!-- end -->
 
-<?php if ($mainContent == 'instructor/head'): ?>
+<?php if ($mainContent == 'instructor/head' || $mainContent == 'instructor/panel'): ?>
 	<script type="text/javascript">
 
 	// notifications
@@ -88,6 +96,22 @@ if ($subContent == 'head/groups') {
 	}
 	notification();
 
+	// count result, count $assignedGroup
+	function countAllAssignedCapstone(){
+	    $.ajax({
+	        url: `${base_url}/instructor/panel/countAllAssignedCapstone`,
+	        type:'post',
+	        data:{
+	            countResult:1
+	        },
+	        success: function(data){
+	            if (data > 0) {
+	                $('#count-assignedGroup').html(`<span class="badge badge-pill badge-primary">${data}</span>`);
+	            }
+	        }
+	    });
+	}
+	countAllAssignedCapstone();
 	</script>
 <?php endif; ?>
 

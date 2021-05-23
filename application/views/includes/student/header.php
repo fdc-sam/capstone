@@ -545,6 +545,11 @@
 
                             <li class="app-sidebar__heading">ADVISER UI</li>
                             <li>
+                                <a href="charts-chartjs.html" >
+                                    <i class="metismenu-icon pe-7s-graph2"></i>ChartJS
+                                </a>
+                            </li>
+                            <li>
                                 <a href="#">
                                     <i class="metismenu-icon pe-7s-light"></i> Elements
                                     <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
@@ -571,11 +576,6 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </li>
-                            <li>
-                                <a href="charts-chartjs.html" >
-                                    <i class="metismenu-icon pe-7s-graph2"></i>ChartJS
-                                </a>
                             </li>
                         </ul>
                     </div>
