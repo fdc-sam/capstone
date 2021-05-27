@@ -1643,10 +1643,10 @@ class Head extends CI_Controller {
         }else{
             redirect(base_url('instructor/head/panelistReject/'.$hearingId.'?errorFlag=1'), 'refresh');
         }
-
-
     }
 
+
+    
     // get any details function
     public function getGroupDetails($groupId = null){
         $groupDetails = $this->universal->get(

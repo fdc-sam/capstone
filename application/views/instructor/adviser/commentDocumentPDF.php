@@ -11,8 +11,13 @@
                             </a>
                         </li>
                         <li class="breadcrumb-item">
+                            <a href="<?php echo base_url('instructor/adviser/viewDocumentPDF/'.$documentsId.'/'.$groupId.'/'.$documentFileName); ?>">
+                                View File
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
                             <a>
-                                Reject
+                                Comment
                             </a>
                         </li>
                     </ol>
@@ -36,12 +41,12 @@
                 <div class="card mb-3">
                     <div class="card-body">
 						<form id="form-addMoreProjectHearing" class=""
-                            action="<?php echo base_url('instructor/adviser/rejectGroup/'.$thisesGroupAssignedAdviserId); ?>" method="post">
+                            action="<?php echo base_url('instructor/adviser/commentDocumentPDF/'.$documentsId.'/'.$groupId.'/'.$documentFileName); ?>" method="post">
 							<div class="form-row">
 								<div class="col-md-12">
 									<div class="position-relative form-group">
-										<label for="" class="">Reason</label>
-										<textarea name="reasion" rows="1" class="form-control autosize-input" style="height: 77px;"></textarea>
+										<label for="" class="">Comment</label>
+										<textarea name="remark" rows="1" class="form-control autosize-input" style="height: 77px;"></textarea>
 									</div>
 								</div>
 							</div>
@@ -49,7 +54,7 @@
                             <div class="clearfix">
                                 <!-- <button type="button" id="reset-btn" class="btn-shadow float-left btn btn-link">Reset</button> -->
                                 <button type="submit" id="updatePanelist" class="btn-shadow btn-wide float-right btn-hover-shine btn btn-primary">Save</button>
-                                <a href="<?php echo base_url('instructor/adviser'); ?>" class="btn-shadow float-right btn-wide mr-3 btn btn-outline-secondary">Cancel</a>
+                                <a href="<?php echo base_url('instructor/adviser/viewDocumentPDF/'.$documentsId.'/'.$groupId.'/'.$documentFileName); ?>" class="btn-shadow float-right btn-wide mr-3 btn btn-outline-secondary">Cancel</a>
                             </div>
 						</form>
                     </div>

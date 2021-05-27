@@ -624,6 +624,7 @@ class Panel extends CI_Controller {
                     // get instructor details
                     $adviser = $this->getPanelistDetails($projectAdviser->instructor_id);
                     $AdviserFullName = $adviser->first_name.' '.$adviser->middle_name.' '.$adviser->last_name;
+                    $adviserRequestStatus = $projectAdviser->status;
                 }
 
                 $groupMembers = $this->universal->get(
@@ -648,10 +649,13 @@ class Panel extends CI_Controller {
                 }
 
                 $groupDetails = $this->getGroupDetails($approvedProposal['thesis_group_id']);
+                $chairmanFullname = $this->getChairman($approvedProposal['thesis_group_id']);
 
                 // all data
+                $approvedProposals[$key]['chairmanFullname'] = $chairmanFullname;
                 $approvedProposals[$key]['groupMemberFullname'] = $groupMemberFullname;
                 $approvedProposals[$key]['adviserFlag'] = isset($AdviserFullName)? true: false;
+                $approvedProposals[$key]['adviserRequestStatus'] = isset($adviserRequestStatus)? $adviserRequestStatus: 100;
                 $approvedProposals[$key]['adviser'] = isset($AdviserFullName)? $AdviserFullName: '<div class="badge badge-warning ml-2">No Assign Adviser</div>';
                 $approvedProposals[$key]['groupName'] = isset($groupDetails->thesis_group_name)? $groupDetails->thesis_group_name: "";
 
@@ -677,7 +681,7 @@ class Panel extends CI_Controller {
         $data['userInfo'] = $this->ion_auth->user()->row();
         $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
         $currentUserGroup = $this->getCurrentUserGroupDetails($data['userInfo']->id);
-
+        $message = null;
         // if add adviser using post method
         $post = $this->input->post();
         if (isset($post) && $post) {
@@ -691,6 +695,11 @@ class Panel extends CI_Controller {
                 )
             );
 
+            // insert thises_group_assigned_adviser_logs
+            $instructorId = $post['selec2-assignAdviser'];
+            $action = "Assigned Instructor to be an adviser";
+            $assignedAdviserLogs = $this->addAssignedAdviserLogs($instructorId, $groupId, $thisesId, $action);
+
             // check ig has adviser
             if (isset($hasAdviser) && $hasAdviser) {
                 $updateAssignAdviser = $this->universal->update(
@@ -698,6 +707,7 @@ class Panel extends CI_Controller {
                     array(
                         'instructor_id' => $post['selec2-assignAdviser'],
                         'thises_id' => $thisesId,
+                        'status' => 0,
                         'date_modified' => date('Y-m-d H:i:s')
                     ),
                     array(
@@ -705,21 +715,7 @@ class Panel extends CI_Controller {
                         'thises_id' => $thisesId
                     )
                 );
-
-                // update capstone1
-                $updateCapstone1 = $this->universal->update(
-                    'capstone1',
-                    array(
-                        'thesis_group_id' => $groupId,
-                        'thises_id' => $thisesId,
-                        'date_created' => date('Y-m-d H:i:s'),
-                        'date_modified' => date('Y-m-d H:i:s')
-                    ),
-                    array(
-                        'group_id' => $groupId,
-                        'thises_id' => $thisesId
-                    )
-                );
+                $message = "Data Successfully Updated";
             }else{
                 $inserteAssignAdviser = $this->universal->insert(
                     'thises_group_assigned_adviser',
@@ -732,22 +728,11 @@ class Panel extends CI_Controller {
                     )
                 );
 
-                // insert data to capstone1
-                $insertCapstone1 = $this->universal->insert(
-                    'capstone1',
-                    array(
-                        'thesis_group_id' => $groupId,
-                        'thises_id' => $thisesId,
-                        'date_created' => date('Y-m-d H:i:s'),
-                        'date_modified' => date('Y-m-d H:i:s')
-                    )
-                );
+                $message = "Data Successfully Inserted";
             }
 
             if (
-                (isset($inserteAssignAdviser) && $inserteAssignAdviser)
-                ||
-                (isset($updateAssignAdviser) && $updateAssignAdviser)
+                isset($inserteAssignAdviser) && $inserteAssignAdviser
             ) {
                 $hasDataCapstone = $this->universal->get(
                     true,
@@ -759,9 +744,6 @@ class Panel extends CI_Controller {
                     )
                 );
             }
-
-
-
         }
 
         // get all panelist id og current param group id
@@ -808,8 +790,21 @@ class Panel extends CI_Controller {
                 'group_id ' => $groupId
             )
         );
-        // pre($currentGroupAdviser->instructor_id);
+        // pre($message);
         // die();
+
+        if (isset($message) && $message) {
+            $this->session->set_flashdata('message',
+                '<div class="alert alert-warning">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <i class="pe-7s-close"> </i>
+                    </button>
+                    <span>
+                        <p>'.$message.'</p>
+                    </span>
+                </div>');
+        }
+
 
         // - data
         $data['currentGroupAdviserId'] = isset($currentGroupAdviser->instructor_id)? $currentGroupAdviser->instructor_id: null;
@@ -879,6 +874,26 @@ class Panel extends CI_Controller {
         return $getAllPanelists;
     }
 
+    public function getChairman($groupId = null){
+        $hasChairman = $this->universal->get(
+            true,
+            'project_title_hearing',
+            '*',
+            'row',
+            array(
+                'chairman_flag' => 1,
+                'group_id' => $groupId
+            )
+        );
+
+        if (isset($hasChairman) && $hasChairman) {
+            $getChairmanDetails = $this->getPanelistDetails($hasChairman->panelist_id);
+            $chairmanFullname = $getChairmanDetails->first_name.' '.$getChairmanDetails->middle_name.' '.$getChairmanDetails->last_name;
+        }
+
+        return isset($chairmanFullname)? $chairmanFullname: null;
+    }
+
     public function getGroupDetails($groupId = null){
         $groupDetails = $this->universal->get(
             true,
@@ -938,5 +953,18 @@ class Panel extends CI_Controller {
         );
 
         return $groupMembersDetails;
+    }
+
+    public function addAssignedAdviserLogs($instructorId = null, $groupId = null, $thisesId = null, $action = null){
+        $addAssignedAdviserLogs = $this->universal->insert(
+            'thises_group_assigned_adviser_logs',
+            array(
+                'instructor_id' => $instructorId,
+                'group_id' => $groupId,
+                'thises_id' => $thisesId,
+                'action' => $action,
+                'date_created' => date('Y-m-d H:i:s')
+            )
+        );
     }
 }

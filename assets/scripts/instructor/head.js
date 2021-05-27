@@ -410,7 +410,16 @@ if (sub_content == 'head/proposal') {
         },
         "columns" : [
             {"data": "id"},
-            {"data": "thesis_group_name"},
+            {
+                "data": "thesis_group_name",
+                "render": function(data, type, row, meta){
+                    return  `
+                        <a href="${base_url}instructor/panel/groupDetails/${row.thesisGroupId}">
+                            ${data}
+                        </a>
+                    `;
+                }
+            },
             {"data": "groupPoposals"},
             {
                 "data": "assignedFlag",

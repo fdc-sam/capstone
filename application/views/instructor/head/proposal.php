@@ -5,12 +5,9 @@
                 <nav class="" aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="<?php echo base_url('instructor/head'); ?>">
+                            <a>
                                 <i aria-hidden="true" class="fa fa-home"></i>
                             </a>
-                        </li>
-                        <li class="breadcrumb-item">
-                            <a>Proposal</a>
                         </li>
                     </ol>
                 </nav>
@@ -36,7 +33,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Group Name</th>
-                                <th>Proposal</th>
+                                <th class="none">Proposal</th>
                                 <th>Panelist Status</th>
                                 <th>Chairman</th>
                                 <th>Created</th>

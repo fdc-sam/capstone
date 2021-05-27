@@ -123,7 +123,7 @@
 <?php if ($subContent == 'home/viewDocumentPDF'): ?>
 
     <!-- for pdf js -->
-    <script type="text/javascript" src="https://unpkg.com/pdfobject@2.1.1/pdfobject.js"></script>
+    <script type="text/javascript" src=" <?php echo base_url('assets/scripts/pdfobject.js'); ?>"></script>
     <script type="text/javascript">
         var file_name = '<?php echo $thesisDocuments->file_name ?>';
         var options = {
@@ -135,7 +135,14 @@
                 view: "FitV"
             }
         };
-        PDFObject.embed(`${base_url}uploads/${file_name}`, "#viewer", options);
+        // PDFObject.embed(`${base_url}uploads/${file_name}`, "#viewer", options);
+        $('#viewer').html(`
+            <object data="${base_url}uploads/${file_name}" type="application/pdf" width="100%" height="100%">
+                <p>Your web browser doesn't have a PDF plugin.
+                Instead you can <a href="${base_url}uploads/${file_name}">click here to
+                download the PDF file.</a></p>
+            </object>
+        `);
     </script>
 <?php endif; ?>
 

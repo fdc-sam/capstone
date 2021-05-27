@@ -14,12 +14,17 @@
                 </nav>
             </div>
         </div>
-        <?php if (isset($message) && $message): ?>
-            <div class="alert alert-info alert-dismissible fade show" role="alert">
+
+        <?php if (isset($_SESSION['message']) && $this->session->flashdata('message')): ?>
+            <div class="alert  alert-dismissible fade show <?php echo isset($_SESSION['message']['class'])? $_SESSION['message']['class']: ""; ?>" role="alert">
                 <button type="button" class="close" aria-label="Close" data-dismiss="alert">
                     <span aria-hidden="true">×</span>
                 </button>
-                <?php echo $message;?>
+                <?php
+                    echo isset($_SESSION['message']['message'])? $_SESSION['message']['message']: "";
+                    // pre($_SESSION['message']);
+                    unset($_SESSION['message']);
+                ?>
             </div>
         <?php endif; ?>
         <div class="row">
@@ -45,7 +50,11 @@
                             <tbody>
                                 <?php foreach ($assignedGroups as $assignedGroupKey => $assignedGroup): ?>
                                     <td><?php echo $assignedGroupKey + 1; ?></td>
-                                    <td><?php echo $assignedGroup['groupName']; ?></td>
+                                    <td>
+                                        <a href="<?php echo base_url('instructor/panel/groupDetails/'.$assignedGroup['group_id']); ?>">
+                                            <?php echo $assignedGroup['groupName']; ?>
+                                        </a>
+                                    </td>
                                     <td><?php echo $assignedGroup['statusFlag']; ?></td>
                                     <td><?php echo $assignedGroup['date_modified']; ?></td>
                                     <td>
@@ -64,14 +73,14 @@
                                                 <i class="fa fa-fw" aria-hidden="true"></i>
                                             </a>
                                         <?php endif; ?>
-                                        <!-- <?php if ($assignedGroup['status'] == 2): ?>
+                                        <?php if ($assignedGroup['status'] == 2): ?>
                                             <a  href="<?php echo base_url('instructor/adviser/acceptGroup/'.$assignedGroup['id']); ?>"
                                                 class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary"
                                                 data-toggle="tooltip" data-placement="top" title="Reject Assigned Group"
                                             >
                                                 <i class="fa fa-fw" aria-hidden="true"></i>
                                             </a>
-                                        <?php endif; ?> -->
+                                        <?php endif; ?>
                                         <?php if ($assignedGroup['status'] == 0): ?>
                                             <a  href="<?php echo base_url('instructor/adviser/rejectGroup/'.$assignedGroup['id']); ?>"
                                                 class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-danger"

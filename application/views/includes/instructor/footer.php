@@ -127,6 +127,36 @@ $(document).ready(function(){
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
 <?php endif; ?>
 
+<?php if ($subContent == 'adviser/viewDocumentPDF'): ?>
+
+    <!-- for pdf js -->
+    <script type="text/javascript" src=" <?php echo base_url('assets/scripts/pdfobject.js'); ?>"></script>
+
+
+    <script type="text/javascript">
+		var pageCount = '<?php echo $pageCount ?>';
+        var file_name = '<?php echo $documentFileName ?>';
+        var options = {
+            pdfOpenParams: {
+                pagemode: "thumbs",
+                navpanes: 1,
+                toolbar: 1,
+                statusbar: 1,
+				view:"left,top,wd,ht",
+				page:'pagenum'
+            }
+        };
+
+        // PDFObject.embed(`${base_url}uploads/${file_name}`, "#viewer", options);
+
+        var timeTwoOriginalHeight = pageCount * 2;
+		var height = $('#pdf').height();
+		$('#pdf').css("height", height * timeTwoOriginalHeight - 250);
+
+
+    </script>
+<?php endif; ?>
+
 <?php if ($subContent == 'head/proposal'): ?>
 	<style media="screen">
 	    .select2-search__field{

@@ -317,7 +317,7 @@
                                 </li>
                             <?php endif; ?>
                             <li class="app-sidebar__heading">Panelist</li>
-                            <li class="<?php echo isset($mainContent) && $mainContent == 'instructor/panel' ? 'mm-active': '' ?>">
+                            <li class="<?php echo isset($mainContent) && $mainContent == 'instructor/panel' && $subContent != 'panel/groupDetails' ? 'mm-active': '' ?>">
                                 <a href="#">
                                     <i class="metismenu-icon pe-7s-note2"></i>Title Hearing
                                     <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
@@ -342,7 +342,6 @@
                                             class="<?php echo isset($subContent)
                                             && $subContent == 'panel/projectTitleHearingResult'
                                             || $subContent == 'panel/assignAdviser'
-                                            || $subContent == 'panel/groupDetails'
                                                 ? 'mm-active': '' ?>  btn-sm">
                                             <i class="metismenu-icon"></i>Title Hearing Result
                                         </a>
@@ -351,12 +350,12 @@
                             </li>
                             <li>
                                 <a href="" >
-                                    <i class="metismenu-icon pe-7s-graph2"></i>Chapstone 1
+                                    <i class="metismenu-icon pe-7s-graph2"></i>Capstone 1
                                 </a>
                             </li>
                             <li>
                                 <a href="" >
-                                    <i class="metismenu-icon pe-7s-graph2"></i>Chapstone 2
+                                    <i class="metismenu-icon pe-7s-graph2"></i>Capstone 2
                                 </a>
                             </li>
 
@@ -366,36 +365,19 @@
                                 && $subContent == 'adviser/index'
                                 || $subContent == 'adviser/rejectGroup'
                                     ? 'mm-active': '' ?>  btn-sm" >
-                                    <i class="metismenu-icon pe-7s-home"></i>Assigned Groups
+                                    <i class="metismenu-icon pe-7s-attention"></i>Assigned Groups
                                 </a>
                             </li>
                             <li>
-                                <a href="#">
-                                    <i class="metismenu-icon pe-7s-light"></i> Elements
-                                    <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                <a href="<?php echo base_url('instructor/adviser/advisory'); ?>" class="<?php echo isset($subContent)
+                                    && $subContent == 'adviser/advisory'
+                                    || $subContent == 'adviser/viewDocumentPDF'
+                                    || $subContent == 'adviser/commentDocumentPDF'
+                                    || $subContent == 'adviser/viewLogs'
+                                    ? 'mm-active': '' ?>  btn-sm"
+                                >
+                                    <i class="metismenu-icon pe-7s-share"></i>Advisory
                                 </a>
-                                <ul>
-                                    <li>
-                                        <a href="forms-controls.html" >
-                                            <i class="metismenu-icon"></i>Controls
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="forms-layouts.html" >
-                                            <i class="metismenu-icon"></i>Layouts
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="forms-validation.html" >
-                                            <i class="metismenu-icon"></i>Validation
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="forms-wizard.html" >
-                                            <i class="metismenu-icon"></i>Wizard
-                                        </a>
-                                    </li>
-                                </ul>
                             </li>
 
                         </ul>

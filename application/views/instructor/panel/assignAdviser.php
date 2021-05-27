@@ -19,14 +19,12 @@
                 </nav>
             </div>
         </div>
-        <?php if (isset($message) && $message): ?>
-            <div class="alert alert-info alert-dismissible fade show" role="alert">
-                <button type="button" class="close" aria-label="Close" data-dismiss="alert">
-                    <span aria-hidden="true">×</span>
-                </button>
-                <?php echo $message;?>
-            </div>
-        <?php endif; ?>
+
+        <?php
+            echo $this->session->flashdata('message');
+            unset($_SESSION['message']);
+        ?>
+
         <div class="row">
             <div class="col-sm-12 col-lg-12">
                 <div class="card mb-3">

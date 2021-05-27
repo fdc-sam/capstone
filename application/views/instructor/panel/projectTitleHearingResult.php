@@ -32,7 +32,9 @@
                                         <th>NO. </th>
                                         <th>Group Name</th>
                                         <th>ASSIGNED ADVISER</th>
+                                        <th>ADVISER REQUEST STATUS </th>
                                         <th>PROPOSAL TITLE </th>
+                                        <th>REMARK </th>
                                         <th class="none">Group Members</th>
                                         <th class="none">Discreption</th>
                                         <th class="none">Limitations Of The Studies </th>
@@ -49,8 +51,28 @@
                                                     <?php echo $approvedProposal['groupName']; ?>
                                                 </a>
                                             </td>
-                                            <td><?php echo $approvedProposal['adviser']; ?> </td>
+                                            <td><?php echo $approvedProposal['adviser']; ?></td>
+                                            <td>
+
+                                                <?php
+                                                    if ($approvedProposal['adviserRequestStatus'] == 0) {
+                                                        ?><div class="mb-2 mr-2 badge badge-warning">Pending</div><?php
+                                                    }elseif ($approvedProposal['adviserRequestStatus'] == 1) {
+                                                        ?><div class="mb-2 mr-2 badge badge-success">Accepted</div><?php
+                                                    }elseif ($approvedProposal['adviserRequestStatus'] == 2) {
+                                                        ?><div class="mb-2 mr-2 badge badge-danger">Reject</div><?php
+                                                    }else {
+                                                        ?><div class="mb-2 mr-2 badge badge-warning">Adviser Required</div><?php
+                                                    }
+                                                ?>
+                                            </td>
                                             <td><?php echo $approvedProposal['title']; ?> </td>
+                                            <td>
+                                                <?php if (isset($approvedProposal['chairmanFullname']) && $approvedProposal['chairmanFullname']): ?>
+                                                    Approved by their chairman : <u><b><?php echo $approvedProposal['chairmanFullname']; ?> </b> </u>
+                                                <?php endif; ?>
+
+                                            </td>
                                             <td><br>
                                                 <ul>
                                                 <?php foreach ($approvedProposal['groupMemberFullname'] as $groupMemberFullnameKey => $fullname): ?>
@@ -79,7 +101,9 @@
                                         <th>NO. </th>
                                         <th>Group Name</th>
                                         <th>ASSIGNED ADVISER</th>
+                                        <th>ADVISER REQUEST STATUS </th>
                                         <th>PROPOSAL TITLE </th>
+                                        <th>REMARK </th>
                                         <th>Group Members</th>
                                         <th>Discreption</th>
                                         <th>Limitations Of The Studies </th>

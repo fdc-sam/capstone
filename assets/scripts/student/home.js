@@ -1,22 +1,22 @@
-if (sub_content == 'home/index') {    
+if (sub_content == 'home/index') {
     $(document).ready(function(){
-        
+
         // this line of code is for the textarea design ang functionalities
         CKEDITOR.replace('description');
         CKEDITOR.replace(`limitations`);
         CKEDITOR.replace(`designDevelopmentPlan`);
-        
+
         // initialize select2
         var groupMemberMultiSelect = $("#groupMember").select2({
             tags: "true",
             theme:"bootstrap4",
             placeholder: "Member's"
         });
-        
+
         $(document).on('click', '#btnGroupSave', function(){
-            
+
             var groupMemberId = $('#groupMember').val();
-            
+
             if (groupMemberId == "") {
                 console.log('empty');
             }else{
@@ -37,7 +37,7 @@ if (sub_content == 'home/index') {
                             var alertClass = `alert-warning`;
                             var alertMessege = `Group member was not Added`;
                         }
-                        
+
                         $('#alertMessageModal').html(`
                             <div class="alert alert-dismissible fade show ${alertClass}" role="alert">
                                 <button type="button" class="close" aria-label="Close" data-dismiss="alert">
@@ -65,19 +65,19 @@ if (sub_content == 'home/index') {
                 })
             }
         });
-    
-    
+
+
         function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
         async function demo() {
             console.log('Taking a break...');
             await sleep(2000);
-            
-            // 
+
+            //
             console.log('Two seconds later, showing sleep in a loop...');
         }
-    
+
     });
 
     function countAvailableProposalLeft(){
@@ -92,15 +92,15 @@ if (sub_content == 'home/index') {
         });
     }
     countAvailableProposalLeft();
-    
-    // max limit of proposal 
+
+    // max limit of proposal
     var maxFields = 5;
-    
+
     var x = parseInt($('#countAvailableProposalLeft').html());
     // add propose
     $(document).on('click','.addMoreProposal',function(e) {
         e.preventDefault();
-        // count of proposal 
+        // count of proposal
         x = parseInt($('#countAvailableProposalLeft').html());
         console.log(x); // show response from the php script.
         if (x < maxFields) {
@@ -158,43 +158,43 @@ if (sub_content == 'home/index') {
         }
         $('#countAvailableProposalLeft').html(x);
     });
-    
+
     $(document).on("click", ".removeProposal", function(e) {
         e.preventDefault();
         $(this).parents('.card').remove();
         x--;
         $('#countAvailableProposalLeft').html(x);
     });
-    
+
     // submit proposal
     $(document).on("submit", "#proposeForm", function(e) {
         e.preventDefault();
-        
+
         // get the CKEDITOR textarea value
-        
-        
+
+
         if ( parseInt($('#countAvailableProposalLeft').html()) >=5 ) {
             alert('You Reached Your Proposal Limit of 5');
             return;
         }
-        
+
         // get the array inputs og titles
-        var proposeTitles = $('input[name="title[]"]').map(function(){ 
-            return this.value; 
+        var proposeTitles = $('input[name="title[]"]').map(function(){
+            return this.value;
         }).get();
-        
-        var proposeDescription = $('textarea[name="description[]"]').map(function(){ 
-            return this.value; 
+
+        var proposeDescription = $('textarea[name="description[]"]').map(function(){
+            return this.value;
         }).get();
-        
-        var proposeLimitations = $('textarea[name="limitations[]"]').map(function(){ 
-            return this.value; 
+
+        var proposeLimitations = $('textarea[name="limitations[]"]').map(function(){
+            return this.value;
         }).get();
-        
-        var proposeDesignDevelopmentPlan = $('textarea[name="designDevelopmentPlan[]"]').map(function(){ 
-            return this.value; 
+
+        var proposeDesignDevelopmentPlan = $('textarea[name="designDevelopmentPlan[]"]').map(function(){
+            return this.value;
         }).get();
-        
+
         $.ajax({
             url:`${base_url}/student/home/addPropose`,
             type:'post',
@@ -217,12 +217,12 @@ if (sub_content == 'home/index') {
                 countAvailableProposalLeft();
             }
         });
-        
+
     });
-    
+
     $(document).on('click','.deletePropossal', function(){
         var thesisId = $(this).attr('thisesId');
-        
+
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -256,10 +256,10 @@ if (sub_content == 'home/index') {
                 });
             }
         })
-        
+
     });
-    
-    
+
+
     //teacher view
     var batchDataTable = $('#dataTableGroupMembers').DataTable({
         "responsive" : true,
@@ -286,7 +286,7 @@ if (sub_content == 'home/index') {
                     var fullName = `${row.first_name} ${row.middle_name} ${row.last_name}`;
                     return fullName;
                 }
-            }, 
+            },
             {"data": "email"},
             {
                 "data": "gender",
@@ -309,15 +309,15 @@ if (sub_content == 'home/index') {
                         </button>
                     `;
                     return btnReturn;
-            
+
                 }
             }
         ]
     });// end of the data table variable
-    
+
     $(document).on('click','.deleteGroupMember', function(){
         var user_id = $(this).attr('user_id');
-        
+
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -352,19 +352,19 @@ if (sub_content == 'home/index') {
                 });
             }
         })
-        
+
     });
 }
 
-if (sub_content == 'home/capstoneDetails') { 
-    
+if (sub_content == 'home/capstoneDetails') {
+
     // add documentation files
     $(document).on('click','.btnAddFiles', function(e){
         e.preventDefault();
-        
+
         // to activate the clicl function of 'selectedFile'
         var selectedFile = $('#selectedFile').click();
-        
+
         const fileSelector = document.getElementById('selectedFile');
         fileSelector.addEventListener('change', (event) => {
             const fileList = event.target.files;
@@ -374,7 +374,7 @@ if (sub_content == 'home/capstoneDetails') {
                 var fileName = escape(f.name);
                 var fileExtention = fileName.split('.').pop();;
                 console.log(fileExtention);
-                
+
                 if (fileExtention == 'pdf') {
                     var files = `
                         <li class="pt-2 pb-2 pr-2 list-group-item li-selectedFile">
@@ -426,11 +426,11 @@ if (sub_content == 'home/capstoneDetails') {
             }
         });
     });
-    
+
     $(document).on('click', '.saveFile', function(e){
         $('.updloadFile').click();
     });
-    
+
     // remove the selected File
     $(document).on('click', '.btnRemoveDocument', function(e){
         Swal.fire({
@@ -453,7 +453,7 @@ if (sub_content == 'home/capstoneDetails') {
             }
         })
     });
-    
+
     // delete the File
     $(document).on('click', '.btnDeleteDocument', function(e){
         e.preventDefault();
@@ -489,13 +489,12 @@ if (sub_content == 'home/capstoneDetails') {
                         $(`.li-selectedFile${documentId}`).fadeOut(500);
                     }
                 });
-                
+
             }
         })
     });
 }
 
-if (sub_content == 'home/viewDocumentPDF') { 
+if (sub_content == 'home/viewDocumentPDF') {
     console.log(base_url);
-    
 }

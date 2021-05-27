@@ -52,14 +52,10 @@
                         <h6 class="mt-3">No account? <a href="<?php echo base_url('register'); ?>" class="text-primary">Sign up now</a></h6>
                         <div class="divider row"></div>
                         <div>
-                            <?php if (isset($message) && $message): ?>
-                                <div class="alert alert-info alert-dismissible fade show" role="alert">
-                                    <button type="button" class="close" aria-label="Close" data-dismiss="alert">
-                                        <span aria-hidden="true">×</span>
-                                    </button>
-                                    <?php echo $message;?>
-                                </div>
-                            <?php endif; ?>
+                            <?php
+                                echo $this->session->flashdata('message');
+                                unset($_SESSION['message']);
+                            ?>
                             <div class="alert alert-danger hidden" id="alertMessage">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <i class="pe-7s-close"> </i>

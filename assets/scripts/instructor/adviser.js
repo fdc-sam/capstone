@@ -8,4 +8,14 @@ $(document).ready(function(){
             ],
         });// end of the data table variable
     }
+
+    if (sub_content == 'adviser/advisory') {
+        var tableAssignedGroub = $('#table-advisory').DataTable({
+            "responsive" : true,
+            "columnDefs": [
+                { responsivePriority: 1, targets: 1 },
+                { responsivePriority: 1, targets: 4 }
+            ],
+        });// end of the data table variable
+    }
 });

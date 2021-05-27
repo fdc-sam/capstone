@@ -20,11 +20,19 @@
                 </nav>
             </div>
         </div>
-        <div class="" id="alertMessege"></div>        
+        <div class="" id="alertMessege"></div>
+        <style media="screen">
+            #viewer{
+                width: 100% !important;
+                height: 100vh !important;
+                margin: 0 auto;
+            }
+
+        </style>
         <div class="tabs-animation">
             <div class="row">
                 <div class="col-md-12 col-lg-12 parent">
-                    <div  id='viewer' style='width: 100%; height: 100%; margin: 0 auto;'></div>
+                    <div id='viewer'></div>
                 </div>
             </div>
         </div>
