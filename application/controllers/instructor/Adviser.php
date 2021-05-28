@@ -247,42 +247,38 @@ class Adviser extends CI_Controller {
                 '*',
                 'row',
                 array(
-                    'panelist_id' => $data['userInfo']->id,
-                    'thises_id' => $getAllGroupAssigned->thises_id,
                     'thesis_group_id' => $getAllGroupAssigned->group_id
                 )
             );
             if (isset($getCapstone1Details) && $getCapstone1Details) {
-                // update capstone1
-                $updateCapstone1 = $this->universal->update(
-                    'capstone1',
-                    array(
-                        'panelist_status' => 1, // accept
-                        'panelist_id' => $data['userInfo']->id,
-                        'thesis_group_id' => $getAllGroupAssigned->group_id,
-                        'thises_id' => $getAllGroupAssigned->thises_id,
-                        'date_created' => date('Y-m-d H:i:s'),
-                        'date_modified' => date('Y-m-d H:i:s')
-                    ),
-                    array(
-                        'thesis_group_id' => $getAllGroupAssigned->group_id,
-                        'thises_id' => $getAllGroupAssigned->thises_id,
-                        'panelist_id' => $data['userInfo']->id
-                    )
-                );
+
             }else{
-                // insert data to capstone1
-                $insertCapstone1 = $this->universal->insert(
-                    'capstone1',
+                $getPanelistId = $this->universal->get(
+                    true,
+                    'project_title_hearing',
+                    '*',
+                    'array',
                     array(
-                        'panelist_status' => 1, // accept
-                        'panelist_id' => $data['userInfo']->id,
-                        'thesis_group_id' => $getAllGroupAssigned->group_id,
-                        'thises_id' => $getAllGroupAssigned->thises_id,
-                        'date_created' => date('Y-m-d H:i:s'),
-                        'date_modified' => date('Y-m-d H:i:s')
+                        'group_id' => $groupId
                     )
                 );
+
+                if (isset($getPanelistId) && $getPanelistId) {
+                    foreach ($getPanelistId as $key => $value) {
+                        // insert data to capstone1
+                        $insertCapstone1 = $this->universal->insert(
+                            'capstone1',
+                            array(
+                                'panelist_status' => 1, // accept
+                                'panelist_id' => $value['panelist_id'],
+                                'thesis_group_id' => $groupId,
+                                'thises_id' => $thisesId,
+                                'date_created' => date('Y-m-d H:i:s'),
+                                'date_modified' => date('Y-m-d H:i:s')
+                            )
+                        );
+                    }
+                }
             }
         }
 

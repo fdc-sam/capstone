@@ -119,7 +119,7 @@
 <script src="<?php echo base_url('assets/scripts/jquery.dataTables.min.js'); ?>"></script>
 <script src="<?php echo base_url('assets/scripts/select2.min.js'); ?>"></script>
 <script src="<?php echo base_url('assets/scripts/student/home.js'); ?>"></script>
-
+<script src="<?php echo base_url('assets/scripts/dataTables.responsive.min.js'); ?>"></script>
 <?php if ($subContent == 'home/viewDocumentPDF'): ?>
 
     <!-- for pdf js -->
@@ -180,6 +180,10 @@
 
 <?php if ($mainContent == 'student/panel'): ?>
 	<script src="<?php echo base_url('assets/scripts/student/panel.js'); ?>"></script>
+<?php endif; ?>
+
+<?php if ($mainContent == 'student/capstone'): ?>
+	<script src="<?php echo base_url('assets/scripts/student/capstone.js'); ?>"></script>
 <?php endif; ?>
 
 <script type="text/javascript">

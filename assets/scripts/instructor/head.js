@@ -1207,5 +1207,14 @@ if (sub_content == 'head/titleHearingEdit') {
             console.log("here"+groupNamePost);
         });
     }); // doncument ready end
+}
 
+if (sub_content == 'head/viewEvaluationRubric') {
+    var tableGroupDetails = $('#table-viewEvaluationRubric').DataTable({
+        "responsive" : true,
+        "columnDefs": [
+            { responsivePriority: 1, targets: 0 },
+            { responsivePriority: 1, targets: 6 }
+        ],
+    });// end of the data table variable
 }

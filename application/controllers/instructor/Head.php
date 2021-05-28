@@ -1645,8 +1645,125 @@ class Head extends CI_Controller {
         }
     }
 
+    public function createEvaluationRubric($evaluationRubricId = null){
+        // - get the user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
 
-    
+        // edit phase
+        if (isset($evaluationRubricId) && $evaluationRubricId) {
+            $evaluationRubricDetails = $this->universal->get(
+                true,
+                'evaluation_rubric',
+                '*',
+                'row',
+                array(
+                    'id' => $evaluationRubricId
+                )
+            );
+        }
+
+        $post = $this->input->post();
+        if (isset($post) && $post) {
+            if (isset($evaluationRubricId) && $evaluationRubricId) {
+                // Update
+                $updateEvaluationRubric = $this->universal->update(
+                    'evaluation_rubric',
+                    array(
+                        'title' => $post['title'],
+                        'unacceptable' => $post['unacceptable'],
+                        'acceptable' => $post['acceptable'],
+                        'good' => $post['good'],
+                        'superior' => $post['superior'],
+                        'date_modified' => date('Y-m-d H:i:s'),
+                    ),
+                    array(
+                        'id' => $evaluationRubricId
+                    )
+                );
+
+                $output = array(
+                    'message' => "Error! Somthing went Wrong",
+                    'class' => 'alert-danger'
+                );
+                if (isset($updateEvaluationRubric) && $updateEvaluationRubric) {
+                    $output = array(
+                        'message' => "Evaluation Rubric Updated",
+                        'class' => 'alert-success'
+                    );
+                }
+            }else{
+                // insert data
+                $insertEvaluationRubric = $this->universal->insert(
+                    'evaluation_rubric',
+                    array(
+                        'title' => $post['title'],
+                        'unacceptable' => $post['unacceptable'],
+                        'acceptable' => $post['acceptable'],
+                        'good' => $post['good'],
+                        'superior' => $post['superior'],
+                        'date_created' => date('Y-m-d H:i:s'),
+                        'date_modified' => date('Y-m-d H:i:s'),
+                    )
+                );
+
+                $output = array(
+                    'message' => "Error! Somthing went Wrong",
+                    'class' => 'alert-danger'
+                );
+                if (isset($insertEvaluationRubric) && $insertEvaluationRubric) {
+                    $output = array(
+                        'message' => "Evaluation Rubric Created",
+                        'class' => 'alert-success'
+                    );
+                }
+            }
+
+            $this->session->set_flashdata('message', $output);
+        }
+        // pre($hearingDetails);
+        // die();
+
+        // - data
+        $data['evaluationRubricId'] = isset($evaluationRubricId)? $evaluationRubricId: null;
+        $data['evaluationRubricDetails'] = isset($evaluationRubricDetails)? $evaluationRubricDetails: null;
+        $data['currentPageTitle'] = 'Head - Create Evaluation Rubric';
+        $data['mainContent'] = 'instructor/head';
+        $data['subContent'] = 'head/createEvaluationRubric';
+
+        // - load view
+        $this->load->view('includes/instructor/header',$data);
+		$this->load->view('instructor/head/createEvaluationRubric');
+		$this->load->view('includes/instructor/footer');
+    }
+
+    public function viewEvaluationRubric(){
+        // - get the user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+
+        // get all EvaluationRubric
+        $evaluationRubricDetailsArr = $this->universal->get(
+            true,
+            'evaluation_rubric',
+            '*',
+            'array'
+        );
+        // pre($evaluationRubricDetailsArr);
+        // die();
+
+        // - data
+        $data['evaluationRubricDetailsArr'] = $evaluationRubricDetailsArr;
+        $data['currentPageTitle'] = 'Head - View Evaluation Rubric';
+        $data['mainContent'] = 'instructor/head';
+        $data['subContent'] = 'head/viewEvaluationRubric';
+
+        // - load view
+        $this->load->view('includes/instructor/header',$data);
+		$this->load->view('instructor/head/viewEvaluationRubric');
+		$this->load->view('includes/instructor/footer');
+    }
+
     // get any details function
     public function getGroupDetails($groupId = null){
         $groupDetails = $this->universal->get(

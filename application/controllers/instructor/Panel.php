@@ -727,7 +727,6 @@ class Panel extends CI_Controller {
                         'date_modified' => date('Y-m-d H:i:s'),
                     )
                 );
-
                 $message = "Data Successfully Inserted";
             }
 
@@ -851,8 +850,228 @@ class Panel extends CI_Controller {
 		$this->load->view('includes/instructor/footer');
     }
 
+    public function capstone1(){
+        // - get the user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+        $currentUserGroup = $this->getCurrentUserGroupDetails($data['userInfo']->id);
+
+        $capstone1Details = $this->universal->get(
+            true,
+            'capstone1',
+            '*',
+            'array',
+            array(
+                'panelist_id' => $data['userInfo']->id
+            )
+        );
+
+        foreach ($capstone1Details as $key => $capstone1Detail) {
+            $groupDetailsObj = $this->getGroupDetails($capstone1Detail['thesis_group_id']);
+            $groupMemberDetailsArr = $this->getGroupMemersDetails($capstone1Detail['thesis_group_id']);
+            $allPanelistArr = $this->getAllPanelist($capstone1Detail['thesis_group_id']);
+            $proposalDetailsObj = $this->proposalDetails($capstone1Detail['thises_id']);
+
+
+            $emptyFlag = false;
+            $groupTotalScore = 0;
+            foreach ($allPanelistArr as $allPanelistKey => $allPanelist) {
+
+                $getPanelistScore = $this->universal->get(
+                    true,
+                    'capstone1 AS C1',
+                    'sum(CERConnect.evaluation_rubric_score) AS score',
+                    'row',
+                    array(
+                        'C1.panelist_id' => $allPanelist['panelist_id'],
+                        'C1.thesis_group_id' => $allPanelist['group_id']
+                    ),
+                    array(),
+                    array(
+                        'capstone1_evaluation_rubric_connect AS CERConnect' => 'CERConnect.capstone_id = C1.id'
+                    )
+                );
+
+                $score = $getPanelistScore->score;
+                if ($score == null) {
+                    $emptyFlag = true;
+                }
+                $groupTotalScore = $groupTotalScore + $score;
+
+                $allPanelistArr[$allPanelistKey]['evaluationRubricScore'] = $getPanelistScore->score;
+            }
+
+            if (!$emptyFlag) {
+                if ($groupTotalScore >= 63) {
+                    $updatedStatus = 1;
+                }elseif ($groupTotalScore >= 48 && $groupTotalScore <= 62) {
+                    $updatedStatus = 1;
+                }elseif ($groupTotalScore >= 32 && $groupTotalScore <= 47) {
+                    $updatedStatus = 1;
+                }elseif ( $groupTotalScore <= 31) {
+                    $updatedStatus = 2;
+                }
+                $updateStatus = $this->universal->update(
+                    'capstone1',
+                    array(
+                        'status' => $updatedStatus
+                    ),
+                    array(
+                        'thesis_group_id' => $capstone1Detail['thesis_group_id']
+                    )
+                );
+            }
+
+            $capstone1Details[$key]['groupDetailsObj'] = $groupDetailsObj;
+            $capstone1Details[$key]['proposalDetailsObj'] = $proposalDetailsObj;
+            $capstone1Details[$key]['groupMemberDetails'] = $groupMemberDetailsArr;
+            $capstone1Details[$key]['allPanelistArr'] = $allPanelistArr;
+            // pre($allPanelistArr);
+            // die();
+        }
+
+
+
+        // view data
+        $data['capstone1Details'] = $capstone1Details;
+        $data['currentuserId'] = $data['userInfo']->id;
+        $data['currentUserGroup'] = $currentUserGroup->name;
+        $data['currentPageTitle'] = 'View Proposal';
+        $data['mainContent'] = 'instructor/panel';
+        $data['subContent'] = 'panel/capstone1';
+
+        // - load view
+        $this->load->view('includes/instructor/header',$data);
+		$this->load->view('instructor/panel/capstone1');
+		$this->load->view('includes/instructor/footer');
+    }
+
+    public function groupEvaluation($groupId = null, $capstone1Id = null){
+        // - get the user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+        $currentUserGroup = $this->getCurrentUserGroupDetails($data['userInfo']->id);
+
+        $post = $this->input->post();
+        if (isset($post) && $post) {
+
+            foreach ($post['evaluationRubricId'] as $key => $evaluationRubricId) {
+                $score = $post['score'][$key];
+                $comment = $post['comment'][$key];
+
+                // check if capstone1Id is exist
+                $hasAlreadyExist = $this->universal->get(
+                    true,
+                    'capstone1_evaluation_rubric_connect',
+                    '*',
+                    'array',
+                    array(
+                        'capstone_id' => $capstone1Id,
+                        'evaluation_rubric_id' => $evaluationRubricId
+                    )
+                );
+
+                if (isset($hasAlreadyExist) && $hasAlreadyExist) {
+                    // update score and comment
+                    if ($score || $comment) {
+                        $updateCapstone1EvaluationRubricConnect = $this->universal->update(
+                            'capstone1_evaluation_rubric_connect',
+                            array(
+                                'evaluation_rubric_score' => $score,
+                                'evaluation_rubric_comment' => $comment,
+                                'date_modified' => date('Y-m-d H:i:s')
+                            ),
+                            array(
+                                'capstone_id' => $capstone1Id,
+                                'evaluation_rubric_id' => $evaluationRubricId,
+                            )
+                        );
+                    }
+
+                }else{
+                    // insert score and comment
+                    $insertCapstone1EvaluationRubricConnect = $this->universal->insert(
+                        'capstone1_evaluation_rubric_connect',
+                        array(
+                            'capstone_id' => $capstone1Id,
+                            'evaluation_rubric_id' => $evaluationRubricId,
+                            'evaluation_rubric_score' => $score,
+                            'evaluation_rubric_comment' => $comment,
+                            'date_created' => date('Y-m-d H:i:s'),
+                            'date_modified' => date('Y-m-d H:i:s')
+                        )
+                    );
+                }
+            } // foreach end
+
+            $output = array(
+                'message' => "Data Save",
+                'class' => 'alert-success'
+            );
+
+            $this->session->set_flashdata('message', $output);
+        }
+
+        // data display
+        $evaluationRubricDetails = $this->universal->get(
+            true,
+            'evaluation_rubric',
+            '*',
+            'array'
+        );
+        foreach ($evaluationRubricDetails as $EVRKey => $evaluationRubricDetail) {
+            // check if capstone1Id is exist
+            $CERConnect = $this->universal->get(
+                true,
+                'capstone1_evaluation_rubric_connect',
+                '*',
+                'row',
+                array(
+                    'capstone_id' => $capstone1Id,
+                    'evaluation_rubric_id' => $evaluationRubricDetail['id']
+                )
+            );
+
+            if (isset($CERConnect) && $CERConnect) {
+                $evaluationRubricDetails[$EVRKey]['score'] = $CERConnect->evaluation_rubric_score;
+                $evaluationRubricDetails[$EVRKey]['comment'] = $CERConnect->evaluation_rubric_comment;
+            }
+        }
+        // pre($evaluationRubricDetails);
+        // die;
+
+        // view data
+        $data['groupId'] = $groupId;
+        $data['capstone1Id'] = $capstone1Id;
+        $data['evaluationRubricDetails'] = $evaluationRubricDetails;
+        $data['currentUserGroup'] = $currentUserGroup->name;
+        $data['currentPageTitle'] = 'View Proposal';
+        $data['mainContent'] = 'instructor/panel';
+        $data['subContent'] = 'panel/groupEvaluation';
+
+        // - load view
+        $this->load->view('includes/instructor/header',$data);
+		$this->load->view('instructor/panel/groupEvaluation');
+		$this->load->view('includes/instructor/footer');
+    }
+
+
 
     // get any details function
+    public function proposalDetails($thisesId = null){
+        $proposalDetails = $this->universal->get(
+            true,
+            'thises',
+            '*',
+            'row',
+            array(
+                'id' => $thisesId,
+                'status' => 1
+            )
+        );
+
+        return $proposalDetails;
+    }
     public function getAllPanelist($groupId = null){
         $getAllPanelists = $this->universal->get(
             true,

@@ -16,6 +16,7 @@
 
     <link href="<?php echo base_url('assets/css/main.d810cf0ae7f39f28f336.css'); ?>  " rel="stylesheet">
     <link href="<?php echo base_url('assets/css/jquery.dataTables.min.css'); ?>" rel="stylesheet">
+    <link href="<?php echo base_url('assets/css/responsive.dataTables.css'); ?>" rel="stylesheet">
 
     <style media="screen">
         .hrefProposal:hover {
@@ -213,6 +214,17 @@
                                     <i class="metismenu-icon fa fa-users"></i>
                                     Panel
                                     <span class="badge badge-pill badge-primary">3</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?php echo base_url('student/capstone'); ?>"
+                                    class="<?php echo isset($subContent)
+                                        && $subContent == 'capstone/index'
+                                        || $subContent == 'capstone/groupEvaluation'
+                                        ? 'mm-active': '' ?>  btn-sm">
+                                    <i class="metismenu-icon fa fa-ils" aria-hidden="true"></i>
+                                    Capstone
+                                    <!-- <span class="badge badge-pill badge-primary">3</span> -->
                                 </a>
                             </li>
 

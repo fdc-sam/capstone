@@ -280,14 +280,21 @@
                         <ul class="vertical-nav-menu">
                             <?php if (isset($mainContent) && $mainContent == 'instructor/head' || $currentUserGroup == 'IT head'): ?>
                                 <li class="app-sidebar__heading">Instructor</li>
-                                <li  class="<?php echo isset($mainContent) && $mainContent == 'instructor/head' ? 'mm-active': '' ?>">
+                                <li  class="<?php echo
+                                    isset($mainContent)
+                                    && $mainContent == 'instructor/head'
+                                    && $subContent != 'head/createEvaluationRubric'
+                                    && $subContent != 'head/viewEvaluationRubric' ? 'mm-active': '' ?>">
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-rocket"></i>Dashboards
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
                                         <li>
-                                            <a href="<?php echo base_url('instructor/head') ?>"  class="<?php echo isset($subContent) && $subContent == 'head/index' ? 'mm-active': '' ?> " >
+                                            <a href="<?php echo base_url('instructor/head') ?>"
+                                                class="<?php echo isset($subContent)
+                                                    && $subContent == 'head/index' ? 'mm-active': '' ?> "
+                                            >
                                                 <i class="metismenu-icon"></i>Panelist
                                             </a>
                                         </li>
@@ -315,9 +322,49 @@
 
                                     </ul>
                                 </li>
+
+                                <li  class="<?php echo
+                                    isset($mainContent)
+                                    && $mainContent == 'instructor/head'
+                                    && $subContent == 'head/createEvaluationRubric'
+                                    || $subContent == 'head/viewEvaluationRubric' ? 'mm-active': '' ?>"
+                                >
+                                    <a href="#">
+                                        <i class="metismenu-icon pe-7s-browser"></i>Evaluation Rubric
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="<?php echo base_url('instructor/head/createEvaluationRubric') ?>"
+                                                class="<?php echo isset($subContent)
+                                                    && $subContent == 'head/createEvaluationRubric' ? 'mm-active': '' ?>"
+                                            >
+                                                <i class="metismenu-icon"></i>Create Evaluation Rubric
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="<?php echo base_url('instructor/head/viewEvaluationRubric') ?>"
+                                                class="<?php echo isset($subContent)
+                                                    && $subContent == 'head/viewEvaluationRubric' ? 'mm-active': '' ?>"
+                                                >
+                                                <i class="metismenu-icon">
+                                                </i>View Evaluation Rubric
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </li>
                             <?php endif; ?>
                             <li class="app-sidebar__heading">Panelist</li>
-                            <li class="<?php echo isset($mainContent) && $mainContent == 'instructor/panel' && $subContent != 'panel/groupDetails' ? 'mm-active': '' ?>">
+                            <li
+                                class="<?php echo isset($mainContent)
+                                    && $mainContent == 'instructor/panel'
+                                    && $subContent != 'panel/groupDetails'
+                                    && $subContent != 'panel/capstone1'
+                                    && $subContent != 'panel/groupEvaluation'
+                                    ? 'mm-active': '' ?>"
+                                >
                                 <a href="#">
                                     <i class="metismenu-icon pe-7s-note2"></i>Title Hearing
                                     <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
@@ -342,14 +389,20 @@
                                             class="<?php echo isset($subContent)
                                             && $subContent == 'panel/projectTitleHearingResult'
                                             || $subContent == 'panel/assignAdviser'
-                                                ? 'mm-active': '' ?>  btn-sm">
+                                            ? 'mm-active': '' ?>  btn-sm"
+                                        >
                                             <i class="metismenu-icon"></i>Title Hearing Result
                                         </a>
                                     </li>
                                 </ul>
                             </li>
                             <li>
-                                <a href="" >
+                                <a href="<?php echo base_url('instructor/panel/capstone1') ?>"
+                                    class="<?php echo isset($subContent)
+                                    && $subContent == 'panel/capstone1'
+                                    || $subContent == 'panel/groupEvaluation'
+                                    ? 'mm-active': '' ?>  btn-sm"
+                                >
                                     <i class="metismenu-icon pe-7s-graph2"></i>Capstone 1
                                 </a>
                             </li>
