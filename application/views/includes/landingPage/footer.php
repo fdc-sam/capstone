@@ -70,6 +70,7 @@ $(document).ready(function(){
         e.preventDefault();
         $('#batchCode').val('z6j0n');
         $('#student-panelist').html('Student / Proponent');
+        $('#span-studentOrInstructorId').html('Student ID Number');
     });
 
     // for input batch code for panelist
@@ -77,7 +78,44 @@ $(document).ready(function(){
         e.preventDefault();
         $('#batchCode').val('Panelist');
         $('#student-panelist').html('Instructor / Panelist');
+        $('#span-studentOrInstructorId').html('Instructor ID Number');
     });
 
+    // determine if student or instructor id already exist
+    $(document).on('keyup', '#studentOrInstructorId', function(e){
+        var studentOrInstructorId = $('#studentOrInstructorId').val();
+        $.ajax({
+            url: base_url+'LandingPageController/checkStudentOrInstructorId', // contrller/function
+            method: 'POST',
+            data: {studentOrInstructorId:studentOrInstructorId},
+            success:function(result){
+                var value = $('#studentOrInstructorId').val();
+                if ( value.length < 4){
+                    if (value.length == 0) {
+                        $('#checking-flag').html(``);
+                    }else{
+                        $('#checking-flag').html(`<i class="fa fa-fw badge-danger" aria-hidden="true" title="Copy to use close"></i>`);
+                    }
+                }else{
+                    if (result == 1) {
+                        $('#checking-flag').html(`<i class="fa fa-fw badge-danger" aria-hidden="true" title="Copy to use close"></i>`);
+                    }else if (result == 0) {
+                        $('#checking-flag').html(`<i class="fa fa-fw badge-success" aria-hidden="true" title="Copy to use check"></i>`);
+                    }else{
+                        $('#checking-flag').html('');
+                    }
+                }
+                console.log(result);
+            }
+        });
+    });
+
+    $('#formRegister').on('submit', function(e){
+        if ($('#checking-flag').html() == `<i class="fa fa-fw badge-danger" aria-hidden="true" title="Copy to use close"></i>`) {
+            e.preventDefault();
+            var label = $('#span-studentOrInstructorId').html();
+            alert(`${label} Must Unique`);
+        }
+    });
 });
 </script>

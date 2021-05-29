@@ -314,7 +314,10 @@
                                                     || $subContent == 'head/assignPanel'
                                                     || $subContent == 'head/titleHearingEdit'
                                                     || $subContent == 'head/teamProposal'
-                                                    || $subContent == 'head/titleHearingDetails' ? 'mm-active': '' ?> ">
+                                                    || $subContent == 'head/titleHearingDetails'
+                                                    || $subContent == 'head/viewPanelEvaluationRubric'
+                                                    || $subContent == 'head/chairman'
+                                                    ? 'mm-active': '' ?> ">
                                                 <i class="metismenu-icon">
                                                 </i>Proposal
                                             </a>

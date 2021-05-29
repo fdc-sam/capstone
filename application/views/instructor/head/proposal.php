@@ -36,8 +36,9 @@
                                 <th class="none">Proposal</th>
                                 <th>Panelist Status</th>
                                 <th>Chairman</th>
-                                <th>Created</th>
-                                <th>Modified</th>
+                                <th>Capstone 1</th>
+                                <th class="none">Created</th>
+                                <th class="none">Modified</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -51,6 +52,7 @@
                                 <th>Proposal</th>
                                 <th>Panelist Status</th>
                                 <th>Chairman</th>
+                                <th>Capstone 1</th>
                                 <th>Created</th>
                                 <th>Modified</th>
                                 <th>Action</th>

@@ -33,10 +33,8 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
-                                <th>Created</th>
-                                <th>Modified</th>
                                 <th>Status</th>
-                                <!-- <th>Action</th> -->
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -46,10 +44,8 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
-                                <th>Created</th>
-                                <th>Modified</th>
                                 <th>Status</th>
-                                <!-- <th>Action</th> -->
+                                <th>Action</th>
                             </tr>
                         </tfoot>
                     </table>

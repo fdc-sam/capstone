@@ -526,6 +526,7 @@ class Auth extends CI_Controller
 				'middle_name' => $this->input->post('middle_name'),
 				'gender' => $this->input->post('gender'),
 				'activation_code' => $activation_code,
+				'school_users_id' => $this->input->post('studentOrInstructorId'),
 			];
 		}
 

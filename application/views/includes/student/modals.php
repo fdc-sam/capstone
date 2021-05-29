@@ -118,8 +118,8 @@
 <script src="<?php echo base_url('assets/scripts/ckeditor/ckeditor.js'); ?>"></script>
 <script src="<?php echo base_url('assets/scripts/jquery.dataTables.min.js'); ?>"></script>
 <script src="<?php echo base_url('assets/scripts/select2.min.js'); ?>"></script>
-<script src="<?php echo base_url('assets/scripts/student/home.js'); ?>"></script>
 <script src="<?php echo base_url('assets/scripts/dataTables.responsive.min.js'); ?>"></script>
+<script src="<?php echo base_url('assets/scripts/student/home.js'); ?>"></script>
 <?php if ($subContent == 'home/viewDocumentPDF'): ?>
 
     <!-- for pdf js -->

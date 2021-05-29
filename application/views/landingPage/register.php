@@ -25,7 +25,10 @@
                             <span>It only takes a <span class="text-success">few seconds</span> to create your account</span>
                         </h4>
                         <div>
-                            <?php echo $this->session->flashdata('message'); ?>
+                            <?php
+                                echo $this->session->flashdata('message');
+                                unset($_SESSION['message']);
+                            ?>
                             <form id="formRegister" class="" action="<?php echo base_url('register') ?>" method="POST">
                                 <div class="form-row">
                                     <div class="col-md-4">
@@ -48,15 +51,25 @@
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
+                                        <div class="position-relative form-group">
+                                            <label for="studentOrInstructorId" class="">
+                                                <span class="text-danger">*</span>
+                                                <span id="span-studentOrInstructorId">Student ID Number</span>
+                                                <span id="checking-flag"></span>
+                                            </label>
+                                            <input type="number" name="studentOrInstructorId" id="studentOrInstructorId" placeholder="ID Number here..."  class="form-control" value="<?php echo $email; ?>" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
                                         <div class="position-relative form-group">
                                             <label for="exampleEmail" class=""><span class="text-danger">*</span> Email</label>
                                             <input name="email" id="email" placeholder="Email here..." type="email" class="form-control" value="<?php echo $email; ?>">
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="position-relative form-group">
-                                            <label for="exampleEmail" class=""><span class="text-danger">*</span> Sex/Gender</label>
+                                            <label for="exampleEmail" class=""><span class="text-danger">*</span> Sex</label>
                                             <select name="gender" class="mb-2 form-control">
                                                 <option value="1">Male</option>
                                                 <option value="2">Female</option>

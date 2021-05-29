@@ -270,14 +270,11 @@ if (sub_content == 'home/index') {
           "url" : `${base_url}/student/home/getGroupMembers`,
           "type" : "POST"
         },
-        // "columnDefs": [
-        //     {
-        //         "targets": [ ], //first column / numbering column
-        //         "orderable": false, //set not orderable
-        //     },
-        //     // { targets: 5 , class: 'text-center'}
-        //     // { targets: 5 , class: 'text-center'},
-        // ],
+        "columnDefs": [
+            { responsivePriority: 1, targets: 5 }
+            // { targets: 5 , class: 'text-center'}
+            // { targets: 5 , class: 'text-center'},
+        ],
         "columns" : [
             {"data": "id"},
             {

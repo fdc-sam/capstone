@@ -498,6 +498,9 @@ class Head extends CI_Controller {
                         'T.thesis_group_id' =>  $thisesGroup['id']
                     )
                 );
+
+
+
                 if ($thisesProposals) {
                     $groupPoposals = '';
                     foreach ($thisesProposals as $key => $thisesProposal) {
@@ -508,6 +511,52 @@ class Head extends CI_Controller {
                             $thisesGroup['proposalCreated'] = date("g:ia | D jS F Y", strtotime($thisesProposal->created));
                             $thisesGroup['proposalModified'] = date("g:ia | D jS F Y", strtotime($thisesProposal->modified));
                             $thisesGroup['thesisGroupId'] = $thisesProposal->thesis_group_id;
+
+
+                            //  capstone1 start
+                            $allPanelistArr = $this->getAllPanelist($thisesProposal->thesis_group_id);
+                            $emptyFlag = false;
+                            $groupTotalScore = 0;
+                            foreach ($allPanelistArr as $allPanelistKey => $allPanelist) {
+                                $getPanelistScore = $this->universal->get(
+                                    true,
+                                    'capstone1 AS C1',
+                                    'sum(CERConnect.evaluation_rubric_score) AS score',
+                                    'row',
+                                    array(
+                                        'C1.panelist_id' => $allPanelist['panelist_id'],
+                                        'C1.thesis_group_id' => $allPanelist['group_id']
+                                    ),
+                                    array(),
+                                    array(
+                                        'capstone1_evaluation_rubric_connect AS CERConnect' => 'CERConnect.capstone_id = C1.id'
+                                    )
+                                );
+
+                                $score = $getPanelistScore->score;
+                                if ($score == null) {
+                                    $emptyFlag = true;
+                                }
+                                $groupTotalScore = $groupTotalScore + $score;
+                                $allPanelistArr[$allPanelistKey]['evaluationRubricScore'] = $getPanelistScore->score;
+                            }
+
+                            if (!$emptyFlag) {
+                                if ($groupTotalScore >= 63) {
+                                    $thisesGroup['scoreStatus'] = '<div class="mb-2 mr-2 badge badge-primary">Superior</div>';
+                                }elseif ($groupTotalScore >= 48 && $groupTotalScore <= 62) {
+                                    $thisesGroup['scoreStatus'] = '<div class="mb-2 mr-2 badge badge-primary">Good</div>';
+                                }elseif ($groupTotalScore >= 32 && $groupTotalScore <= 47) {
+                                    $thisesGroup['scoreStatus'] = '<div class="mb-2 mr-2 badge badge-primary">Acceptable</div>';
+                                }elseif ( $groupTotalScore <= 31) {
+                                    $thisesGroup['scoreStatus'] = '<div class="mb-2 mr-2 badge badge-danger">Unacceptable</div>';
+                                }
+                            }else{
+                                $thisesGroup['scoreStatus'] = '<div class="mb-2 mr-2 badge badge-warning">On Proccess</div>';
+                            }
+                            $thisesGroup['groupTotalScore'] = $groupTotalScore;
+                            //  capstone1 end
+
                         }
                     }
                     $thisesGroup['groupPoposals'] =  $groupPoposals;
@@ -597,6 +646,8 @@ class Head extends CI_Controller {
                         ';
                         $thisesGroup['chairman'] = $chairmanBtn;
                     }
+
+
 
                     if (isset($thisesGroup['groupPoposals'])) {
                         $thisesGroup['countPanelistRejectTheGroup'] =  $countPanelistRejectTheGroup;
@@ -1581,6 +1632,68 @@ class Head extends CI_Controller {
         );
     }
 
+    public function viewPanelEvaluationRubric($groupId = null, $panelistId = null){
+        // - get the user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+
+        // get panelist details
+        $panelistDetails = $this->getPanelistDetails($panelistId);
+        if (isset($panelistDetails) && $panelistDetails) {
+            $panelistFullName = $panelistDetails->first_name.' '.$panelistDetails->middle_name.' '.$panelistDetails->last_name;
+        }
+
+        // get all evaluation rubric information
+        $evaluationRubricDetailsArr = $this->universal->get(
+            true,
+            'evaluation_rubric',
+            '*',
+            'array'
+        );
+
+        // capstone 1 evaluation
+        if (isset($evaluationRubricDetailsArr) && $evaluationRubricDetailsArr) {
+            foreach ($evaluationRubricDetailsArr as $key => $value) {
+                $getPanelEvaluation = $this->universal->get(
+                    true,
+                    'capstone1 AS C1',
+                    'C1ERConnect.*',
+                    'row',
+                    array(
+                        'C1.panelist_id' => $panelistId,
+                        'C1.thesis_group_id' => $groupId,
+                        'C1ERConnect.evaluation_rubric_id' => $value['id']
+                    ),
+                    array(),
+                    array(
+                        'capstone1_evaluation_rubric_connect AS C1ERConnect' => 'C1ERConnect.capstone_id = C1.id'
+                    )
+                );
+
+                $evaluationRubricDetailsArr[$key]['group_id'] = $groupId;
+                $evaluationRubricDetailsArr[$key]['panelist_id'] = $panelistId;
+                $evaluationRubricDetailsArr[$key]['score'] = isset($getPanelEvaluation->evaluation_rubric_score)? $getPanelEvaluation->evaluation_rubric_score: 0;
+                $evaluationRubricDetailsArr[$key]['comment'] = isset($getPanelEvaluation->evaluation_rubric_comment)? $getPanelEvaluation->evaluation_rubric_comment: null;
+            }
+
+        }
+        // pre($evaluationRubricDetailsArr);
+        // die();
+
+        // - data
+        $data['panelistFullName'] = isset($panelistFullName)? $panelistFullName: null;
+        $data['evaluationRubricDetailsArr'] = $evaluationRubricDetailsArr;
+        $data['groupId'] = $groupId;
+        $data['currentPageTitle'] = 'Team Proposal';
+        $data['mainContent'] = 'instructor/head';
+        $data['subContent'] = 'head/viewPanelEvaluationRubric';
+
+        // - load view
+        $this->load->view('includes/instructor/header',$data);
+		$this->load->view('instructor/head/viewPanelEvaluationRubric');
+		$this->load->view('includes/instructor/footer');
+    }
+
     public function panelistReject($hearingId = null){
         // - get the user information
         $data['userInfo'] = $this->ion_auth->user()->row();
@@ -1870,4 +1983,26 @@ class Head extends CI_Controller {
         );
         return $getProjectHearingDetails;
     }
+
+    public function getAllPanelist($groupId = null){
+        $getAllPanelists = $this->universal->get(
+            true,
+            'project_title_hearing',
+            '*',
+            'array',
+            array(
+                'group_id' => $groupId
+            )
+        );
+
+        foreach ($getAllPanelists as $key => $value) {
+            $getPanelistDetails = $this->getPanelistDetails($value['panelist_id']);
+            $getAllPanelists[$key]['panelistFullName'] = $getPanelistDetails->first_name.' '.$getPanelistDetails->middle_name.' '.$getPanelistDetails->last_name;
+            $getAllPanelists[$key]['panelistEmail'] = $getPanelistDetails->email;
+            $getAllPanelists[$key]['gender'] =  ($getPanelistDetails->gender == 1) ? "Male" : "Female" ;
+        }
+
+        return $getAllPanelists;
+    }
+
 }

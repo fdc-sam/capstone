@@ -436,6 +436,7 @@ if (sub_content == 'head/proposal') {
                 }
             },
             {"data": "chairman"},
+            {"data": "scoreStatus"},
             {"data": "proposalCreated"},
             {"data": "proposalModified"},
             {
@@ -599,8 +600,6 @@ if (sub_content == 'head/teamProposal') {
         "columns" : [
             {"data": "id"},
             {"data": "panelistFullName"},
-            {"data": "reject_ression"},
-            {"data": "date_create"},
             {
                 "data": 'status',
                 "render": function(data, type, row, meta){
@@ -625,51 +624,17 @@ if (sub_content == 'head/teamProposal') {
                     return badge;
                 }
             },
-            // {
-            //     "data": 'status',
-            //     "render": function(data, type, row, meta){
-            //         var btnReturn = '';
-            //         if (data == 1) {
-            //             var chagneStat = `Reject`;
-            //             var btnStat = `btn-outline-danger`;
-            //         }else if (data == 2) {
-            //             var chagneStat = `Approve`;
-            //             var btnStat = `btn-outline-primary`;
-            //         }
-            //
-            //         if (row.approvedFlag && data == 1) {
-            //             btnReturn = `
-            //                 <button class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-danger" proposalId="${row.id}" activation="Reject" data-toggle="tooltip" data-placement="top" title="Reject">
-            //                     <i class="lnr-cross-circle btn-icon-wrapper"> </i>
-            //                 </button>
-            //             `;
-            //         }else if(!row.approvedFlag && data == 0){
-            //             btnReturn = `
-            //                 <button class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary" proposalId="${row.id}" activation="Approve" data-toggle="tooltip" data-placement="top" title="Approve">
-            //                     <i class="lnr-checkmark-circle btn-icon-wrapper"> </i>
-            //                 </button>
-            //                 <button class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-danger" proposalId="${row.id}" activation="Reject" data-toggle="tooltip" data-placement="top" title="Reject">
-            //                     <i class="lnr-cross-circle btn-icon-wrapper"> </i>
-            //                 </button>
-            //             `;
-            //         }else if(!row.approvedFlag &&  data == 2){
-            //             btnReturn = `
-            //                 <button class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary" proposalId="${row.id}" activation="Approve" data-toggle="tooltip" data-placement="top" title="Approve">
-            //                     <i class="lnr-checkmark-circle btn-icon-wrapper"> </i>
-            //                 </button>
-            //             `;
-            //         }
-            //
-            //         btnReturn += `
-            //             <button class="btn-changeStatus btn-sm mb-2 mr-2 btn-icon btn-icon-only btn-shadow btn-outline-2x btn btn-outline-primary" proposalId="${row.id}"  data-toggle="tooltip" data-placement="top" title="View">
-            //                 <i class="lnr-eye btn-icon-wrapper"> </i>
-            //             </button>
-            //         `;
-            //
-            //         return btnReturn;
-            //
-            //     }
-            // }
+            {
+                "data": "id",
+                "render": function(data, type, row, meta){
+                    return `
+                        <a href="${base_url}instructor/head/viewPanelEvaluationRubric/${thesisGroupId}/${row.panelist_id}" class="mb-2 mr-2 btn-shadow btn-icon btn btn-sm btn-primary">
+                            <i class="fa fa-eye btn-icon-wrapper"> </i>
+                            View Evaluation
+                        </a>
+                    `;
+                }
+            }
         ]
     });// end of the data table variable
 
@@ -1212,6 +1177,18 @@ if (sub_content == 'head/titleHearingEdit') {
 if (sub_content == 'head/viewEvaluationRubric') {
     var tableGroupDetails = $('#table-viewEvaluationRubric').DataTable({
         "responsive" : true,
+        "columnDefs": [
+            { responsivePriority: 1, targets: 0 },
+            { responsivePriority: 1, targets: 6 }
+        ],
+    });// end of the data table variable
+}
+
+if (sub_content == 'head/viewPanelEvaluationRubric') {
+    var tableGroupDetails = $('#table-viewPanelEvaluationRubric').DataTable({
+        "responsive" : true,
+        "ordering": false,
+        "paging": false,
         "columnDefs": [
             { responsivePriority: 1, targets: 0 },
             { responsivePriority: 1, targets: 6 }
