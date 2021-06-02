@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2021 at 08:31 AM
--- Server version: 10.4.13-MariaDB
--- PHP Version: 7.2.32
+-- Generation Time: Jun 02, 2021 at 05:23 PM
+-- Server version: 10.4.18-MariaDB
+-- PHP Version: 8.0.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -110,7 +110,110 @@ INSERT INTO `batch_connect` (`id`, `batch_id`, `email`) VALUES
 (24, 28, 'student11@gmail.com'),
 (25, 28, 'student12@gmail.com'),
 (26, 28, 'student13@gmail.com'),
-(27, 28, 'student14@gmail.com');
+(27, 28, 'student14@gmail.com'),
+(28, 8, 'instructor5@gmail.com'),
+(29, 8, 'sai@gmail.com'),
+(30, 8, 'sai1@gmail.com'),
+(31, 8, 'test2@gmail.com'),
+(32, 8, 'student15@gmail.com');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `capstone1`
+--
+
+CREATE TABLE `capstone1` (
+  `id` int(11) NOT NULL,
+  `panelist_id` int(11) NOT NULL,
+  `thises_id` int(11) NOT NULL,
+  `thesis_group_id` int(11) NOT NULL,
+  `status` int(11) NOT NULL COMMENT '0 : Pending / On Process\r\n1 : Approved\r\n3 : Redefence',
+  `panelist_status` int(11) NOT NULL DEFAULT 1 COMMENT '1 : accept\r\n2 : reject',
+  `date_created` datetime NOT NULL,
+  `date_modified` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `capstone1`
+--
+
+INSERT INTO `capstone1` (`id`, `panelist_id`, `thises_id`, `thesis_group_id`, `status`, `panelist_status`, `date_created`, `date_modified`) VALUES
+(9, 54, 75, 40, 2, 1, '2021-05-27 10:34:53', '2021-05-27 10:34:53'),
+(10, 55, 75, 40, 2, 1, '2021-05-27 10:34:53', '2021-05-27 10:34:53'),
+(11, 21, 75, 40, 2, 1, '2021-05-27 10:34:53', '2021-05-27 10:34:53');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `capstone1_evaluation_rubric_connect`
+--
+
+CREATE TABLE `capstone1_evaluation_rubric_connect` (
+  `id` int(11) NOT NULL,
+  `capstone_id` int(11) NOT NULL,
+  `evaluation_rubric_id` int(11) NOT NULL,
+  `evaluation_rubric_score` int(11) NOT NULL,
+  `evaluation_rubric_comment` text NOT NULL,
+  `date_created` datetime NOT NULL,
+  `date_modified` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `capstone1_evaluation_rubric_connect`
+--
+
+INSERT INTO `capstone1_evaluation_rubric_connect` (`id`, `capstone_id`, `evaluation_rubric_id`, `evaluation_rubric_score`, `evaluation_rubric_comment`, `date_created`, `date_modified`) VALUES
+(37, 11, 1, 4, 'asdasd', '2021-05-27 16:30:08', '2021-05-31 16:07:59'),
+(38, 11, 2, 0, '', '2021-05-27 16:30:08', '2021-05-27 16:30:08'),
+(39, 11, 3, 2, 'asdasd', '2021-05-27 16:30:08', '2021-05-31 16:08:00'),
+(40, 11, 4, 4, 'asdasdasd', '2021-05-27 16:30:08', '2021-05-31 16:08:00'),
+(41, 11, 5, 0, '', '2021-05-27 16:30:08', '2021-05-27 16:30:08'),
+(42, 11, 6, 0, '', '2021-05-27 16:30:08', '2021-05-27 16:30:08'),
+(43, 11, 7, 0, '', '2021-05-27 16:30:08', '2021-05-27 16:30:08'),
+(44, 11, 8, 0, '', '2021-05-27 16:30:08', '2021-05-27 16:30:08'),
+(45, 11, 9, 0, '', '2021-05-27 16:30:08', '2021-05-27 16:30:08'),
+(46, 11, 10, 0, '', '2021-05-27 16:30:08', '2021-05-27 16:30:08'),
+(47, 11, 11, 2, 'asdasd', '2021-05-27 16:30:08', '2021-05-31 16:08:00'),
+(48, 11, 12, 2, '', '2021-05-27 16:30:08', '2021-05-31 16:08:00'),
+(49, 10, 1, 0, '', '2021-05-27 17:09:01', '2021-05-27 17:09:01'),
+(50, 10, 2, 0, '', '2021-05-27 17:09:01', '2021-05-27 17:09:01'),
+(51, 10, 3, 0, '', '2021-05-27 17:09:01', '2021-05-27 17:09:01'),
+(52, 10, 4, 0, '', '2021-05-27 17:09:01', '2021-05-27 17:09:01'),
+(53, 10, 5, 0, '', '2021-05-27 17:09:01', '2021-05-27 17:09:01'),
+(54, 10, 6, 0, '', '2021-05-27 17:09:01', '2021-05-27 17:09:01'),
+(55, 10, 7, 0, '', '2021-05-27 17:09:01', '2021-05-27 17:09:01'),
+(56, 10, 8, 1, '', '2021-05-27 17:09:01', '2021-05-27 17:09:01'),
+(57, 10, 9, 1, '', '2021-05-27 17:09:01', '2021-05-27 17:09:01'),
+(58, 10, 10, 4, '', '2021-05-27 17:09:01', '2021-05-27 17:09:01'),
+(59, 10, 11, 0, 'asd', '2021-05-27 17:09:01', '2021-05-27 17:09:01'),
+(60, 10, 12, 0, 'asd', '2021-05-27 17:09:01', '2021-05-27 17:09:01'),
+(61, 9, 1, 0, 'asd', '2021-05-27 17:47:29', '2021-05-27 17:47:29'),
+(62, 9, 2, 0, 'asd', '2021-05-27 17:47:29', '2021-05-27 17:47:29'),
+(63, 9, 3, 2, '', '2021-05-27 17:47:29', '2021-05-27 17:47:29'),
+(64, 9, 4, 2, '', '2021-05-27 17:47:29', '2021-05-27 17:47:29'),
+(65, 9, 5, 0, '', '2021-05-27 17:47:29', '2021-05-27 17:47:29'),
+(66, 9, 6, 0, '', '2021-05-27 17:47:29', '2021-05-27 17:47:29'),
+(67, 9, 7, 0, '', '2021-05-27 17:47:29', '2021-05-27 17:47:29'),
+(68, 9, 8, 0, '', '2021-05-27 17:47:29', '2021-05-27 17:47:29'),
+(69, 9, 9, 0, '', '2021-05-27 17:47:29', '2021-05-27 17:47:29'),
+(70, 9, 10, 0, '', '2021-05-27 17:47:29', '2021-05-27 17:47:29'),
+(71, 9, 11, 0, '', '2021-05-27 17:47:29', '2021-05-27 17:47:29'),
+(72, 9, 12, 0, '', '2021-05-27 17:47:29', '2021-05-27 17:47:29'),
+(73, 11, 13, 4, ',masnd,anslejlqw', '2021-05-31 07:31:41', '2021-05-31 16:08:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `capstone2`
+--
+
+CREATE TABLE `capstone2` (
+  `id` int(11) NOT NULL,
+  `thises_id` int(11) NOT NULL,
+  `thesis_group_id` int(11) NOT NULL,
+  `status` int(11) NOT NULL COMMENT '0 : Pending / On Process\r\n1 : Approved\r\n3 : Redefence'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -139,6 +242,7 @@ CREATE TABLE `documents` (
   `file_name` varchar(50) NOT NULL,
   `display_file_name` varchar(50) NOT NULL,
   `file_extention` varchar(10) NOT NULL,
+  `page_count` int(11) NOT NULL DEFAULT 1,
   `created_date` datetime NOT NULL,
   `modified_date` datetime NOT NULL,
   `created_ip` varchar(20) DEFAULT NULL,
@@ -149,9 +253,45 @@ CREATE TABLE `documents` (
 -- Dumping data for table `documents`
 --
 
-INSERT INTO `documents` (`id`, `group_id`, `thesis_id`, `file_name`, `display_file_name`, `file_extention`, `created_date`, `modified_date`, `created_ip`, `modified_ip`) VALUES
-(18, 36, 66, '9da4cae75a568185f1dde2a9564e7143.docx', '1. Title proposal.docx', '.docx', '2021-05-07 07:46:31', '2021-05-07 07:46:31', '::1', '::1'),
-(19, 36, 66, 'e7248f8d9e5b0e32b53f4f03836f26fe.pdf', '2. TITLE HEARING SCHEDULE.pdf', '.pdf', '2021-05-07 07:46:48', '2021-05-07 07:46:48', '::1', '::1');
+INSERT INTO `documents` (`id`, `group_id`, `thesis_id`, `file_name`, `display_file_name`, `file_extention`, `page_count`, `created_date`, `modified_date`, `created_ip`, `modified_ip`) VALUES
+(28, 40, 75, 'c4eca820646c7e7c2d3b200ec3317a90.pdf', '2. TITLE HEARING SCHEDULE.pdf', '.pdf', 3, '2021-05-26 14:09:45', '2021-05-26 14:09:45', '::1', '::1');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `evaluation_rubric`
+--
+
+CREATE TABLE `evaluation_rubric` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `unacceptable` text NOT NULL,
+  `acceptable` text NOT NULL,
+  `good` text NOT NULL,
+  `superior` text NOT NULL,
+  `date_created` datetime NOT NULL,
+  `date_modified` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `evaluation_rubric`
+--
+
+INSERT INTO `evaluation_rubric` (`id`, `title`, `unacceptable`, `acceptable`, `good`, `superior`, `date_created`, `date_modified`) VALUES
+(1, 'test1', 'test1', 'test1', 'test1', 'test1', '2021-05-27 07:32:48', '2021-05-27 08:49:14'),
+(2, 'testing', 'testing', 'testing', 'testing', 'testing', '2021-05-27 08:45:07', '2021-05-27 08:45:07'),
+(3, 'test2', 'test2', 'test2', 'test2', 'test2', '2021-05-27 15:10:54', '2021-05-27 15:10:54'),
+(4, 'test3', 'test3', 'test3', 'test3', 'test3', '2021-05-27 15:11:01', '2021-05-27 15:11:01'),
+(5, 'test4', 'test4', 'test4', 'test4', 'test4', '2021-05-27 15:11:15', '2021-05-27 15:11:15'),
+(6, 'test5', 'test5', 'test5', 'test5', 'test5', '2021-05-27 15:11:25', '2021-05-27 15:11:25'),
+(7, 'test6', 'test6', 'test6', 'test6', 'test6', '2021-05-27 15:11:34', '2021-05-27 15:11:34'),
+(8, 'test7', 'test7', 'test7', 'test7', 'test7', '2021-05-27 15:11:42', '2021-05-27 15:11:42'),
+(9, 'test8', 'test8', 'test8', 'test8', 'test8', '2021-05-27 15:11:51', '2021-05-27 15:11:51'),
+(10, 'test9', 'test9', 'test9', 'test9', 'test9', '2021-05-27 15:11:59', '2021-05-27 15:11:59'),
+(11, 'test10', 'test10', 'test10', 'test10', 'test10', '2021-05-27 15:12:13', '2021-05-27 15:12:13'),
+(12, 'test11', 'test11', 'test11', 'test11', 'test11', '2021-05-27 15:12:20', '2021-05-27 15:12:20'),
+(13, 'Research question', 'aksjdakshqwpe', 'asdasjdlk', 'alskdjalksjd', 'aslkdjaslkdj', '2021-05-31 07:31:06', '2021-05-31 07:31:06'),
+(14, 'qwertyuiop', 'qwertyuiop', 'qwertyuiop', 'qwertyuiop', 'qwertyuiop', '2021-05-31 16:12:03', '2021-05-31 16:12:03');
 
 -- --------------------------------------------------------
 
@@ -188,13 +328,6 @@ CREATE TABLE `login_attempts` (
   `time` int(11) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `login_attempts`
---
-
-INSERT INTO `login_attempts` (`id`, `ip_address`, `login`, `time`) VALUES
-(106, '::1', 'student01@gmail.com', 1620366169);
-
 -- --------------------------------------------------------
 
 --
@@ -206,7 +339,9 @@ CREATE TABLE `project_title_hearing` (
   `group_id` int(11) NOT NULL,
   `panelist_id` int(11) NOT NULL,
   `hearing_date` datetime NOT NULL,
-  `status` smallint(5) NOT NULL,
+  `status` smallint(5) NOT NULL COMMENT '0 : default\r\n1 : accept\r\n2 : reject',
+  `chairman_flag` int(11) DEFAULT 0,
+  `reject_ression` text NOT NULL,
   `date_create` datetime NOT NULL,
   `date_modified` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -215,10 +350,13 @@ CREATE TABLE `project_title_hearing` (
 -- Dumping data for table `project_title_hearing`
 --
 
-INSERT INTO `project_title_hearing` (`id`, `group_id`, `panelist_id`, `hearing_date`, `status`, `date_create`, `date_modified`) VALUES
-(60, 38, 53, '2021-05-29 08:05:00', 0, '2021-05-07 08:21:15', '2021-05-07 08:21:15'),
-(61, 38, 54, '2021-05-29 08:05:00', 0, '2021-05-07 08:21:15', '2021-05-07 08:21:15'),
-(62, 38, 55, '2021-05-29 08:05:00', 0, '2021-05-07 08:21:15', '2021-05-07 08:21:15');
+INSERT INTO `project_title_hearing` (`id`, `group_id`, `panelist_id`, `hearing_date`, `status`, `chairman_flag`, `reject_ression`, `date_create`, `date_modified`) VALUES
+(152, 36, 53, '2021-05-15 00:05:00', 0, NULL, '', '2021-05-27 09:53:01', '2021-05-27 09:53:01'),
+(153, 36, 54, '2021-05-15 00:05:00', 0, NULL, '', '2021-05-27 09:53:01', '2021-05-27 09:53:01'),
+(154, 36, 21, '2021-05-15 00:05:00', 1, 1, '', '2021-05-27 09:53:01', '2021-05-27 09:54:54'),
+(155, 40, 54, '2021-05-14 22:05:00', 0, NULL, '', '2021-05-27 10:10:28', '2021-05-27 10:10:28'),
+(156, 40, 55, '2021-05-14 22:05:00', 0, NULL, '', '2021-05-27 10:10:28', '2021-05-27 10:10:28'),
+(157, 40, 21, '2021-05-14 22:05:00', 1, 1, '', '2021-05-27 10:10:28', '2021-05-27 10:11:56');
 
 -- --------------------------------------------------------
 
@@ -273,11 +411,14 @@ INSERT INTO `thises` (`id`, `thesis_group_id`, `title`, `discreption`, `limitati
 (61, '30', 'PROJECT TITLE 2', '<p>SCOPE OF THE STUDY 2</p>\n', '<p>LIMITATIONS OF THE STUDY 2</p>\n', '<p>PROJECT DESIGN DEVELOPMENT PLAN 2</p>\n', '2021-04-25 10:15:04', '2021-04-25 10:15:04', 0),
 (62, '31', 'student8 PROJECT TITLE', '<p>student8 PROJECT TITLE</p>\n\n<p><ins>asdasdasd qowieoqiwe</ins></p>\n\n<p><ins>asjkdalskjdl</ins></p>\n\n<ul>\n	<li><ins>asldjkka;sldk;aslkd;alskd</ins></li>\n	<li><ins>alskjdlaksjdlkahsjd</ins></li>\n</ul>\n', '<p>student8 PROJECT TITLE</p>\n\n<ol>\n	<li>qwe</li>\n	<li>asd</li>\n	<li>zxc</li>\n	<li>rtyrty</li>\n</ol>\n', '<p>student8 PROJECT TITLE</p>\n\n<ul>\n	<li>1</li>\n	<li>2</li>\n	<li>3</li>\n	<li>4</li>\n	<li>5</li>\n</ul>\n', '2021-04-25 10:20:50', '2021-04-25 10:20:50', 0),
 (63, '33', 'PROJECT TITLE 1', '<p>PROJECT TITLE 1</p>\n', '<p>LIMITATIONS OF THE STUDY 1</p>\n', '<p>PROJECT DESIGN DEVELOPMENT PLAN 1</p>\n', '2021-04-28 13:49:10', '2021-04-28 13:49:10', 0),
-(66, '36', 'PROJECT TITLE', '<p>SCOPE OF THE STUDY</p>\n', '<p>LIMITATIONS OF THE STUDY</p>\n', '<p>PROJECT DESIGN DEVELOPMENT PLAN</p>\n', '2021-04-28 13:57:28', '2021-04-28 13:57:28', 1),
 (67, '37', 'PROJECT TITLE1', '<p>SCOPE OF THE STUDY1</p>\n', '<p>LIMITATIONS OF THE STUDY1</p>\n', '<p>PROJECT DESIGN DEVELOPMENT PLAN1</p>\n', '2021-04-28 13:58:59', '2021-04-28 13:58:59', 0),
 (68, '37', 'PROJECT TITLE2', '<p>SCOPE OF THE STUDY2</p>\n', '<p>LIMITATIONS OF THE STUDY2</p>\n', '<p>PROJECT DESIGN DEVELOPMENT PLAN2</p>\n', '2021-04-28 13:58:59', '2021-04-28 13:58:59', 0),
 (69, '38', 'PROJECT TITLE1', '<p>SCOPE OF THE STUDY1</p>\n', '<p>LIMITATIONS OF THE STUDY1</p>\n', '<p>PROJECT DESIGN DEVELOPMENT PLAN1</p>\n', '2021-05-07 08:10:43', '2021-05-07 08:10:43', 0),
-(70, '38', 'PROJECT TITLE2', '<p>SCOPE OF THE STUDY2</p>\n', '<p>LIMITATIONS OF THE STUDY2</p>\n', '<p>PROJECT DESIGN DEVELOPMENT PLAN2</p>\n', '2021-05-07 08:10:43', '2021-05-07 08:10:43', 0);
+(70, '38', 'PROJECT TITLE2', '<p>SCOPE OF THE STUDY2</p>\n', '<p>LIMITATIONS OF THE STUDY2</p>\n', '<p>PROJECT DESIGN DEVELOPMENT PLAN2</p>\n', '2021-05-07 08:10:43', '2021-05-07 08:10:43', 0),
+(72, '36', 'PROJECT TITLE', '<p>PROJECT TITLE</p>\n', '<p>PROJECT TITLE</p>\n', '<p>PROJECT TITLE</p>\n', '2021-05-16 03:12:34', '2021-05-16 03:12:34', 0),
+(73, '36', 'PROJECT TITLE2', '<p>PROJECT TITLE2</p>\n', '<p>PROJECT TITLE2</p>\n', '<p>PROJECT TITLE2</p>\n', '2021-05-16 04:17:54', '2021-05-16 04:17:54', 0),
+(74, '40', 'PROJECT TITLE 2', '<p>PROJECT TITLE 2</p>\n', '<p>PROJECT TITLE 2</p>\n', '<p>PROJECT TITLE 2</p>\n', '2021-05-16 17:43:19', '2021-05-16 17:43:19', 0),
+(75, '40', 'PROJECT TITLE 1.1', '<p>PROJECT TITLE 1.1</p>\n', '<p>PROJECT TITLE 1.1</p>\n', '<p>PROJECT TITLE 1.1</p>\n', '2021-05-16 17:54:54', '2021-05-16 17:54:54', 1);
 
 -- --------------------------------------------------------
 
@@ -303,13 +444,48 @@ INSERT INTO `thises_connect` (`id`, `thesis_group_id`, `thises_id`, `batch_id`, 
 (161, '36', 0, '8', 45, '2021-04-28 13:57:05', '2021-04-28 13:57:05'),
 (162, '36', 0, '8', 46, '2021-04-28 13:57:05', '2021-04-28 13:57:05'),
 (163, '36', 0, '8', 47, '2021-04-28 13:57:05', '2021-04-28 13:57:05'),
-(164, '37', 0, '8', 49, '2021-04-28 13:58:18', '2021-04-28 13:58:18'),
-(165, '37', 0, '8', 48, '2021-04-28 13:58:18', '2021-04-28 13:58:18'),
-(166, '37', 0, '8', 50, '2021-04-28 13:58:18', '2021-04-28 13:58:18'),
-(168, '38', 0, '28', 56, '2021-05-07 07:59:45', '2021-05-07 07:59:45'),
-(169, '39', 0, '28', 58, '2021-05-07 08:05:26', '2021-05-07 08:05:26'),
-(171, '38', 0, '28', 57, '2021-05-07 08:06:46', '2021-05-07 08:06:46'),
-(172, '38', 0, '28', 59, '2021-05-07 08:07:19', '2021-05-07 08:07:19');
+(173, '36', 0, '8', 51, '2021-05-12 15:33:56', '2021-05-12 15:33:56'),
+(175, '40', 0, '8', 48, '2021-05-12 15:37:00', '2021-05-12 15:37:00'),
+(176, '40', 0, '8', 49, '2021-05-12 15:37:00', '2021-05-12 15:37:00'),
+(177, '40', 0, '8', 50, '2021-05-12 15:37:00', '2021-05-12 15:37:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `thises_copy`
+--
+
+CREATE TABLE `thises_copy` (
+  `id` int(11) NOT NULL,
+  `thises_id` int(11) NOT NULL,
+  `panelist_id` int(11) NOT NULL,
+  `thesis_group_id` varchar(20) NOT NULL,
+  `title` text NOT NULL COMMENT '\r\nPROJECT TITLE',
+  `discreption` text NOT NULL COMMENT 'SCOPE OF THE STUDY',
+  `limitations_of_the_studies` text NOT NULL COMMENT 'LIMITATIONS OF THE STUDY',
+  `design_development_plans` text NOT NULL COMMENT 'PROJECT DESIGN DEVELOPMENT PLAN',
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+  `status` int(11) DEFAULT 0 COMMENT '0 Pending\r\n1 Approved\r\n2 Rejected'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `thises_copy`
+--
+
+INSERT INTO `thises_copy` (`id`, `thises_id`, `panelist_id`, `thesis_group_id`, `title`, `discreption`, `limitations_of_the_studies`, `design_development_plans`, `created`, `modified`, `status`) VALUES
+(23, 74, 21, '40', 'PROJECT TITLE 2', '<p>PROJECT TITLE 2</p>\n', '<p>PROJECT TITLE 2</p>\n', '<p>PROJECT TITLE 2</p>\n', '2021-05-16 17:43:19', '2021-05-16 17:43:19', 2),
+(24, 75, 21, '40', 'PROJECT TITLE 1.1', '<p>PROJECT TITLE 1.1</p>\n', '<p>PROJECT TITLE 1.1</p>\n', '<p>PROJECT TITLE 1.1</p>\n', '2021-05-16 17:54:54', '2021-05-16 17:54:54', 1),
+(25, 74, 53, '40', 'PROJECT TITLE 2', '<p>PROJECT TITLE 2</p>\n', '<p>PROJECT TITLE 2</p>\n', '<p>PROJECT TITLE 2</p>\n', '2021-05-16 17:43:19', '2021-05-16 17:43:19', 0),
+(26, 75, 53, '40', 'PROJECT TITLE 1.1', '<p>PROJECT TITLE 1.1</p>\n', '<p>PROJECT TITLE 1.1</p>\n', '<p>PROJECT TITLE 1.1</p>\n', '2021-05-16 17:54:54', '2021-05-16 17:54:54', 1),
+(27, 74, 55, '40', 'PROJECT TITLE 2', '<p>PROJECT TITLE 2</p>\n', '<p>PROJECT TITLE 2</p>\n', '<p>PROJECT TITLE 2</p>\n', '2021-05-16 17:43:19', '2021-05-16 17:43:19', 0),
+(28, 75, 55, '40', 'PROJECT TITLE 1.1', '<p>PROJECT TITLE 1.1</p>\n', '<p>PROJECT TITLE 1.1</p>\n', '<p>PROJECT TITLE 1.1</p>\n', '2021-05-16 17:54:54', '2021-05-16 17:54:54', 1),
+(29, 72, 21, '36', 'PROJECT TITLE', '<p>PROJECT TITLE</p>\n', '<p>PROJECT TITLE</p>\n', '<p>PROJECT TITLE</p>\n', '2021-05-16 03:12:34', '2021-05-16 03:12:34', 1),
+(30, 73, 21, '36', 'PROJECT TITLE2', '<p>PROJECT TITLE2</p>\n', '<p>PROJECT TITLE2</p>\n', '<p>PROJECT TITLE2</p>\n', '2021-05-16 04:17:54', '2021-05-16 04:17:54', 2),
+(31, 72, 53, '36', 'PROJECT TITLE', '<p>PROJECT TITLE</p>\n', '<p>PROJECT TITLE</p>\n', '<p>PROJECT TITLE</p>\n', '2021-05-16 03:12:34', '2021-05-16 03:12:34', 1),
+(32, 73, 53, '36', 'PROJECT TITLE2', '<p>PROJECT TITLE2</p>\n', '<p>PROJECT TITLE2</p>\n', '<p>PROJECT TITLE2</p>\n', '2021-05-16 04:17:54', '2021-05-16 04:17:54', 2),
+(33, 72, 54, '36', 'PROJECT TITLE', '<p>PROJECT TITLE</p>\n', '<p>PROJECT TITLE</p>\n', '<p>PROJECT TITLE</p>\n', '2021-05-16 03:12:34', '2021-05-16 03:12:34', 0),
+(34, 73, 54, '36', 'PROJECT TITLE2', '<p>PROJECT TITLE2</p>\n', '<p>PROJECT TITLE2</p>\n', '<p>PROJECT TITLE2</p>\n', '2021-05-16 04:17:54', '2021-05-16 04:17:54', 0);
 
 -- --------------------------------------------------------
 
@@ -332,9 +508,60 @@ CREATE TABLE `thises_group` (
 
 INSERT INTO `thises_group` (`id`, `thesis_group_name`, `status`, `assigned_panelist_flag`, `created`, `modified`) VALUES
 (36, 'z-78ml7xqv', 0, 1, '2021-04-28 13:57:05', '2021-04-28 13:57:05'),
-(37, 'kp15ddwnv6', 0, 1, '2021-04-28 13:58:18', '2021-04-28 13:58:18'),
-(38, 'studentware', 0, 0, '2021-05-07 07:59:45', '2021-05-07 07:59:45'),
-(39, 'q2kzh307sz', 0, 0, '2021-05-07 08:05:26', '2021-05-07 08:05:26');
+(40, 'xvevpkqprs', 0, 1, '2021-05-12 15:37:00', '2021-05-12 15:37:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `thises_group_assigned_adviser`
+--
+
+CREATE TABLE `thises_group_assigned_adviser` (
+  `id` int(11) NOT NULL,
+  `thises_id` int(11) NOT NULL,
+  `group_id` int(11) NOT NULL,
+  `instructor_id` int(11) NOT NULL COMMENT 'assigned adviser',
+  `date_created` datetime NOT NULL,
+  `reject_ression` text NOT NULL,
+  `status` int(5) NOT NULL DEFAULT 0 COMMENT '0 : default/pending\r\n1 : accepted\r\n2 : reject',
+  `date_modified` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `thises_group_assigned_adviser`
+--
+
+INSERT INTO `thises_group_assigned_adviser` (`id`, `thises_id`, `group_id`, `instructor_id`, `date_created`, `reject_ression`, `status`, `date_modified`) VALUES
+(12, 75, 40, 60, '2021-05-27 10:25:37', '', 1, '2021-05-28 08:32:35');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `thises_group_assigned_adviser_logs`
+--
+
+CREATE TABLE `thises_group_assigned_adviser_logs` (
+  `id` int(11) NOT NULL,
+  `instructor_id` int(11) NOT NULL COMMENT 'assigned Adviser',
+  `group_id` int(11) NOT NULL,
+  `thises_id` int(11) NOT NULL,
+  `action` text NOT NULL,
+  `date_created` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `thises_group_assigned_adviser_logs`
+--
+
+INSERT INTO `thises_group_assigned_adviser_logs` (`id`, `instructor_id`, `group_id`, `thises_id`, `action`, `date_created`) VALUES
+(6, 21, 40, 75, 'Assigned Instructor', '2021-05-24 16:09:56'),
+(7, 21, 40, 75, 'Accept Adivisory', '2021-05-24 16:16:10'),
+(8, 21, 40, 75, 'Adivisory Rejected', '2021-05-24 16:17:35'),
+(9, 21, 40, 75, 'Accept Adivisory', '2021-05-25 04:30:57'),
+(10, 53, 40, 75, 'Assigned Instructor to be an adviser', '2021-05-27 10:08:31'),
+(11, 53, 40, 75, 'Assigned Instructor to be an adviser', '2021-05-27 10:10:50'),
+(12, 60, 40, 75, 'Assigned Instructor to be an adviser', '2021-05-27 10:25:37'),
+(13, 60, 40, 75, 'Assigned Instructor to be an adviser', '2021-05-28 08:32:35');
 
 -- --------------------------------------------------------
 
@@ -355,9 +582,47 @@ CREATE TABLE `thises_group_assigned_panelist` (
 --
 
 INSERT INTO `thises_group_assigned_panelist` (`id`, `group_id`, `instructor_id`, `date_created`, `date_modified`) VALUES
-(14, 36, '{\"instructor1\":\"53\",\"instructor2\":\"54\",\"instructor3\":null}', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(15, 37, '{\"instructor1\":\"54\",\"instructor2\":\"55\",\"instructor3\":null}', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(16, 37, '{\"instructor1\":\"54\",\"instructor2\":\"55\",\"instructor3\":null}', '2021-04-28 14:42:19', '2021-04-28 14:42:19');
+(23, 40, '[\"54\",\"55\",\"21\"]', '2021-05-13 03:32:53', '2021-05-27 10:10:28'),
+(24, 36, '[\"54\",\"55\",\"21\"]', '2021-05-16 03:15:07', '2021-05-27 10:10:28');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `thises_logs`
+--
+
+CREATE TABLE `thises_logs` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `group_id` int(11) NOT NULL,
+  `thises_id` int(11) NOT NULL,
+  `action` text NOT NULL,
+  `remark` text NOT NULL,
+  `remark_flag` int(11) NOT NULL DEFAULT 1 COMMENT '1 : thises logs\r\n2 : comment',
+  `date_created` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `thises_logs`
+--
+
+INSERT INTO `thises_logs` (`id`, `user_id`, `group_id`, `thises_id`, `action`, `remark`, `remark_flag`, `date_created`) VALUES
+(1, 21, 40, 75, 'Adivisory Rejected', '', 1, '2021-05-26 03:30:30'),
+(2, 21, 40, 75, 'Accept Adivisory', '', 1, '2021-05-26 03:30:51'),
+(3, 21, 40, 75, 'Add comment', 'asdasd', 2, '2021-05-26 05:17:35'),
+(4, 48, 40, 75, 'Add comment', 'test', 2, '2021-05-26 15:04:07'),
+(5, 21, 40, 75, 'Adivisory Rejected', 'asdas', 2, '2021-05-27 09:51:18'),
+(6, 21, 40, 75, 'Accept Adivisory', '', 1, '2021-05-27 09:51:20'),
+(7, 21, 40, 75, 'Adivisory Rejected', 'asdasd', 2, '2021-05-27 09:53:24'),
+(8, 21, 40, 75, 'Accept Adivisory', '', 1, '2021-05-27 09:57:48'),
+(9, 21, 40, 75, 'Adivisory Rejected', 'asdasd', 2, '2021-05-27 09:59:20'),
+(10, 21, 40, 75, 'Accept Adivisory', '', 1, '2021-05-27 10:10:56'),
+(11, 60, 40, 75, 'Accept Adivisory', '', 1, '2021-05-27 10:30:53'),
+(12, 60, 40, 75, 'Accept Adivisory', '', 1, '2021-05-27 10:34:53'),
+(13, 60, 40, 75, 'Accept Adivisory', '', 1, '2021-05-28 08:33:01'),
+(14, 60, 40, 75, 'Add comment', 'bogo', 2, '2021-05-28 08:34:02'),
+(15, 48, 40, 75, 'Add comment', 'animal ka ', 2, '2021-05-28 08:35:06'),
+(16, 60, 40, 75, 'Add comment', 'asdasdasdConcept Squad asd asdasd ', 2, '2021-05-28 08:36:23');
 
 -- --------------------------------------------------------
 
@@ -367,6 +632,7 @@ INSERT INTO `thises_group_assigned_panelist` (`id`, `group_id`, `instructor_id`,
 
 CREATE TABLE `users` (
   `id` int(11) UNSIGNED NOT NULL,
+  `school_users_id` int(11) DEFAULT NULL,
   `ip_address` varchar(45) NOT NULL,
   `username` varchar(100) DEFAULT NULL,
   `password` varchar(255) NOT NULL,
@@ -385,31 +651,38 @@ CREATE TABLE `users` (
   `last_name` varchar(50) DEFAULT NULL,
   `middle_name` varchar(100) DEFAULT NULL,
   `gender` tinyint(2) DEFAULT NULL COMMENT '1 : Male\r\n2 : Female',
-  `phone` varchar(20) DEFAULT NULL
+  `phone` varchar(20) DEFAULT NULL,
+  `date_created` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `email`, `activation_selector`, `activation_code`, `forgotten_password_selector`, `forgotten_password_code`, `forgotten_password_time`, `remember_selector`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `middle_name`, `gender`, `phone`) VALUES
-(1, '127.0.0.1', 'administrator', '$2y$12$Xvj2qkM/SxReG2/uRdFv4uX8gzgmdFZ/x8FfyHnyJd33SlWbHrW/y', 'admin@admin.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1618121137, 1, 'Admin', 'istrator', 'ADMIN', NULL, '0'),
-(21, '::1', 'head@gmail.com', '$2y$10$ntwlC.FUf3j6u5b4ZZNtKeFqv0RZgoFrcu8AdnaIWOwU6lP9kl6rS', 'head@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1615634101, 1620368759, 1, 'Head', 'Head', 'Head', 1, NULL),
-(45, '::1', 'student1@gmail.com', '$2y$10$8FzR.OpFpkqk2N0TH72G2epDNXV5jPTxogUIfPxS6hky9V3nzwwf6', 'student1@gmail.com', NULL, 'leq9k', NULL, NULL, NULL, NULL, NULL, 1619259848, 1620366363, 1, 'student1', 'student1', 'student1', 2, NULL),
-(46, '::1', 'student2@gmail.com', '$2y$10$k7PWp9cFprEqbO126O.KGuVrKaB2xwpeNk68dwGkThFdOv80hdUCm', 'student2@gmail.com', NULL, 'bjdpy', NULL, NULL, NULL, NULL, NULL, 1619261434, 1619610571, 1, 'student2', 'student2', 'student2', 2, NULL),
-(47, '::1', 'student3@gmail.com', '$2y$10$jZh1btIF.21jJEl7DrVV7OslsadvSwIf0WQpRGswGtF/OQyVoArXm', 'student3@gmail.com', NULL, '-1r3t', NULL, NULL, NULL, NULL, NULL, 1619329053, 1619610504, 1, 'student3', 'student3', 'student3', 2, NULL),
-(48, '::1', 'student4@gmail.com', '$2y$10$eT9Ce3oNECi46607mVhzReC/P84mLEq90nifNwSCVlls82vhIgZYO', 'student4@gmail.com', NULL, '5m6ps', NULL, NULL, NULL, NULL, NULL, 1619329086, 1619329102, 1, 'student4', 'student4', 'student4', 1, NULL),
-(49, '::1', 'student5@gmail.com', '$2y$10$pKy71L93S8bu0MlaAtyR1u5Agado4e3ZaCKQ0kNUHsimUp5SkMccm', 'student5@gmail.com', NULL, 'oaxno', NULL, NULL, NULL, NULL, NULL, 1619337255, 1619611091, 1, 'student5', 'student5', 'student5', 2, NULL),
-(50, '::1', 'student6@gmail.com', '$2y$10$b0Gbb6looGlNXM8SgXR1wuMUxd3Kbhz9TUnse9TeijuRIszNAccbG', 'student6@gmail.com', NULL, 'xas52', NULL, NULL, NULL, NULL, NULL, 1619337284, NULL, 1, 'student6', 'student6', 'student6', 2, NULL),
-(51, '::1', 'student7@gmail.com', '$2y$10$yXoCrCgdSR/ywp.4G6T5mOICf01XLXSaM907hSnMELPeW7L6l4Sz2', 'student7@gmail.com', NULL, 'plp3o', NULL, NULL, NULL, NULL, NULL, 1619337310, 1619338418, 1, 'student7', 'student7', 'student7', 2, NULL),
-(52, '::1', 'student8@gmail.com', '$2y$10$k6fMDD7POaFuxqBkkZh0oeBD7z47t2CyQnSGZ4.NIFO0zouCsVR2G', 'student8@gmail.com', NULL, '7s9s5', NULL, NULL, NULL, NULL, NULL, 1619338758, 1619338773, 1, 'student8', 'student8', 'student8', 1, NULL),
-(53, '::1', 'instructor1@gmail.com', '$2y$10$84holkj54lj5RkFu6tjfieM9kFlmwe6Ky/GfKktZ4vGXZU88rfdvu', 'instructor1@gmail.com', NULL, 'kr4eb', NULL, NULL, NULL, NULL, NULL, 1619565733, 1620368523, 1, 'instructor1', 'instructor1', 'instructor1', 1, NULL),
-(54, '::1', 'instructor2@gmail.com', '$2y$10$6bznM84Ofeh26bERs102o.HeGLdNnges6U0YDeGlWkNjeJiUTgazm', 'instructor2@gmail.com', NULL, 'yf60p', NULL, NULL, NULL, NULL, NULL, 1619565780, NULL, 1, 'instructor2', 'instructor2', 'instructor2', 1, NULL),
-(55, '::1', 'instructor3@gmail.com', '$2y$10$TqiTHhCDD/47jzZu.66R9eC7OX16J1S1EM9pgKFfaPyoNozHO2ukO', 'instructor3@gmail.com', NULL, 'o8zdh', NULL, NULL, NULL, NULL, NULL, 1619565813, NULL, 1, 'instructor3', 'instructor3', 'instructor3', 1, NULL),
-(56, '::1', 'student11@gmail.com', '$2y$10$806O12h8hYLxZVcOXEy.puvThlrBSrqY2Ye8bQeyK1k9YAdMEldem', 'student11@gmail.com', NULL, 'cf8tl', NULL, NULL, NULL, NULL, NULL, 1620367106, 1620368052, 1, 'student11', 'student11', 'student11', 2, NULL),
-(57, '::1', 'student12@gmail.com', '$2y$10$u5Z8deRJZF1PsMjagpHO9uTvm0KdOagVsg6ZsWw4DEm4lTtoc6Dci', 'student12@gmail.com', NULL, '8s5r2', NULL, NULL, NULL, NULL, NULL, 1620367152, 1620367166, 1, 'student12', 'student12', 'student12', 2, NULL),
-(58, '::1', 'student13@gmail.com', '$2y$10$0sT7JnhLOwRiaAx0elghL..C9/up1fvIcANedH563Ehw32PpALNyS', 'student13@gmail.com', NULL, '36p5v', NULL, NULL, NULL, NULL, NULL, 1620367273, 1620367394, 1, 'student13', 'student13', 'student13', 2, NULL),
-(59, '::1', 'student14@gmail.com', '$2y$10$myU/g5NNsqnH0byIpyN37em938kVYkOHYNnf3SIq4vmBOG1TQ9Vja', 'student14@gmail.com', NULL, 'ciskp', NULL, NULL, NULL, NULL, NULL, 1620367374, NULL, 1, 'student14', 'student14', 'student14', 1, NULL);
+INSERT INTO `users` (`id`, `school_users_id`, `ip_address`, `username`, `password`, `email`, `activation_selector`, `activation_code`, `forgotten_password_selector`, `forgotten_password_code`, `forgotten_password_time`, `remember_selector`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `middle_name`, `gender`, `phone`, `date_created`) VALUES
+(1, NULL, '127.0.0.1', 'samvillarta01@gmail.com', '$2y$12$vWrYh06FiPXndc1aLCWhQ.SQgLCfETXpy3g0ONG5rxqPzzsEPx/xe', 'samvillarta01@gmail.com', NULL, '', '51251e0af7e7e387351f', '$2y$10$/qTEZMeyUTO9ObxI.eGoje2Tk23lvUef4vPfitKa8Wad7S6Jz5/M2', 1620869277, NULL, NULL, 1268889823, 1620710347, 1, 'Admin', 'istrator', 'ADMIN', NULL, '0', '2021-06-02'),
+(21, NULL, '::1', 'head@gmail.com', '$2y$10$zND92HHioBi0bSYrCIO.Jeh5wRScc55kgCVmdfUQymOrFh6xxJQe2', 'head@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1615634101, 1622601883, 1, 'Head', 'Head', 'Head', 1, NULL, '2021-06-02'),
+(45, NULL, '::1', 'student1@gmail.com', '$2y$10$8FzR.OpFpkqk2N0TH72G2epDNXV5jPTxogUIfPxS6hky9V3nzwwf6', 'student1@gmail.com', NULL, 'leq9k', NULL, NULL, NULL, NULL, NULL, 1619259848, 1622598586, 1, 'student1', 'student1', 'student1', 2, NULL, '2021-06-02'),
+(46, NULL, '::1', 'student2@gmail.com', '$2y$10$k7PWp9cFprEqbO126O.KGuVrKaB2xwpeNk68dwGkThFdOv80hdUCm', 'student2@gmail.com', NULL, 'bjdpy', NULL, NULL, NULL, NULL, NULL, 1619261434, 1619610571, 1, 'student2', 'student2', 'student2', 2, NULL, '2021-06-02'),
+(47, NULL, '::1', 'student3@gmail.com', '$2y$10$jZh1btIF.21jJEl7DrVV7OslsadvSwIf0WQpRGswGtF/OQyVoArXm', 'student3@gmail.com', NULL, '-1r3t', NULL, NULL, NULL, NULL, NULL, 1619329053, 1619610504, 1, 'student3', 'student3', 'student3', 2, NULL, '2021-06-02'),
+(48, NULL, '::1', 'student4@gmail.com', '$2y$10$eT9Ce3oNECi46607mVhzReC/P84mLEq90nifNwSCVlls82vhIgZYO', 'student4@gmail.com', NULL, '5m6ps', NULL, NULL, NULL, NULL, NULL, 1619329086, 1622470121, 1, 'student4', 'student4', 'student4', 1, NULL, '2021-06-02'),
+(49, NULL, '::1', 'student5@gmail.com', '$2y$10$pKy71L93S8bu0MlaAtyR1u5Agado4e3ZaCKQ0kNUHsimUp5SkMccm', 'student5@gmail.com', NULL, 'oaxno', NULL, NULL, NULL, NULL, NULL, 1619337255, 1619611091, 1, 'student5', 'student5', 'student5', 2, NULL, '2021-06-02'),
+(50, NULL, '::1', 'student6@gmail.com', '$2y$10$b0Gbb6looGlNXM8SgXR1wuMUxd3Kbhz9TUnse9TeijuRIszNAccbG', 'student6@gmail.com', NULL, 'xas52', NULL, NULL, NULL, NULL, NULL, 1619337284, 1621867303, 1, 'student6', 'student6', 'student6', 2, NULL, '2021-06-02'),
+(51, NULL, '::1', 'student7@gmail.com', '$2y$10$yXoCrCgdSR/ywp.4G6T5mOICf01XLXSaM907hSnMELPeW7L6l4Sz2', 'student7@gmail.com', NULL, 'plp3o', NULL, NULL, NULL, NULL, NULL, 1619337310, 1619338418, 1, 'student7', 'student7', 'student7', 2, NULL, '2021-06-02'),
+(52, NULL, '::1', 'student8@gmail.com', '$2y$10$k6fMDD7POaFuxqBkkZh0oeBD7z47t2CyQnSGZ4.NIFO0zouCsVR2G', 'student8@gmail.com', NULL, '7s9s5', NULL, NULL, NULL, NULL, NULL, 1619338758, 1619338773, 1, 'student8', 'student8', 'student8', 1, NULL, '2021-06-02'),
+(53, NULL, '::1', 'instructor1@gmail.com', '$2y$10$84holkj54lj5RkFu6tjfieM9kFlmwe6Ky/GfKktZ4vGXZU88rfdvu', 'instructor1@gmail.com', NULL, 'kr4eb', NULL, NULL, NULL, NULL, NULL, 1619565733, 1621720921, 1, 'instructor1', 'instructor1', 'instructor1', 2, NULL, '2021-06-02'),
+(54, NULL, '::1', 'instructor2@gmail.com', '$2y$10$6bznM84Ofeh26bERs102o.HeGLdNnges6U0YDeGlWkNjeJiUTgazm', 'instructor2@gmail.com', NULL, 'yf60p', NULL, NULL, NULL, NULL, NULL, 1619565780, 1622130436, 1, 'instructor2', 'instructor2', 'instructor2', 1, NULL, '2021-06-02'),
+(55, NULL, '::1', 'instructor3@gmail.com', '$2y$10$TqiTHhCDD/47jzZu.66R9eC7OX16J1S1EM9pgKFfaPyoNozHO2ukO', 'instructor3@gmail.com', NULL, 'o8zdh', NULL, NULL, NULL, NULL, NULL, 1619565813, 1622128080, 1, 'instructor3', 'instructor3', 'instructor3', 1, NULL, '2021-06-02'),
+(56, NULL, '::1', 'student11@gmail.com', '$2y$10$806O12h8hYLxZVcOXEy.puvThlrBSrqY2Ye8bQeyK1k9YAdMEldem', 'student11@gmail.com', NULL, 'cf8tl', NULL, NULL, NULL, NULL, NULL, 1620367106, 1620368052, 1, 'student11', 'student11', 'student11', 2, NULL, '2021-06-02'),
+(57, NULL, '::1', 'student12@gmail.com', '$2y$10$u5Z8deRJZF1PsMjagpHO9uTvm0KdOagVsg6ZsWw4DEm4lTtoc6Dci', 'student12@gmail.com', NULL, '8s5r2', NULL, NULL, NULL, NULL, NULL, 1620367152, 1620367166, 1, 'student12', 'student12', 'student12', 2, NULL, '2021-06-02'),
+(58, NULL, '::1', 'student13@gmail.com', '$2y$10$0sT7JnhLOwRiaAx0elghL..C9/up1fvIcANedH563Ehw32PpALNyS', 'student13@gmail.com', NULL, '36p5v', NULL, NULL, NULL, NULL, NULL, 1620367273, 1620367394, 1, 'student13', 'student13', 'student13', 2, NULL, '2021-06-02'),
+(59, NULL, '::1', 'student14@gmail.com', '$2y$10$myU/g5NNsqnH0byIpyN37em938kVYkOHYNnf3SIq4vmBOG1TQ9Vja', 'student14@gmail.com', NULL, 'ciskp', NULL, NULL, NULL, NULL, NULL, 1620367374, NULL, 1, 'student14', 'student14', 'student14', 1, NULL, '2021-06-02'),
+(60, NULL, '::1', 'instructor4@gmail.com', '$2y$10$piaLmIG48oeV.l/4us.2D.leNNTphzxDt8OSHpDC9cH7QVxFigvQe', 'instructor4@gmail.com', NULL, '7dili', NULL, NULL, NULL, NULL, NULL, 1621568498, 1622470711, 1, 'instructor4', 'instructor4', 'instructor4', 1, NULL, '2021-06-02'),
+(61, NULL, '::1', 'instructor5@gmail.com', '$2y$10$84Z6Sp5FVYlhW9B/dGlWzedphHap21OvGSszrZWeH4C4ikCasH7cG', 'instructor5@gmail.com', NULL, 'oqtd5', NULL, NULL, NULL, NULL, NULL, 1621568527, NULL, 1, 'instructor5', 'instructor5', 'instructor5', 1, NULL, '2021-06-02'),
+(62, NULL, '::1', 'sai@gmail.com', '$2y$10$Fag2FKpp9L7t5CGKedQv/.gX0kqpkW0L/XuWftRgvcHnBTqG3KReu', 'sai@gmail.com', NULL, 'v5xm6', NULL, NULL, NULL, NULL, NULL, 1621821281, NULL, 1, 'sai', 'sai', 'sai', 1, NULL, '2021-06-02'),
+(63, NULL, '::1', 'sai1@gmail.com', '$2y$10$347jGN90gwnwe9bjLjS4yOZX3eJZwaxJ.BnXBm1P13qEYxd6Bq26K', 'sai1@gmail.com', NULL, 'l874r', NULL, NULL, NULL, NULL, NULL, 1621821503, NULL, 1, 'sai1', 'sai1', 'sai1', 1, NULL, '2021-06-02'),
+(64, 22222222, '::1', 'test2@gmail.com', '$2y$10$7pHlqIk0cFkFQNPBxfHnCOpnBCcvoStURkKX7AmNi1.721af3CA4.', 'test2@gmail.com', NULL, 'oo2pf', NULL, NULL, NULL, NULL, NULL, 1622250387, NULL, 1, 'test2', 'test2', 'test2', 1, NULL, '2021-06-02'),
+(65, 234566567, '::1', 'student15@gmail.com', '$2y$10$055g77Jtf27oPLI6nl4sBeHFIiwjzT6CTYspNx526fF2elLqTfGbG', 'student15@gmail.com', NULL, 'gnk8a', NULL, NULL, NULL, NULL, NULL, 1622601838, NULL, 1, 'student15', 'student15', 'student15', 1, NULL, '2021-06-02');
 
 -- --------------------------------------------------------
 
@@ -444,7 +717,13 @@ INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
 (56, 56, 4),
 (57, 57, 4),
 (58, 58, 4),
-(59, 59, 4);
+(59, 59, 4),
+(60, 60, 5),
+(61, 61, 5),
+(62, 62, 4),
+(63, 63, 4),
+(64, 64, 4),
+(65, 65, 4);
 
 -- --------------------------------------------------------
 
@@ -552,6 +831,18 @@ ALTER TABLE `batch_connect`
   ADD KEY `email` (`email`);
 
 --
+-- Indexes for table `capstone1`
+--
+ALTER TABLE `capstone1`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `capstone1_evaluation_rubric_connect`
+--
+ALTER TABLE `capstone1_evaluation_rubric_connect`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `class`
 --
 ALTER TABLE `class`
@@ -561,6 +852,12 @@ ALTER TABLE `class`
 -- Indexes for table `documents`
 --
 ALTER TABLE `documents`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `evaluation_rubric`
+--
+ALTER TABLE `evaluation_rubric`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -604,9 +901,28 @@ ALTER TABLE `thises_connect`
   ADD KEY `thesis_group_id` (`thesis_group_id`);
 
 --
+-- Indexes for table `thises_copy`
+--
+ALTER TABLE `thises_copy`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `thises_group`
 --
 ALTER TABLE `thises_group`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `thises_group_assigned_adviser`
+--
+ALTER TABLE `thises_group_assigned_adviser`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `group_id` (`group_id`);
+
+--
+-- Indexes for table `thises_group_assigned_adviser_logs`
+--
+ALTER TABLE `thises_group_assigned_adviser_logs`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -617,13 +933,20 @@ ALTER TABLE `thises_group_assigned_panelist`
   ADD KEY `group_id` (`group_id`);
 
 --
+-- Indexes for table `thises_logs`
+--
+ALTER TABLE `thises_logs`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `uc_email` (`email`),
   ADD UNIQUE KEY `uc_forgotten_password_selector` (`forgotten_password_selector`),
-  ADD UNIQUE KEY `uc_remember_selector` (`remember_selector`);
+  ADD UNIQUE KEY `uc_remember_selector` (`remember_selector`),
+  ADD KEY `school_esers_id` (`school_users_id`);
 
 --
 -- Indexes for table `users_groups`
@@ -681,7 +1004,19 @@ ALTER TABLE `batch`
 -- AUTO_INCREMENT for table `batch_connect`
 --
 ALTER TABLE `batch_connect`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+
+--
+-- AUTO_INCREMENT for table `capstone1`
+--
+ALTER TABLE `capstone1`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `capstone1_evaluation_rubric_connect`
+--
+ALTER TABLE `capstone1_evaluation_rubric_connect`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT for table `class`
@@ -693,7 +1028,13 @@ ALTER TABLE `class`
 -- AUTO_INCREMENT for table `documents`
 --
 ALTER TABLE `documents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+
+--
+-- AUTO_INCREMENT for table `evaluation_rubric`
+--
+ALTER TABLE `evaluation_rubric`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `groups`
@@ -705,13 +1046,13 @@ ALTER TABLE `groups`
 -- AUTO_INCREMENT for table `login_attempts`
 --
 ALTER TABLE `login_attempts`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=155;
 
 --
 -- AUTO_INCREMENT for table `project_title_hearing`
 --
 ALTER TABLE `project_title_hearing`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=158;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -723,37 +1064,61 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `thises`
 --
 ALTER TABLE `thises`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 
 --
 -- AUTO_INCREMENT for table `thises_connect`
 --
 ALTER TABLE `thises_connect`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=173;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=178;
+
+--
+-- AUTO_INCREMENT for table `thises_copy`
+--
+ALTER TABLE `thises_copy`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `thises_group`
 --
 ALTER TABLE `thises_group`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+
+--
+-- AUTO_INCREMENT for table `thises_group_assigned_adviser`
+--
+ALTER TABLE `thises_group_assigned_adviser`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `thises_group_assigned_adviser_logs`
+--
+ALTER TABLE `thises_group_assigned_adviser_logs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `thises_group_assigned_panelist`
 --
 ALTER TABLE `thises_group_assigned_panelist`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- AUTO_INCREMENT for table `thises_logs`
+--
+ALTER TABLE `thises_logs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT for table `users_groups`
 --
 ALTER TABLE `users_groups`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT for table `users_roles`
