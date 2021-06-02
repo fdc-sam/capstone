@@ -17,16 +17,16 @@
                 </nav>
             </div>
         </div>
-        <div class="" id="alertMessege"></div>        
+        <div class="" id="alertMessege"></div>
         <div class="tabs-animation">
             <div class="row">
-                
+
                 <div class="col-md-12 col-lg-8">
                     <div class="main-card mb-3 card">
                         <div class="card-header">
                             <div class="btn-actions-pane-right actions-icon-btn">
                                 <div role="group" class="btn-group-sm nav btn-group">
-                                    <?php  
+                                    <?php
                                     if ($getCapstoneDetails[0]->status == 1) {
                                         // Approved
                                         ?><div class="badge badge-success ml-2">Approved</div><?php
@@ -41,18 +41,18 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="card-body" style="border: 2px solid black;">
                             <style>
                                 * {
                                     font-family: Arial;
                                     font-size: 11pt;
                                 }
-                            
+
                                 a.NoteRef {
                                     text-decoration: none;
                                 }
-                            
+
                                 hr {
                                     height: 1px;
                                     padding: 0;
@@ -60,13 +60,13 @@
                                     border: 0;
                                     border-top: .000001em solid #CCC;
                                 }
-                            
+
                                 table {
                                     /* border: .011em solid black; */
                                     border-spacing: 0px;
                                     width: 100%;
                                 }
-                            
+
                                 td {
                                     border: .000001em solid black;
                                 }
@@ -78,16 +78,16 @@
                                 .Normal {
                                     margin-bottom: 8pt;
                                 }
-                            
+
                                 .No Spacing {
                                     margin-bottom: 0pt;
                                 }
-                                
+
                             </style>
                             <div class="" >
                                 <img style="width: 350px; height: 78px;" src="<?php echo base_url('assets/images/evsu-logo-with-words.png') ?>" alt="evsu logo">
                             </div>
-                                
+
                             <p style="text-align: center; margin-top: 0; margin-bottom: 0;">
                                 <span style="font-family: 'Arial Narrow'; font-size: 14pt; font-weight: bold;">CAPSTONE PROJECT TEAM ASSIGNMENTS</span>
                             </p>
@@ -125,10 +125,10 @@
                                         </p>
                                     </td>
                                 </tr>
-                                
+
                                 <!--  get the group members -->
                                 <?php foreach ($getCapstoneDetails as $key => $value): ?>
-                                    <?php  
+                                    <?php
                                         $first_name = $value->first_name.' '.$value->middle_name.' '.$value->last_name;
                                     ?>
                                     <tr style="line-height: 25px !important;">
@@ -150,8 +150,8 @@
                                         </td>
                                         <td style="height: 25px !important;">
                                             <?php if ($value->signatures): ?>
-                                                <img src="data:image/png;base64, <?php echo $value->signatures ?>" alt="Signature" 
-                                                    style=" overflow: visible;  width:200px; position: absolute; margin-top: -25px;" 
+                                                <img src="data:image/png;base64, <?php echo $value->signatures ?>" alt="Signature"
+                                                    style=" overflow: visible;  width:200px; position: absolute; margin-top: -25px;"
                                                 />
                                             <?php else: ?>
                                                 <p style="text-align: center; margin-top: 0; margin-bottom: 0;">
@@ -161,7 +161,7 @@
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
-                                
+
                             </table>
                             <p>&nbsp;</p>
                             <p style="text-align: center; margin-top: 0; margin-bottom: 0;"><span style="font-family: 'Arial Narrow'; font-size: 14pt; font-weight: bold;">PRE-PROPOSAL STATEMENTS</span></p>
@@ -179,7 +179,7 @@
                                     <td>
                                         <p style="margin: 5px;"><span style="font-family: 'Arial Narrow'; font-size: 12pt; font-weight: bold;">SCOPE OF THE STUDY : </span></p>
                                         <?php echo $getCapstoneDetails[0]->discreption; ?>
-                        
+
                                     </td>
                                 </tr>
                                 <tr>
@@ -202,8 +202,8 @@
                         </div>
                     </div>
                 </div>
-                
-                
+
+
                 <div class="col-md-12 col-lg-4">
                     <div class="main-card mb-3 card">
                         <div class="card-header-tab card-header">
@@ -211,7 +211,7 @@
                                 Documents
                             </div>
                             <div class="btn-actions-pane-right text-capitalize">
-                                <?php  
+                                <?php
                                 if ($getCapstoneDetails[0]->status == 1) {
                                     // Approved
                                     ?>
@@ -226,13 +226,13 @@
                                     <?php
                                 }
                                 ?>
-                                
+
                             </div>
                         </div>
                         <div class="files-box">
                             <ul class="list-group list-group-flush selectedFiles">
                             </ul>
-                            
+
                             <ul class="list-group list-group-flush">
                                 <?php if (isset($thesisDocuments) && $thesisDocuments): ?>
                                     <?php foreach ($thesisDocuments as $key => $thesisDocument): ?>
@@ -288,11 +288,48 @@
                             </ul>
                         </div>
                     </div>
+
+                    <?php if ($getCapstoneDetails[0]->status == 1): ?>
+                        <!-- presentation materials -->
+                        <div class="main-card mb-3 card">
+                            <div class="card-header-tab card-header">
+                                <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+                                    Documents
+                                </div>
+                                <div class="btn-actions-pane-right text-capitalize">
+
+                                        <form method='post' action='<?php echo base_url('upload/uploadMultiFiles'); ?>' enctype='multipart/form-data'>
+                                            <input type="text" name="proposalId" value="<?php echo $proposalId; ?>" hidden>
+                                            <input id="addMultiFiles" type='file' name='files[]' accept="image/*" multiple hidden>
+
+                                            <button class="mb-2 mr-2 btn-icon btn-shadow btn-sm btn-outline-2x btn btn-outline-primary btnSaveMultiFiles">
+                                                <i class="fa fa-fw" aria-hidden="true" title="Copy to use check"></i>
+                                                Save
+                                            </button>
+                                            <button class="mb-2 mr-2 btn-icon btn-shadow btn-sm btn-outline-2x btn btn-outline-primary btnAddMultiFiles">
+                                                <i class="lnr lnr-file-add btn-icon-wrapper"> </i>
+                                                File
+                                            </button>
+                                            <button class="mb-2 mr-2 btn-icon btn-shadow btn-sm btn-outline-2x btn btn-outline-danger btnCancelFiles">
+                                                <i class="fa fa-fw" aria-hidden="true" title="Copy to use close"></i>
+                                                Cancel
+                                            </button>
+                                        </form>
+
+                                </div>
+                            </div>
+                            <div class="files-box">
+                                <ul class="list-group list-group-flush selectedFiles">
+                                </ul>
+
+                                <ul class="list-group list-group-flush">
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
-

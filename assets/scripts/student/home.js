@@ -354,6 +354,30 @@ if (sub_content == 'home/index') {
 }
 
 if (sub_content == 'home/capstoneDetails') {
+    $('.btnCancelFiles').hide();
+    $('.btnSaveMultiFiles').hide();
+
+    // add documentation multi files
+    $(document).on('click','.btnAddMultiFiles', function(e){
+        e.preventDefault();
+
+        // to activate the clicl function of 'selectedFile'
+        var selectedFile = $('#addMultiFiles').click();
+
+        $('.btnCancelFiles').show();
+        $('.btnSaveMultiFiles').show();
+        $('.btnAddMultiFiles').hide();
+    });
+
+    // cancel
+    $(document).on('click','.btnCancelFiles', function(e){
+        e.preventDefault();
+
+        $('.btnCancelFiles').hide();
+        $('.btnSaveMultiFiles').hide();
+        $('.btnAddMultiFiles').show();
+    });
+
 
     // add documentation files
     $(document).on('click','.btnAddFiles', function(e){

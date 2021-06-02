@@ -527,6 +527,7 @@ class Auth extends CI_Controller
 				'gender' => $this->input->post('gender'),
 				'activation_code' => $activation_code,
 				'school_users_id' => $this->input->post('studentOrInstructorId'),
+				'date_created' => date('Y-m-d'),
 			];
 		}
 

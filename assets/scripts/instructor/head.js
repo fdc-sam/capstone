@@ -1195,3 +1195,15 @@ if (sub_content == 'head/viewPanelEvaluationRubric') {
         ],
     });// end of the data table variable
 }
+
+if (sub_content == 'head/student') {
+    var tableGroupDetails = $('#table-student').DataTable({
+        "responsive" : true,
+        "ordering": false,
+        "paging": false,
+        "columnDefs": [
+            { responsivePriority: 1, targets: 0 },
+            { responsivePriority: 1, targets: 1 }
+        ],
+    });// end of the data table variable
+}

@@ -37,6 +37,7 @@
                                     <td><?php echo $panelistDetail['gender'] ?></td>
                                     <td>
                                         <?php
+                                        if (isset($panelistDetail['capstoneDetails']) && $panelistDetail['capstoneDetails']) {
                                             if($panelistDetail['capstoneDetails']->status == 0){
                                                 echo '<div class="mb-2 mr-2 badge badge-warning">Pending / On Process</div>';
                                             }elseif ($panelistDetail['capstoneDetails']->status == 1) {
@@ -44,16 +45,22 @@
                                             }elseif ($panelistDetail['capstoneDetails']->status == 2){
                                                 echo '<div class="mb-2 mr-2 badge badge-danger">Redefence</div>';
                                             }
+                                        }else{
+                                            echo '<div class="mb-2 mr-2 badge badge-warning">Pending / On Process</div>';
+                                        }
                                         ?>
                                     </td>
                                     <td>
-                                        <a
-                                            href="<?php echo base_url('student/capstone/groupEvaluation/'.$panelistDetail['capstoneDetails']->id) ?>"
-                                            class="mb-2 mr-2 btn-icon btn-sm btn-shadow btn-outline-2x btn btn-outline-primary"
-                                        >
-                                            <i class="fa fa-eye btn-icon-wrapper"> </i>
-                                            Evaluate
-                                        </a>
+                                        <?php if (isset($panelistDetail['capstoneDetails']->id) && $panelistDetail['capstoneDetails']->id): ?>
+                                            <a
+                                                href="<?php echo base_url('student/capstone/groupEvaluation/'.$panelistDetail['capstoneDetails']->id) ?>"
+                                                class="mb-2 mr-2 btn-icon btn-sm btn-shadow btn-outline-2x btn btn-outline-primary"
+                                            >
+                                                <i class="fa fa-eye btn-icon-wrapper"> </i>
+                                                Evaluate
+                                            </a>
+                                        <?php endif; ?>
+
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

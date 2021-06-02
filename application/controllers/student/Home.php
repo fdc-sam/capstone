@@ -962,8 +962,6 @@ class Home extends CI_Controller {
 
         }
 
-
-
         // - data
         $data['currentPageTitle'] = 'Student - Proposal Details';
         $data['mainContent'] = 'student/home';

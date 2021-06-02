@@ -21,9 +21,7 @@
                 <div class="col-md-12 col-lg-12">
                     <div class="card mb-3">
                         <div class="card-header-tab card-header">
-                            <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
-                                    class="header-icon lnr-laptop-phone mr-3 text-muted opacity-6"> </i>Group Members
-                            </div>
+                            <i class="header-icon fa fa-users icon-gradient bg-plum-plate"> </i> Panelist
                             <div class="btn-actions-pane-right actions-icon-btn">
                                 <div class="btn-group dropdown">
                                     <button class="mb-2 mr-2 btn-icon btn-shadow btn-outline-2x btn btn-outline-primary" data-toggle="modal" data-target="#addGroupModal">

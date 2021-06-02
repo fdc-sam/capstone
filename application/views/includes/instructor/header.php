@@ -279,7 +279,7 @@
                     <div class="app-sidebar__inner">
                         <ul class="vertical-nav-menu">
                             <?php if (isset($mainContent) && $mainContent == 'instructor/head' || $currentUserGroup == 'IT head'): ?>
-                                <li class="app-sidebar__heading">Instructor</li>
+                                <li class="app-sidebar__heading">Admin</li>
                                 <li  class="<?php echo
                                     isset($mainContent)
                                     && $mainContent == 'instructor/head'
@@ -357,6 +357,15 @@
                                         </li>
 
                                     </ul>
+                                </li>
+                                <li>
+                                    <a href="<?php echo base_url('instructor/head/student') ?>"
+                                        class="<?php echo isset($subContent)
+                                        && $subContent == 'head/student'
+                                        ? 'mm-active': '' ?>  btn-sm"
+                                    >
+                                        <i class="metismenu-icon pe-7s-users"></i>Student
+                                    </a>
                                 </li>
                             <?php endif; ?>
                             <li class="app-sidebar__heading">Panelist</li>

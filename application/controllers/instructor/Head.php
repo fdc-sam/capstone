@@ -45,6 +45,54 @@ class Head extends CI_Controller {
 		$this->load->view('includes/instructor/footer');
     }
 
+    public function student(){
+        // - get the user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+
+        $currentUserGroup = $this->getCurrentUserGroupDetails($data['userInfo']->id);
+
+        // get the date
+        $get = $this->input->get();
+        $searchDate = isset($get['searctDate'])? $get['searctDate']:  date('Y-m-d');
+
+        // get all student
+        $joins = array(
+            'users_groups AS UG' => 'UG.user_id = U.id',
+            'groups AS G' => 'G.id = UG.group_id'
+        );
+        $where = array(
+            'G.id' => 4,
+            'U.date_created' => $searchDate
+        );
+
+        $studentDetails = $this->universal->get(
+            true,
+            'users AS U',
+            'U.*',
+            'array',
+            $where,
+            array(),
+            $joins
+        );
+        // get all student end
+
+        // pre($studentDetails);
+        // die;
+
+        // - data
+        $data['studentDetails'] = $studentDetails;
+        $data['currentUserGroup'] = $currentUserGroup->name;
+        $data['currentPageTitle'] = 'Head - Student';
+        $data['mainContent'] = 'instructor/head';
+        $data['subContent'] = 'head/student';
+
+        // - load view
+        $this->load->view('includes/instructor/header',$data);
+		$this->load->view('instructor/head/student');
+		$this->load->view('includes/instructor/footer');
+    }
+
     public function getAllInstructor(){
         // - variables from datatable
         $post = $this->input->post();
@@ -966,6 +1014,7 @@ class Head extends CI_Controller {
 		$this->load->view('instructor/head/groups');
 		$this->load->view('includes/instructor/footer');
     }
+
 
     public function getAllGroups(){
 

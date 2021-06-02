@@ -150,6 +150,11 @@
 	<script src="<?php echo base_url('assets/scripts/student/myProfile.js'); ?>"></script>
 <?php endif; ?>
 
+
+<?php if ($subContent == 'adviser/index'): ?>
+	<script src="<?php echo base_url('assets/scripts/student/adviser.js'); ?>"></script>
+<?php endif; ?>
+
 <?php if ($subContent == 'home/mySignature'): ?>
 
     <link type="text/css" href="<?php echo base_url('assets/signature/css/jquery-ui.css') ?>" rel="stylesheet">

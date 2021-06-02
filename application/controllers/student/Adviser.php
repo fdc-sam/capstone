@@ -50,8 +50,10 @@ class Adviser extends CI_Controller {
                 'status' => 1
             )
         );
-
-        $adviserDetails = $this->getadviserDetails($assignAdviser->instructor_id);
+        $adviserDetails = array();
+        if (isset($assignAdviser) && $assignAdviser) {
+            $adviserDetails = $this->getadviserDetails($assignAdviser->instructor_id);
+        }
 
         // - data
         $data['groupId'] = $groupId;

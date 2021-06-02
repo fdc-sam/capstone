@@ -16,7 +16,7 @@
         <div class="tabs-animation">
             <div class="card mb-3">
                 <div class="card-header">
-                    <i class="header-icon lnr-laptop-phone icon-gradient bg-plum-plate"> </i>Proposals Details
+                    <i class="header-icon lnr-laptop-phone icon-gradient bg-plum-plate"> </i>View Evaluation Rubric
                     <!-- <div class="btn-actions-pane-right actions-icon-btn">
                         <a href="<?php echo base_url('instructor/head/assignPanel'); ?>" class="mb-2 mr-2 btn-icon btn btn-primary btn-shadow">
                             <i class="lnr-users btn-icon-wrapper"> </i> Assign Panelist
