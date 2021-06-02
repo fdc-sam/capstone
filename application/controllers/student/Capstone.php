@@ -36,6 +36,7 @@ class Capstone extends CI_Controller {
             )
         );
 
+        $panelistDetails = array();
         if (isset($thisesConnectDetails) && $thisesConnectDetails) {
             $panelistDetails = $this->getAllPanelist($thisesConnectDetails->thesis_group_id);
 
