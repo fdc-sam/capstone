@@ -288,46 +288,6 @@
                             </ul>
                         </div>
                     </div>
-
-                    <?php if ($getCapstoneDetails[0]->status == 1): ?>
-                        <!-- presentation materials -->
-                        <div class="main-card mb-3 card">
-                            <div class="card-header-tab card-header">
-                                <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
-                                    Documents
-                                </div>
-                                <div class="btn-actions-pane-right text-capitalize">
-
-                                        <form method='post' action='<?php echo base_url('upload/uploadMultiFiles'); ?>' enctype='multipart/form-data'>
-                                            <input type="text" name="proposalId" value="<?php echo $proposalId; ?>" hidden>
-                                            <input id="addMultiFiles" type='file' name='files[]' accept="image/*" multiple hidden>
-
-                                            <button class="mb-2 mr-2 btn-icon btn-shadow btn-sm btn-outline-2x btn btn-outline-primary btnSaveMultiFiles">
-                                                <i class="fa fa-fw" aria-hidden="true" title="Copy to use check"></i>
-                                                Save
-                                            </button>
-                                            <button class="mb-2 mr-2 btn-icon btn-shadow btn-sm btn-outline-2x btn btn-outline-primary btnAddMultiFiles">
-                                                <i class="lnr lnr-file-add btn-icon-wrapper"> </i>
-                                                File
-                                            </button>
-                                            <button class="mb-2 mr-2 btn-icon btn-shadow btn-sm btn-outline-2x btn btn-outline-danger btnCancelFiles">
-                                                <i class="fa fa-fw" aria-hidden="true" title="Copy to use close"></i>
-                                                Cancel
-                                            </button>
-                                        </form>
-
-                                </div>
-                            </div>
-                            <div class="files-box">
-                                <ul class="list-group list-group-flush selectedFiles">
-                                </ul>
-
-                                <ul class="list-group list-group-flush">
-                                    
-                                </ul>
-                            </div>
-                        </div>
-                    <?php endif; ?>
                 </div>
             </div>
         </div>

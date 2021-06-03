@@ -375,6 +375,8 @@
                                     && $subContent != 'panel/groupDetails'
                                     && $subContent != 'panel/capstone1'
                                     && $subContent != 'panel/groupEvaluation'
+                                    && $subContent != 'panel/viewScript'
+                                    && $subContent != 'panel/capstone1Remark'
                                     ? 'mm-active': '' ?>"
                                 >
                                 <a href="#">
@@ -414,6 +416,7 @@
                                     && $subContent == 'panel/capstone1'
                                     || $subContent == 'panel/groupEvaluation'
                                     || $subContent == 'panel/viewScript'
+                                    || $subContent == 'panel/capstone1Remark'
                                     ? 'mm-active': '' ?>  btn-sm"
                                 >
                                     <i class="metismenu-icon pe-7s-graph2"></i>Capstone 1

@@ -155,6 +155,89 @@ class Panel extends CI_Controller {
 		$this->load->view('includes/instructor/footer');
     }
 
+    public function capstone1Remark($groupId = null){
+        // - get the user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+        $currentUserGroup = $this->getCurrentUserGroupDetails($data['userInfo']->id);
+
+        $finalRemarks = $this->universal->get(
+            true,
+            'capstone1_final_remarks',
+            '*',
+            'row',
+            array(
+                'group_id' => $groupId,
+                'instructor_id' => $data['userInfo']->id
+            )
+        );
+
+
+        $post = $this->input->post();
+        if (isset($post) && $post) {
+            if (isset($finalRemarks) && $finalRemarks) {
+                $finalRemarks = $this->universal->update(
+                    'capstone1_final_remarks',
+                    array(
+                        'remarks' => $post['capstone1Remark']
+                    ),
+                    array(
+                        'instructor_id' => $data['userInfo']->id,
+                        'group_id' => $groupId,
+                    )
+                );
+
+                $output = array(
+                    'message' => "Data Not Save, Something Went Wrong",
+                    'class' => 'alert-danger'
+                );
+                if (isset($finalRemarks) && $finalRemarks) {
+                    $output = array(
+                        'message' => "Remark Updated",
+                        'class' => 'alert-success'
+                    );
+                }
+            }else{
+                $finalRemarks = $this->universal->insert(
+                    'capstone1_final_remarks',
+                    array(
+                        'instructor_id' => $data['userInfo']->id,
+                        'group_id' => $groupId,
+                        'remarks' => $post['capstone1Remark'],
+                        'date_created' => date('Y-m-d H:i:s')
+                    )
+                );
+
+                $output = array(
+                    'message' => "Data Not Save, Something Went Wrong",
+                    'class' => 'alert-danger'
+                );
+                if (isset($finalRemarks) && $finalRemarks) {
+                    $output = array(
+                        'message' => "Remark Save",
+                        'class' => 'alert-success'
+                    );
+                }
+            }
+            $this->session->set_flashdata('message', $output);
+            redirect(base_url('instructor/panel/capstone1'), 'refresh');
+        }
+
+
+        // - data
+        $data['finalRemarks'] = $finalRemarks;
+        $data['groupId'] = $groupId;
+        $data['currentUserGroup'] = $currentUserGroup->name;
+        $data['currentPageTitle'] = 'Panel - Capstone';
+        $data['mainContent'] = 'instructor/panel';
+        $data['subContent'] = 'panel/capstone1Remark';
+
+        // - load view
+        $this->load->view('includes/instructor/header',$data);
+		$this->load->view('instructor/panel/capstone1Remark');
+		$this->load->view('includes/instructor/footer');
+    }
+
     public function assignedGroupAccept($projectTitleHearingId = null, $groupId = null){
         $updateRejectAssignedGroup = $this->universal->update(
             'project_title_hearing',

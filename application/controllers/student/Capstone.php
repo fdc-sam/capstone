@@ -35,7 +35,8 @@ class Capstone extends CI_Controller {
                 'user_id' => $data['userInfo']->id
             )
         );
-
+        // pre($thisesConnectDetails);
+        // die;
         $panelistDetails = array();
         if (isset($thisesConnectDetails) && $thisesConnectDetails) {
             $panelistDetails = $this->getAllPanelist($thisesConnectDetails->thesis_group_id);
@@ -51,7 +52,7 @@ class Capstone extends CI_Controller {
 
         // - data
         $data['panelistDetails'] = $panelistDetails;
-        $data['currentPageTitle'] = 'Student - Home';
+        $data['currentPageTitle'] = 'Student - Capstone';
         $data['mainContent'] = 'student/capstone';
         $data['subContent'] = 'capstone/index';
 
@@ -60,6 +61,66 @@ class Capstone extends CI_Controller {
 		$this->load->view('includes/student/footer');
         $this->load->view('includes/student/modals');
 	}
+
+    public function capstone1Remark($panelistId = null){
+        // get the current user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+
+        $thisesConnectDetails = $this->universal->get(
+            true,
+            'thises_connect',
+            '*',
+            'row',
+            array(
+                'user_id' => $data['userInfo']->id
+            )
+        );
+
+        // get the panelist information
+        $panelistDetails = $this->universal->get(
+            true,
+            'users',
+            '*',
+            'row',
+            array(
+                'id' => $panelistId
+            )
+        );
+
+
+        // get the capstone final Remark
+        $capstoneFinalRemark = $this->universal->get(
+            true,
+            'capstone1_final_remarks',
+            '*',
+            'row',
+            array(
+                'instructor_id' => $panelistId,
+                'group_id' => $thisesConnectDetails->thesis_group_id
+            )
+        );
+
+        $remark = '';
+        if (isset($capstoneFinalRemark) && $capstoneFinalRemark) {
+            $remark = $capstoneFinalRemark->remarks;
+        }
+
+        // pre($remark);
+        // die;
+
+        // - data
+        $data['fullName'] = $panelistDetails->first_name.' '.$panelistDetails->middle_name.' '.$panelistDetails->last_name;
+        $data['remark'] = $remark;
+        $data['currentPageTitle'] = 'Student - Capstone';
+        $data['mainContent'] = 'student/capstone';
+        $data['subContent'] = 'capstone/capstone1Remark';
+
+        $this->load->view('includes/student/header',$data);
+		$this->load->view('student/capstone/capstone1Remark');
+		$this->load->view('includes/student/footer');
+        $this->load->view('includes/student/modals');
+    }
 
     public function groupEvaluation($capstoneId = null){
         // get the current user information

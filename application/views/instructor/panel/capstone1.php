@@ -13,6 +13,18 @@
                 </nav>
             </div>
         </div>
+        <?php if (isset($_SESSION['message']) && $this->session->flashdata('message')): ?>
+            <div class="alert  alert-dismissible fade show <?php echo isset($_SESSION['message']['class'])? $_SESSION['message']['class']: ""; ?>" role="alert">
+                <button type="button" class="close" aria-label="Close" data-dismiss="alert">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <?php
+                    echo isset($_SESSION['message']['message'])? $_SESSION['message']['message']: "";
+                    // pre($_SESSION['message']);
+                    unset($_SESSION['message']);
+                ?>
+            </div>
+        <?php endif; ?>
         <div class="tabs-animation">
             <div class="card mb-3">
                 <div class="card-header">
@@ -66,6 +78,13 @@
                                             >
                                                 <i class="fa fa-eye btn-icon-wrapper"> </i>
                                                 View Script
+                                            </a>
+                                            <a
+                                                href="<?php echo base_url('instructor/panel/capstone1Remark/'.$capstone1Detail['groupDetailsObj']->id) ?>"
+                                                class="mb-2 mr-2 btn-icon btn-sm btn-shadow btn-outline-2x btn btn-outline-primary"
+                                            >
+                                                <i class="fa fa fa-fw btn-icon-wrapper"></i>
+                                                Remark
                                             </a>
                                         </td>
                                         <td>

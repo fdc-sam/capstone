@@ -221,6 +221,7 @@
                                     class="<?php echo isset($subContent)
                                         && $subContent == 'capstone/index'
                                         || $subContent == 'capstone/groupEvaluation'
+                                        || $subContent == 'capstone/capstone1Remark'
                                         ? 'mm-active': '' ?>  btn-sm">
                                     <i class="metismenu-icon fa fa-ils" aria-hidden="true"></i>
                                     Capstone

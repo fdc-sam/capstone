@@ -150,7 +150,7 @@ $(document).ready(function(){
 
         var timeTwoOriginalHeight = pageCount * 2;
 		var height = $('#pdf').height();
-		$('#pdf').css("height", height * timeTwoOriginalHeight - 250);
+		$('#pdf').css("height", (height * timeTwoOriginalHeight) - (120 * timeTwoOriginalHeight));
 
 
     </script>
