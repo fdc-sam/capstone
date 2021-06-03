@@ -60,6 +60,13 @@
                                                 <i class="fa fa-eye btn-icon-wrapper"> </i>
                                                 Evaluate
                                             </a>
+                                            <a
+                                                href="<?php echo base_url('instructor/panel/viewScript/'.$capstone1Detail['groupDetailsObj']->id) ?>"
+                                                class="mb-2 mr-2 btn-icon btn-sm btn-shadow btn-outline-2x btn btn-outline-primary"
+                                            >
+                                                <i class="fa fa-eye btn-icon-wrapper"> </i>
+                                                View Script
+                                            </a>
                                         </td>
                                         <td>
                                             <!-- GROUP MEMBERS -->

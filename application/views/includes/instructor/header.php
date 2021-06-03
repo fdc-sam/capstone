@@ -413,6 +413,7 @@
                                     class="<?php echo isset($subContent)
                                     && $subContent == 'panel/capstone1'
                                     || $subContent == 'panel/groupEvaluation'
+                                    || $subContent == 'panel/viewScript'
                                     ? 'mm-active': '' ?>  btn-sm"
                                 >
                                     <i class="metismenu-icon pe-7s-graph2"></i>Capstone 1

@@ -117,6 +117,44 @@ class Panel extends CI_Controller {
 		$this->load->view('includes/instructor/footer');
     }
 
+    public function viewScript($groupId = null){
+        // - get the user information
+        $data['userInfo'] = $this->ion_auth->user()->row();
+        $data['fullName'] = $data['userInfo']->first_name." ".$data['userInfo']->middle_name." ".$data['userInfo']->last_name;
+        $currentUserGroup = $this->getCurrentUserGroupDetails($data['userInfo']->id);
+
+        $documentFiles = $this->universal->get(
+            true,
+            'documents',
+            '*',
+            'row',
+            array(
+                'group_id' => $groupId
+            )
+        );
+
+        $files = array();
+        if (isset($documentFiles) && $documentFiles) {
+            $files = $documentFiles;
+        }
+
+        // pre($files);
+        // die;
+
+        // - data
+        $data['files'] = $files;
+        $data['pageCount'] = $files->page_count;
+        $data['currentUserGroup'] = $currentUserGroup->name;
+        $data['currentPageTitle'] = 'Panel - Capstone';
+        $data['mainContent'] = 'instructor/panel';
+        $data['subContent'] = 'panel/viewScript';
+
+        // - load view
+        $this->load->view('includes/instructor/header',$data);
+		$this->load->view('instructor/panel/viewScript');
+		$this->load->view('includes/instructor/footer');
+    }
+
     public function assignedGroupAccept($projectTitleHearingId = null, $groupId = null){
         $updateRejectAssignedGroup = $this->universal->update(
             'project_title_hearing',

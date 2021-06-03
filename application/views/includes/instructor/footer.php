@@ -127,7 +127,7 @@ $(document).ready(function(){
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
 <?php endif; ?>
 
-<?php if ($subContent == 'adviser/viewDocumentPDF'): ?>
+<?php if ($subContent == 'adviser/viewDocumentPDF' || $subContent == 'panel/viewScript'): ?>
 
     <!-- for pdf js -->
     <script type="text/javascript" src=" <?php echo base_url('assets/scripts/pdfobject.js'); ?>"></script>
@@ -135,7 +135,6 @@ $(document).ready(function(){
 
     <script type="text/javascript">
 		var pageCount = '<?php echo $pageCount ?>';
-        var file_name = '<?php echo $documentFileName ?>';
         var options = {
             pdfOpenParams: {
                 pagemode: "thumbs",
