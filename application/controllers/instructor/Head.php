@@ -54,7 +54,7 @@ class Head extends CI_Controller {
 
         // get the date
         $get = $this->input->get();
-        $searchDate = isset($get['searctDate'])? $get['searctDate']:  date('Y-m-d');
+        $searchDate = isset($get['searctDate'])? $get['searctDate']:  date('Y-m');
 
         // get all student
         $joins = array(
@@ -63,16 +63,17 @@ class Head extends CI_Controller {
         );
         $where = array(
             'G.id' => 4,
+        );
+        $like = array(
             'U.date_created' => $searchDate
         );
-
         $studentDetails = $this->universal->get(
             true,
             'users AS U',
             'U.*',
             'array',
             $where,
-            array(),
+            $like,
             $joins
         );
         // get all student end
