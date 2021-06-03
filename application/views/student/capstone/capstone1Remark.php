@@ -27,7 +27,7 @@
                     <br>
                     <p>
                         <i class="header-icon fa fa-quote-left "> </i>
-                        <?php echo $remark; ?>
+                        <?php echo isset($remark)? $remark: "No Remark Yet"; ?>
                     </p>
                 </div>
             </div>
