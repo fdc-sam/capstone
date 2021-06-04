@@ -449,10 +449,11 @@ class Home extends CI_Controller {
                     $sideStatusBar = 'bg-success';
                     $requestStatus = '<div class="badge badge-success ml-2">Approved</div>';
                 }
-                if ($value->status == 2) {
+                if ($value->status == 2 || $value->status == 3) {
                     $sideStatusBar = 'bg-danger';
                     $requestStatus = '<div class="badge badge-danger ml-2">Rejected</div>';
                 }
+
                 $proposeData .= '
                     <li class="list-group-item">
 

@@ -14,11 +14,43 @@
             </div>
         </div>
         <div class="tabs-animation">
-            <div class="card mb-3">
+            <div class="card mb-12">
                 <div class="card-header">
                     <i class="header-icon lnr-laptop-phone icon-gradient bg-plum-plate"> </i>Student
+
                 </div>
+
                 <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-9">
+
+                        </div>
+                        <div class="col-md-3">
+                            <div class="position-relative row form-group">
+                                <label for="exampleSelect" class="col-sm-12 col-form-label">Sort By Date</label>
+                                <div class="col-sm-12">
+                                    <select name="select" id="searchDate" class="form-control">
+
+                                        <?php if (isset($studentDetails) && $studentDetails): ?>
+                                            <?php foreach ($studentDetails as $key1 => $studentDetail1):?>
+                                                <?php
+                                                $displayDate = date('Y-m', strtotime($studentDetail1['date_created']));
+                                                ?>
+                                                <?php if (isset($studentDetails[$key1+1]['date_created']) && $studentDetails[$key1+1]['date_created'] != $studentDetail1['date_created']): ?>
+                                                    <option value="<?php echo $displayDate; ?>" <?php echo ($searchDate == $displayDate)? 'selected': ''; ?> >
+                                                        Summer of <?php echo  date('Y', strtotime($studentDetail1['date_created'])); ?>
+                                                    </option>
+                                                <?php endif; ?>
+
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
                     <table style="width: 100%;" id="table-student" class="table table-hover table-striped table-bordered">
                         <thead>
                             <tr>
@@ -32,14 +64,17 @@
                             <?php if (isset($studentDetails) && $studentDetails): ?>
                                 <?php foreach ($studentDetails as $key => $studentDetail):
                                     $fullName = $studentDetail['first_name'].' '.$studentDetail['middle_name'].' '.$studentDetail['last_name'];
+                                    $displayDate = date('Y-m', strtotime($studentDetail['date_created']));
                                 ?>
-
+                                <?php if ($searchDate == $displayDate): ?>
                                     <tr>
                                         <td><?php echo $studentDetail['school_users_id']; ?></td>
                                         <td><?php echo $fullName; ?></td>
                                         <td><?php echo $studentDetail['email']; ?></td>
                                         <td><?php echo $studentDetail['date_created']; ?></td>
                                     </tr>
+                                <?php endif; ?>
+
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </tbody>

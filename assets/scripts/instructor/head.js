@@ -1183,11 +1183,17 @@ if (sub_content == 'head/viewPanelEvaluationRubric') {
 if (sub_content == 'head/student') {
     var tableGroupDetails = $('#table-student').DataTable({
         "responsive" : true,
+        "searching": false,
         "ordering": false,
-        "paging": false,
+        // "paging": false,
         "columnDefs": [
             { responsivePriority: 1, targets: 0 },
             { responsivePriority: 1, targets: 1 }
         ],
     });// end of the data table variable
+
+    $(document).on('change', '#searchDate', function(){
+        var searctDate = $('#searchDate').val();
+        window.location.replace(`${base_url}instructor/head/student?searctDate=${searctDate}`);
+    });
 }

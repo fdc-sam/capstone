@@ -54,7 +54,7 @@ class Head extends CI_Controller {
 
         // get the date
         $get = $this->input->get();
-        $searchDate = isset($get['searctDate'])? $get['searctDate']:  date('Y-m');
+        $searchDate = isset($get['searctDate'])? date('Y-m', strtotime($get['searctDate'])):  date('Y-m');
 
         // get all student
         $joins = array(
@@ -65,7 +65,7 @@ class Head extends CI_Controller {
             'G.id' => 4,
         );
         $like = array(
-            'U.date_created' => $searchDate
+            // 'U.date_created' => $searchDate
         );
         $studentDetails = $this->universal->get(
             true,
@@ -82,6 +82,7 @@ class Head extends CI_Controller {
         // die;
 
         // - data
+        $data['searchDate'] = $searchDate;
         $data['studentDetails'] = $studentDetails;
         $data['currentUserGroup'] = $currentUserGroup->name;
         $data['currentPageTitle'] = 'Head - Student';
