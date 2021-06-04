@@ -54,10 +54,22 @@
                                 <div class="col-md-6">
                                     <label for="exampleEmail" class="">Category</label>
                                     <select class="form-control" name="category">
-                                        <option value="Personal Development">Personal Development</option>
-                                        <option value="Written Paper">Written Paper</option>
-                                        <option value="Oral Presentation">Oral Presentation</option>
-                                        <option value="Design">Design</option>
+                                        <option value="Personal Development"
+                                            <?php echo isset($evaluationRubricDetails->category)
+                                            && ($evaluationRubricDetails->category == 'Personal Development')? 'selected': ''; ?>
+                                        >Personal Development</option>
+                                        <option value="Written Paper"
+                                            <?php echo isset($evaluationRubricDetails->category)
+                                            && ($evaluationRubricDetails->category == 'Written Paper')? 'selected': ''; ?>
+                                        >Written Paper</option>
+                                        <option value="Oral Presentation"
+                                            <?php echo isset($evaluationRubricDetails->category)
+                                            && ($evaluationRubricDetails->category == 'Oral Presentation')? 'selected': ''; ?>
+                                        >Oral Presentation</option>
+                                        <option value="Design"
+                                            <?php echo isset($evaluationRubricDetails->category)
+                                            && ($evaluationRubricDetails->category == 'Design')? 'selected': ''; ?>
+                                        >Design</option>
                                     </select>
                                 </div>
                             </div>

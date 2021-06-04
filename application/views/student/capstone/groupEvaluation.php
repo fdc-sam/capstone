@@ -37,15 +37,123 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($panelistIdEvaluationDetails as $key => $panelistIdEvaluationDetail): ?>
-                                <tr>
-                                    <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->title; ?></td>
-                                    <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->unacceptable; ?></td>
-                                    <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->acceptable; ?></td>
-                                    <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->good; ?></td>
-                                    <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->superior; ?></td>
-                                    <td><?php echo $panelistIdEvaluationDetail['evaluation_rubric_comment']; ?></td>
-                                </tr>
+                            <?php
+                            // pre();
+                            // die();
+                             ?>
+                            <?php $count=0; foreach ($panelistIdEvaluationDetails as $key => $panelistIdEvaluationDetail): ?>
+                                <?php if ($panelistIdEvaluationDetail['evaluationDetails']->category == "Personal Development"): ?>
+                                    <?php
+                                    if ($count == 0) {
+                                        ?>
+                                        <tr>
+                                            <td colspan="4"><b>Personal Development</b> </td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    $count ++;
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->title; ?></td>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->unacceptable; ?></td>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->acceptable; ?></td>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->good; ?></td>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->superior; ?></td>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluation_rubric_comment']; ?></td>
+                                    </tr>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+
+                            <?php $count=0; foreach ($panelistIdEvaluationDetails as $key => $panelistIdEvaluationDetail): ?>
+                                <?php if ($panelistIdEvaluationDetail['evaluationDetails']->category == "Written Paper"): ?>
+                                    <?php
+                                    if ($count == 0) {
+                                        ?>
+                                        <tr>
+                                            <td colspan="4"><b>Written Paper</b> </td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    $count ++;
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->title; ?></td>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->unacceptable; ?></td>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->acceptable; ?></td>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->good; ?></td>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->superior; ?></td>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluation_rubric_comment']; ?></td>
+                                    </tr>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+
+                            <?php $count=0; foreach ($panelistIdEvaluationDetails as $key => $panelistIdEvaluationDetail): ?>
+                                <?php if ($panelistIdEvaluationDetail['evaluationDetails']->category == "Oral Presentation"): ?>
+                                    <?php
+                                    if ($count == 0) {
+                                        ?>
+                                        <tr>
+                                            <td colspan="4"><b>Oral Presentation</b> </td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    $count ++;
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->title; ?></td>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->unacceptable; ?></td>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->acceptable; ?></td>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->good; ?></td>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->superior; ?></td>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluation_rubric_comment']; ?></td>
+                                    </tr>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+
+                            <?php $count=0; foreach ($panelistIdEvaluationDetails as $key => $panelistIdEvaluationDetail): ?>
+                                <?php if ($panelistIdEvaluationDetail['evaluationDetails']->category == "Design"): ?>
+                                    <?php
+                                    if ($count == 0) {
+                                        ?>
+                                        <tr>
+                                            <td colspan="4"><b>Design</b> </td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    $count ++;
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->title; ?></td>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->unacceptable; ?></td>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->acceptable; ?></td>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->good; ?></td>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->superior; ?></td>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluation_rubric_comment']; ?></td>
+                                    </tr>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+
+                            <?php $count=0; foreach ($panelistIdEvaluationDetails as $key => $panelistIdEvaluationDetail): ?>
+                                <?php if ($panelistIdEvaluationDetail['evaluationDetails']->category == null): ?>
+                                    <?php
+                                    if ($count == 0) {
+                                        ?>
+                                        <tr>
+                                            <td colspan="4"><b>NO CATEGORY YET</b> </td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    $count ++;
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->title; ?></td>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->unacceptable; ?></td>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->acceptable; ?></td>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->good; ?></td>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->superior; ?></td>
+                                        <td><?php echo $panelistIdEvaluationDetail['evaluation_rubric_comment']; ?></td>
+                                    </tr>
+                                <?php endif; ?>
                             <?php endforeach; ?>
                         </tbody>
                         <tfoot>
