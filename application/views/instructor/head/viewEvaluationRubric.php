@@ -183,7 +183,7 @@
                                     $count ++;
                                     ?>
                                     <tr>
-                                        <td><?php echo $count ?></td>
+                                        <td><?php echo $evaluationRubricDetail['title'] ?></td>
                                         <td><?php echo $evaluationRubricDetail['unacceptable']; ?></td>
                                         <td><?php echo $evaluationRubricDetail['acceptable']; ?></td>
                                         <td><?php echo $evaluationRubricDetail['good']; ?></td>
