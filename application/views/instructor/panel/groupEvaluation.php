@@ -54,25 +54,175 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($evaluationRubricDetails as $evaluationRubricDetailsKey => $evaluationRubricDetail): ?>
-                                    <tr>
-                                        <td><?php echo $evaluationRubricDetail['title'] ?></td>
-                                        <td><?php echo $evaluationRubricDetail['unacceptable'] ?></td>
-                                        <td><?php echo $evaluationRubricDetail['acceptable'] ?></td>
-                                        <td><?php echo $evaluationRubricDetail['good'] ?></td>
-                                        <td><?php echo $evaluationRubricDetail['superior'] ?></td>
-                                        <td>
-                                            <?php
-                                            $score = isset($evaluationRubricDetail['score'])? $evaluationRubricDetail['score']: 0;
-                                            $comment = isset($evaluationRubricDetail['comment'])? $evaluationRubricDetail['comment']: null;
+                                
+                                <?php $count=0; foreach ($evaluationRubricDetails as $key => $evaluationRubricDetail): ?>
+                                    <?php if ($evaluationRubricDetail['category'] == "Personal Development"): ?>
+                                        <?php
+                                        if ($count == 0) {
                                             ?>
-                                            <input type="number" name="score[]" min="0" max="4" value="<?php echo $score; ?>"  class="form-control">
-                                            <input type="hidden" name="evaluationRubricId[]" value="<?php echo $evaluationRubricDetail['id'] ?>"  class="form-control">
-                                        </td>
-                                        <td>
-                                            <textarea name="comment[]" class="form-control"><?php echo $comment; ?></textarea>
-                                        </td>
-                                    </tr>
+                                            <tr>
+                                                <td colspan="7"><b>Personal Development</b> </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                        $count ++;
+                                        ?>
+
+                                        <tr>
+                                            <td><?php echo $evaluationRubricDetail['title'] ?></td>
+                                            <td><?php echo $evaluationRubricDetail['unacceptable'] ?></td>
+                                            <td><?php echo $evaluationRubricDetail['acceptable'] ?></td>
+                                            <td><?php echo $evaluationRubricDetail['good'] ?></td>
+                                            <td><?php echo $evaluationRubricDetail['superior'] ?></td>
+                                            <td>
+                                                <?php
+                                                $score = isset($evaluationRubricDetail['score'])? $evaluationRubricDetail['score']: 0;
+                                                $comment = isset($evaluationRubricDetail['comment'])? $evaluationRubricDetail['comment']: null;
+                                                ?>
+                                                <input type="number" name="score[]" min="0" max="4" value="<?php echo $score; ?>"  class="form-control">
+                                                <input type="hidden" name="evaluationRubricId[]" value="<?php echo $evaluationRubricDetail['id'] ?>"  class="form-control">
+                                            </td>
+                                            <td>
+                                                <textarea name="comment[]" class="form-control"><?php echo $comment; ?></textarea>
+                                            </td>
+                                        </tr>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+
+                                <?php $count = 0; foreach ($evaluationRubricDetails as $evaluationRubricDetailsKey => $evaluationRubricDetail): ?>
+                                    <?php if ($evaluationRubricDetail['category'] == "Written Paper"): ?>
+                                        <?php
+                                        if ($count == 0) {
+                                            ?>
+                                            <tr>
+                                                <td colspan="7"><b>Written Paper</b> </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                        $count ++;
+                                        ?>
+
+                                        <tr>
+                                            <td><?php echo $evaluationRubricDetail['title'] ?></td>
+                                            <td><?php echo $evaluationRubricDetail['unacceptable'] ?></td>
+                                            <td><?php echo $evaluationRubricDetail['acceptable'] ?></td>
+                                            <td><?php echo $evaluationRubricDetail['good'] ?></td>
+                                            <td><?php echo $evaluationRubricDetail['superior'] ?></td>
+                                            <td>
+                                                <?php
+                                                $score = isset($evaluationRubricDetail['score'])? $evaluationRubricDetail['score']: 0;
+                                                $comment = isset($evaluationRubricDetail['comment'])? $evaluationRubricDetail['comment']: null;
+                                                ?>
+                                                <input type="number" name="score[]" min="0" max="4" value="<?php echo $score; ?>"  class="form-control">
+                                                <input type="hidden" name="evaluationRubricId[]" value="<?php echo $evaluationRubricDetail['id'] ?>"  class="form-control">
+                                            </td>
+                                            <td>
+                                                <textarea name="comment[]" class="form-control"><?php echo $comment; ?></textarea>
+                                            </td>
+                                        </tr>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+
+                                <?php $count = 0; foreach ($evaluationRubricDetails as $evaluationRubricDetailsKey => $evaluationRubricDetail): ?>
+                                    <?php if ($evaluationRubricDetail['category'] == "Oral Presentation"): ?>
+                                        <?php
+                                        if ($count == 0) {
+                                            ?>
+                                            <tr>
+                                                <td colspan="7"><b>Oral Presentation</b> </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                        $count ++;
+                                        ?>
+
+                                        <tr>
+                                            <td><?php echo $evaluationRubricDetail['title'] ?></td>
+                                            <td><?php echo $evaluationRubricDetail['unacceptable'] ?></td>
+                                            <td><?php echo $evaluationRubricDetail['acceptable'] ?></td>
+                                            <td><?php echo $evaluationRubricDetail['good'] ?></td>
+                                            <td><?php echo $evaluationRubricDetail['superior'] ?></td>
+                                            <td>
+                                                <?php
+                                                $score = isset($evaluationRubricDetail['score'])? $evaluationRubricDetail['score']: 0;
+                                                $comment = isset($evaluationRubricDetail['comment'])? $evaluationRubricDetail['comment']: null;
+                                                ?>
+                                                <input type="number" name="score[]" min="0" max="4" value="<?php echo $score; ?>"  class="form-control">
+                                                <input type="hidden" name="evaluationRubricId[]" value="<?php echo $evaluationRubricDetail['id'] ?>"  class="form-control">
+                                            </td>
+                                            <td>
+                                                <textarea name="comment[]" class="form-control"><?php echo $comment; ?></textarea>
+                                            </td>
+                                        </tr>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+
+                                <?php $count = 0; foreach ($evaluationRubricDetails as $evaluationRubricDetailsKey => $evaluationRubricDetail): ?>
+                                    <?php if ($evaluationRubricDetail['category'] == "Design"): ?>
+                                        <?php
+                                        if ($count == 0) {
+                                            ?>
+                                            <tr>
+                                                <td colspan="7"><b>Design</b> </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                        $count ++;
+                                        ?>
+
+                                        <tr>
+                                            <td><?php echo $evaluationRubricDetail['title'] ?></td>
+                                            <td><?php echo $evaluationRubricDetail['unacceptable'] ?></td>
+                                            <td><?php echo $evaluationRubricDetail['acceptable'] ?></td>
+                                            <td><?php echo $evaluationRubricDetail['good'] ?></td>
+                                            <td><?php echo $evaluationRubricDetail['superior'] ?></td>
+                                            <td>
+                                                <?php
+                                                $score = isset($evaluationRubricDetail['score'])? $evaluationRubricDetail['score']: 0;
+                                                $comment = isset($evaluationRubricDetail['comment'])? $evaluationRubricDetail['comment']: null;
+                                                ?>
+                                                <input type="number" name="score[]" min="0" max="4" value="<?php echo $score; ?>"  class="form-control">
+                                                <input type="hidden" name="evaluationRubricId[]" value="<?php echo $evaluationRubricDetail['id'] ?>"  class="form-control">
+                                            </td>
+                                            <td>
+                                                <textarea name="comment[]" class="form-control"><?php echo $comment; ?></textarea>
+                                            </td>
+                                        </tr>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+
+                                <?php $count = 0; foreach ($evaluationRubricDetails as $evaluationRubricDetailsKey => $evaluationRubricDetail): ?>
+                                    <?php if ($evaluationRubricDetail['category'] == null): ?>
+                                        <?php
+                                        if ($count == 0) {
+                                            ?>
+                                            <tr>
+                                                <td colspan="7"><b>NO CATEGORY YET</b> </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                        $count ++;
+                                        ?>
+
+                                        <tr>
+                                            <td><?php echo $evaluationRubricDetail['title'] ?></td>
+                                            <td><?php echo $evaluationRubricDetail['unacceptable'] ?></td>
+                                            <td><?php echo $evaluationRubricDetail['acceptable'] ?></td>
+                                            <td><?php echo $evaluationRubricDetail['good'] ?></td>
+                                            <td><?php echo $evaluationRubricDetail['superior'] ?></td>
+                                            <td>
+                                                <?php
+                                                $score = isset($evaluationRubricDetail['score'])? $evaluationRubricDetail['score']: 0;
+                                                $comment = isset($evaluationRubricDetail['comment'])? $evaluationRubricDetail['comment']: null;
+                                                ?>
+                                                <input type="number" name="score[]" min="0" max="4" value="<?php echo $score; ?>"  class="form-control">
+                                                <input type="hidden" name="evaluationRubricId[]" value="<?php echo $evaluationRubricDetail['id'] ?>"  class="form-control">
+                                            </td>
+                                            <td>
+                                                <textarea name="comment[]" class="form-control"><?php echo $comment; ?></textarea>
+                                            </td>
+                                        </tr>
+                                    <?php endif; ?>
                                 <?php endforeach; ?>
                             </tbody>
                             <tfoot>

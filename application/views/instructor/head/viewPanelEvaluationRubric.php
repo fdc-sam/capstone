@@ -44,16 +44,128 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($evaluationRubricDetailsArr as $key => $value): ?>
-                                <tr>
-                                    <td><?php echo $value['title']; ?></td>
-                                    <td><?php echo $value['unacceptable']; ?></td>
-                                    <td><?php echo $value['acceptable']; ?></td>
-                                    <td><?php echo $value['good']; ?></td>
-                                    <td><?php echo $value['superior']; ?></td>
-                                    <td><?php echo $value['score']; ?></td>
-                                    <td><?php echo $value['comment']; ?></td>
-                                </tr>
+
+                            <?php $count=0; foreach ($evaluationRubricDetailsArr as $key => $value): ?>
+                                <?php if ($value['category'] == "Personal Development"): ?>
+                                    <?php
+                                    if ($count == 0) {
+                                        ?>
+                                        <tr>
+                                            <td colspan="7"><b>Personal Development</b> </td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    $count ++;
+                                    ?>
+
+                                    <tr>
+                                        <td><?php echo $value['title']; ?></td>
+                                        <td><?php echo $value['unacceptable']; ?></td>
+                                        <td><?php echo $value['acceptable']; ?></td>
+                                        <td><?php echo $value['good']; ?></td>
+                                        <td><?php echo $value['superior']; ?></td>
+                                        <td><?php echo $value['score']; ?></td>
+                                        <td><?php echo $value['comment']; ?></td>
+                                    </tr>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+
+                            <?php $count=0; foreach ($evaluationRubricDetailsArr as $key => $value): ?>
+                                <?php if ($value['category'] == "Written Paper"): ?>
+                                    <?php
+                                    if ($count == 0) {
+                                        ?>
+                                        <tr>
+                                            <td colspan="7"> <b>Written Paper</b></td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    $count ++;
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $value['title']; ?></td>
+                                        <td><?php echo $value['unacceptable']; ?></td>
+                                        <td><?php echo $value['acceptable']; ?></td>
+                                        <td><?php echo $value['good']; ?></td>
+                                        <td><?php echo $value['superior']; ?></td>
+                                        <td><?php echo $value['score']; ?></td>
+                                        <td><?php echo $value['comment']; ?></td>
+                                    </tr>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+
+
+                            <?php $count=0; foreach ($evaluationRubricDetailsArr as $key => $value): ?>
+                                <?php if ($value['category'] == "Oral Presentation"): ?>
+                                    <?php
+                                    if ($count == 0) {
+                                        ?>
+                                        <tr>
+                                            <td colspan="7"> <b>Oral Presentation</b> </td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    $count ++;
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $value['title']; ?></td>
+                                        <td><?php echo $value['unacceptable']; ?></td>
+                                        <td><?php echo $value['acceptable']; ?></td>
+                                        <td><?php echo $value['good']; ?></td>
+                                        <td><?php echo $value['superior']; ?></td>
+                                        <td><?php echo $value['score']; ?></td>
+                                        <td><?php echo $value['comment']; ?></td>
+                                    </tr>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+
+
+                            <?php $count=0; foreach ($evaluationRubricDetailsArr as $key => $value): ?>
+                                <?php if ($value['category'] == "Design"): ?>
+                                    <?php
+                                    if ($count == 0) {
+                                        ?>
+                                        <tr>
+                                            <td colspan="7"><b>Design</b></td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    $count ++;
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $value['title']; ?></td>
+                                        <td><?php echo $value['unacceptable']; ?></td>
+                                        <td><?php echo $value['acceptable']; ?></td>
+                                        <td><?php echo $value['good']; ?></td>
+                                        <td><?php echo $value['superior']; ?></td>
+                                        <td><?php echo $value['score']; ?></td>
+                                        <td><?php echo $value['comment']; ?></td>
+                                    </tr>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+
+                            <?php $count=0; foreach ($evaluationRubricDetailsArr as $key => $value): ?>
+                                <?php if ($value['category'] == null): ?>
+                                    <?php
+                                    if ($count == 0) {
+                                        ?>
+                                        <tr>
+                                            <td colspan="7"><b>NO CATEGORY YET</b></td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    $count ++;
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $value['title']; ?></td>
+                                        <td><?php echo $value['unacceptable']; ?></td>
+                                        <td><?php echo $value['acceptable']; ?></td>
+                                        <td><?php echo $value['good']; ?></td>
+                                        <td><?php echo $value['superior']; ?></td>
+                                        <td><?php echo $value['score']; ?></td>
+                                        <td><?php echo $value['comment']; ?></td>
+                                    </tr>
+                                <?php endif; ?>
                             <?php endforeach; ?>
                         </tbody>
                         <tfoot>

@@ -40,14 +40,28 @@
                     ?>
                     <form class="" action="<?php echo$actionUrl; ?>" method="post">
                         <div class="position-relative form-group">
-                            <label for="exampleEmail" class="">Title</label>
-                            <input
-                                type="text"
-                                name="title"
-                                id="title"
-                                placeholder="Tilte here ..."
-                                class="form-control"
-                                value="<?php echo isset($evaluationRubricDetails->title)? $evaluationRubricDetails->title: null; ?>">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="exampleEmail" class="">Title</label>
+                                    <input
+                                        type="text"
+                                        name="title"
+                                        id="title"
+                                        placeholder="Tilte here ..."
+                                        class="form-control"
+                                        value="<?php echo isset($evaluationRubricDetails->title)? $evaluationRubricDetails->title: null; ?>">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="exampleEmail" class="">Category</label>
+                                    <select class="form-control" name="category">
+                                        <option value="Personal Development">Personal Development</option>
+                                        <option value="Written Paper">Written Paper</option>
+                                        <option value="Oral Presentation">Oral Presentation</option>
+                                        <option value="Design">Design</option>
+                                    </select>
+                                </div>
+                            </div>
+
                         </div>
                         <br>
                         <h5 class="card-title">Controls Types</h5>

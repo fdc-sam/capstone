@@ -19,6 +19,18 @@
                 </nav>
             </div>
         </div>
+        <?php if (isset($_SESSION['message']) && $this->session->flashdata('message')): ?>
+            <div class="alert  alert-dismissible fade show <?php echo isset($_SESSION['message']['class'])? $_SESSION['message']['class']: ""; ?>" role="alert">
+                <button type="button" class="close" aria-label="Close" data-dismiss="alert">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <?php
+                    echo isset($_SESSION['message']['message'])? $_SESSION['message']['message']: "";
+                    // pre($_SESSION['message']);
+                    unset($_SESSION['message']);
+                ?>
+            </div>
+        <?php endif; ?>
         <div class="row">
             <?php echo $this->layout->element('proposalDetails'); ?>
         </div>

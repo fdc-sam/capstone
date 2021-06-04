@@ -72,6 +72,8 @@ if ($subContent == 'head/groups') {
 	<?php endif; ?>
 
 	<script src="<?php echo base_url('assets/scripts/sweetalert2.js'); ?>"></script>
+
+
 <!-- end -->
 
 <?php if ($mainContent == 'instructor/head' || $mainContent == 'instructor/panel'): ?>

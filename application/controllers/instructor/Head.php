@@ -866,6 +866,7 @@ class Head extends CI_Controller {
         $currentUserGroup = $this->getCurrentUserGroupDetails($data['userInfo']->id);
 
         // - data
+        $data['thesisGroupId'] = $thesisGroupId;
         $data['currentUserGroup'] = $currentUserGroup->name;
         $data['currentPageTitle'] = 'Team Proposal';
         $data['mainContent'] = 'instructor/head';
@@ -876,6 +877,32 @@ class Head extends CI_Controller {
         $this->load->view('includes/instructor/header',$data);
 		$this->load->view('instructor/head/proposalDetails');
 		$this->load->view('includes/instructor/footer');
+    }
+
+    public function rejectProsalByHead($thesisId = null, $groupid = null){
+        $updateThesis = $this->universal->update(
+            'thises',
+            array(
+                'status' => 3
+            ),
+            array(
+                'id' => $thesisId
+            )
+        );
+
+        $output = array(
+            'message' => "Error! Somthing went Wrong",
+            'class' => 'alert-danger'
+        );
+        if (isset($updateThesis) && $updateThesis) {
+            $output = array(
+                'message' => "Proposal Rejected",
+                'class' => 'alert-success'
+            );
+        }
+        $this->session->set_flashdata('message', $output);
+
+        redirect(base_url('instructor/head/proposalDetails/'.$groupid), 'refresh');
     }
 
     public function teamProposal($thesisGroupId = null){
@@ -1838,6 +1865,7 @@ class Head extends CI_Controller {
                         'acceptable' => $post['acceptable'],
                         'good' => $post['good'],
                         'superior' => $post['superior'],
+                        'category' => $post['category'],
                         'date_modified' => date('Y-m-d H:i:s'),
                     ),
                     array(
@@ -1865,6 +1893,7 @@ class Head extends CI_Controller {
                         'acceptable' => $post['acceptable'],
                         'good' => $post['good'],
                         'superior' => $post['superior'],
+                        'category' => $post['category'],
                         'date_created' => date('Y-m-d H:i:s'),
                         'date_modified' => date('Y-m-d H:i:s'),
                     )
@@ -1910,7 +1939,12 @@ class Head extends CI_Controller {
             true,
             'evaluation_rubric',
             '*',
-            'array'
+            'array',
+            $where=array(),
+            $like=array(),
+            $join=array(),
+            $limit=array(),
+            array('category','ASC')
         );
         // pre($evaluationRubricDetailsArr);
         // die();

@@ -559,31 +559,15 @@ if (sub_content == 'head/assignPanelist') {
     });
 }
 
-// if (sub_content == 'head/proposalDetails') {
-//     $.ajax({
-//         url:`${base_url}instructor/head/getProposalDetails`,
-//         type:'post',
-//         dataType:'json',
-//         data:{
-//             thesisGroupId:thesisGroupId
-//         },
-//         beforeSend: function() {
-//             $('#loadingState').show();
-//         },
-//         success: function(data){
-//             console.log(data);
-//             Swal.fire(
-//                 'INFO!',
-//                 'User data has been Updated',
-//                 'success'
-//             )
-//         },
-//         complete: function(){
-//             $('#loadingState').hide();
-//             getProposalDetails.ajax.reload();
-//         }
-//     });
-// }
+if (sub_content == 'head/proposalDetails') {
+
+    $(document).on('click','.btn-rejectProsalByHead', function(e){
+        e.preventDefault();
+        var thesisId = $(this).attr('thesisId');
+        var groupid = $(this).attr('groupid');
+        window.location.replace(`${base_url}instructor/head/rejectProsalByHead/${thesisId}/${groupid}`);
+    })
+}
 
 if (sub_content == 'head/teamProposal') {
     var getProposalDetails = $('#getProposalDetails').DataTable({

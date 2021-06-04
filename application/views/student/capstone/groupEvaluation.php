@@ -33,7 +33,6 @@
                                 <th>ACCEPTABLE</th>
                                 <th>GOOD</th>
                                 <th>SUPERIOR</th>
-                                <th>SCORE</th>
                                 <th>COMMENT</th>
                             </tr>
                         </thead>
@@ -45,7 +44,6 @@
                                     <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->acceptable; ?></td>
                                     <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->good; ?></td>
                                     <td><?php echo $panelistIdEvaluationDetail['evaluationDetails']->superior; ?></td>
-                                    <td><?php echo $panelistIdEvaluationDetail['evaluation_rubric_score']; ?></td>
                                     <td><?php echo $panelistIdEvaluationDetail['evaluation_rubric_comment']; ?></td>
                                 </tr>
                             <?php endforeach; ?>
@@ -57,7 +55,6 @@
                                 <th>ACCEPTABLE</th>
                                 <th>GOOD</th>
                                 <th>SUPERIOR</th>
-                                <th>SCORE</th>
                                 <th>COMMENT</th>
                             </tr>
                         </tfoot>
