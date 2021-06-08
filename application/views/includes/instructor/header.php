@@ -279,7 +279,7 @@
                     <div class="app-sidebar__inner">
                         <ul class="vertical-nav-menu">
                             <?php if (isset($mainContent) && $mainContent == 'instructor/head' || $currentUserGroup == 'IT head'): ?>
-                                <li class="app-sidebar__heading">Admin</li>
+                                <li class="app-sidebar__heading">Instructor / Coordinator</li>
                                 <li  class="<?php echo
                                     isset($mainContent)
                                     && $mainContent == 'instructor/head'
