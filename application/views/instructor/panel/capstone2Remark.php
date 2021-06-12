@@ -6,13 +6,13 @@
                 <nav class="" aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="<?php echo base_url('instructor/panel/capstone1') ?>">
+                            <a href="<?php echo base_url('instructor/panel/capstone2') ?>">
                                 <i aria-hidden="true" class="fa fa-home"></i>
                             </a>
                         </li>
                         <li class="breadcrumb-item">
                             <a>
-                                Capstone 1 Final Remark
+                                Capstone 2 Final Remark
                             </a>
                         </li>
                     </ol>
@@ -42,7 +42,7 @@
 
                         </div>
                     </div>
-                    <form class="" action="<?php echo base_url('instructor/panel/capstone1Remark/'.$groupId) ?>" method="post">
+                    <form class="" action="<?php echo base_url('instructor/panel/capstone2Remark/'.$groupId) ?>" method="post">
                         <div class="card-body">
                             <div class="form-row">
                                 <div class="col-md-12">
@@ -54,7 +54,7 @@
                             </div>
                         </div>
                         <div class="d-block text-right card-footer">
-                            <a href="<?php echo base_url('instructor/panel/capstone1') ?>" class="mr-2 btn btn-link btn-sm">Cancel</a>
+                            <a href="<?php echo base_url('instructor/panel/capstone2') ?>" class="mr-2 btn btn-link btn-sm">Cancel</a>
                             <button class="btn-wide btn-shadow btn btn-primary">Submit</button>
                         </div>
                     </form>

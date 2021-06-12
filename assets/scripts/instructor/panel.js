@@ -437,4 +437,28 @@ $(document).ready(function(){
             ],
         });// end of the data table variable
     }
+    
+    if (sub_content == 'panel/capstone2') {
+        var tableGroupDetails = $('#table-capstone2').DataTable({
+            "responsive" : true,
+            "columnDefs": [
+                { responsivePriority: 1, targets: 0 },
+                { responsivePriority: 1, targets: 2 },
+                { responsivePriority: 1, targets: 4 }
+            ],
+        });// end of the data table variable
+    }
+    
+    if (sub_content == 'panel/groupEvaluation2') {
+        var tableGroupDetails = $('#table-groupEvaluation').DataTable({
+            "responsive" : true,
+            "ordering": false,
+            "paging": false,
+            "columnDefs": [
+                { responsivePriority: 1, targets: 0 },
+                { responsivePriority: 1, targets: 2 },
+                { responsivePriority: 1, targets: 4 }
+            ],
+        });// end of the data table variable
+    }
 });

@@ -17,10 +17,9 @@ $(document).ready(function(){
             "responsive" : true,
             "ordering": false,
             "paging": false,
+            "bFilter": false,
             "columnDefs": [
-                { responsivePriority: 1, targets: 0 },
-                { responsivePriority: 1, targets: 5 },
-                { responsivePriority: 1, targets: 6 }
+                { responsivePriority: 1, targets: 0 }
             ],
         });// end of the data table variable
     }

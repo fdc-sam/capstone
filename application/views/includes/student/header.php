@@ -13,7 +13,8 @@
 
     <!-- Disable tap highlight on IE -->
     <meta name="msapplication-tap-highlight" content="no">
-
+    
+    <link rel="shortcut icon" href="<?php echo base_url('assets/images/originals/it_logo.ico') ?>" />
     <link href="<?php echo base_url('assets/css/main.d810cf0ae7f39f28f336.css'); ?>  " rel="stylesheet">
     <link href="<?php echo base_url('assets/css/jquery.dataTables.min.css'); ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/responsive.dataTables.css'); ?>" rel="stylesheet">
@@ -222,6 +223,7 @@
                                         && $subContent == 'capstone/index'
                                         || $subContent == 'capstone/groupEvaluation'
                                         || $subContent == 'capstone/capstone1Remark'
+                                        || $subContent == 'capstone/capstone2Remark'
                                         ? 'mm-active': '' ?>  btn-sm">
                                     <i class="metismenu-icon fa fa-ils" aria-hidden="true"></i>
                                     Capstone

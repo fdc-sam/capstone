@@ -13,7 +13,8 @@
 
     <!-- Disable tap highlight on IE -->
     <meta name="msapplication-tap-highlight" content="no">
-
+    
+    <link rel="shortcut icon" href="<?php echo base_url('assets/images/originals/it_logo.ico') ?>" />
     <link href="<?php echo base_url('assets/css/main.d810cf0ae7f39f28f336.css'); ?>  " rel="stylesheet">
     <link href="<?php echo base_url('assets/css/jquery.dataTables.min.css'); ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/responsive.dataTables.css'); ?>" rel="stylesheet">
@@ -375,8 +376,11 @@
                                     && $subContent != 'panel/groupDetails'
                                     && $subContent != 'panel/capstone1'
                                     && $subContent != 'panel/groupEvaluation'
+                                    && $subContent != 'panel/groupEvaluation2'
                                     && $subContent != 'panel/viewScript'
                                     && $subContent != 'panel/capstone1Remark'
+                                    && $subContent != 'panel/capstone2Remark'
+                                    && $subContent != 'panel/capstone2' 
                                     ? 'mm-active': '' ?>"
                                 >
                                 <a href="#">
@@ -415,7 +419,6 @@
                                     class="<?php echo isset($subContent)
                                     && $subContent == 'panel/capstone1'
                                     || $subContent == 'panel/groupEvaluation'
-                                    || $subContent == 'panel/viewScript'
                                     || $subContent == 'panel/capstone1Remark'
                                     ? 'mm-active': '' ?>  btn-sm"
                                 >
@@ -423,7 +426,13 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="" >
+                                <a href="<?php echo base_url('instructor/panel/capstone2') ?>"
+                                    class="<?php echo isset($subContent)
+                                    && $subContent == 'panel/capstone2'
+                                    || $subContent == 'panel/groupEvaluation2'
+                                    || $subContent == 'panel/capstone2Remark'
+                                    ? 'mm-active': '' ?>  btn-sm"
+                                >
                                     <i class="metismenu-icon pe-7s-graph2"></i>Capstone 2
                                 </a>
                             </li>

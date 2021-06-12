@@ -5,12 +5,12 @@
                 <nav class="" aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="<?php echo base_url('student/capstone'); ?>">
+                            <a href="javascript:history.go(-1)">
                                 <i aria-hidden="true" class="fa fa-home"></i>
                             </a>
                         </li>
                         <li class="breadcrumb-item">
-                            Capstone 1 Evaluation
+                            Capstone <?php echo $capstoneFlag; ?> Evaluation
                         </li>
                     </ol>
                 </nav>

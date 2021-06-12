@@ -13,6 +13,24 @@
                 </nav>
             </div>
         </div>
+        <ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
+            <li class="nav-item">
+                <a  role="tab" 
+                    class="nav-link <?php echo isset($capstoneFlag) && $capstoneFlag == 1? 'active': null; ?> " 
+                    href="<?php echo base_url('student/capstone'); ?>"
+                >
+                    <span>Capstone 1</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a  role="tab" 
+                    class="nav-link <?php echo isset($capstoneFlag) && $capstoneFlag == 2? 'active': null; ?> " 
+                    href="<?php echo base_url('student/capstone?capstoneFlag=2'); ?>"
+                >
+                    <span>Capstone 2</span>
+                </a>
+            </li>
+        </ul>
         <div class="tabs-animation">
             <div class="card mb-3">
                 <div class="card-header">
@@ -54,14 +72,14 @@
                                         <td>
                                             <?php if (isset($panelistDetail['capstoneDetails']->id) && $panelistDetail['capstoneDetails']->id): ?>
                                                 <a
-                                                    href="<?php echo base_url('student/capstone/groupEvaluation/'.$panelistDetail['capstoneDetails']->id) ?>"
+                                                    href="<?php echo base_url('student/capstone/groupEvaluation/'.$panelistDetail['capstoneDetails']->id).'/'.$capstoneFlag ?>"
                                                     class="mb-2 mr-2 btn-icon btn-sm btn-shadow btn-outline-2x btn btn-outline-primary"
                                                 >
                                                     <i class="fa fa-eye btn-icon-wrapper"> </i>
                                                     Evaluate
                                                 </a>
                                                 <a
-                                                    href="<?php echo base_url('student/capstone/capstone1Remark/'.$panelistDetail['capstoneDetails']->panelist_id) ?>"
+                                                    href="<?php echo base_url('student/capstone/capstone'.$capstoneFlag.'Remark/'.$panelistDetail['capstoneDetails']->panelist_id) ?>"
                                                     class="mb-2 mr-2 btn-icon btn-sm btn-shadow btn-outline-2x btn btn-outline-primary"
                                                 >
                                                     <i class="fa fa-eye btn-icon-wrapper"> </i>

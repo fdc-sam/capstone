@@ -6,7 +6,7 @@
                 <nav class="" aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="<?php echo base_url('instructor/adviser/advisory'); ?>">
+                            <a href="javascript:history.go(-1)">
                                 <i aria-hidden="true" class="fa fa-home"></i>
                             </a>
                         </li>
