@@ -29,7 +29,7 @@
             <div class="card mb-3">
                 <div class="card-header">
                     <i class="header-icon lnr-laptop-phone icon-gradient bg-plum-plate"> </i>
-                    Thesis 2 Evaluation Rubric
+                    Thesis Evaluation Rubric
                 </div>
                 <div class="card-body">
                     <?php
