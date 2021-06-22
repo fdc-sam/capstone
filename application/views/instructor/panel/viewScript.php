@@ -32,7 +32,7 @@
                     <?php if (isset($files) && $files): ?>
                         <object id="pdf" data="<?php echo base_url('uploads/'.$files->file_name); ?>" type="application/pdf" width="100%">
                                 <p>Your web browser doesn't have a PDF plugin.
-                                Instead you can <a href="<?php echo base_url('uploads/'.$documentFileName); ?>">click here to
+                                Instead you can <a href="<?php echo base_url('uploads/'.$files->file_name); ?>" download>click here to
                                 download the PDF file.</a></p>
                         </object>
                     <?php endif; ?>
