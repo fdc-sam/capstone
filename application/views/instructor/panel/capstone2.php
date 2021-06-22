@@ -28,7 +28,7 @@
         <div class="tabs-animation">
             <div class="card mb-3">
                 <div class="card-header">
-                    <i class="header-icon lnr-laptop-phone icon-gradient bg-plum-plate"> </i>Capstone 1
+                    <i class="header-icon lnr-laptop-phone icon-gradient bg-plum-plate"> </i>Capstone 2
                 </div>
                 <div class="card-body">
                     <table style="width: 100%;" id="table-capstone2" class="table table-hover table-striped table-bordered">
